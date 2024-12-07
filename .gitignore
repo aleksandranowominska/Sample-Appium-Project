@@ -1,0 +1,32 @@
+# Node.js standard ignores
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# TypeScript build output
+dist/
+build/
+out/
+
+# Coverage directory used by tools like istanbul/jest
+coverage/
+
+# Mac system files
+.DS_Store
+
+# Environment variables file
+.env
+
+# Jest cache
+.jest/
+
+# VSCode settings (opcjonalnie, jeśli nie chcesz ich w repo)
+.vscode/
+
+# Logs
+*.log
+
+# Appium artifacts
+Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
+iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app
