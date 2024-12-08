@@ -1,4 +1,4 @@
-export class BaseSelectors {
+export class iOSSelectors {
 
     // Header Selectors
     static menuSelector = '//XCUIElementTypeOther[@name="test-Menu"]';

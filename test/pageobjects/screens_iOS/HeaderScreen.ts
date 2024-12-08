@@ -1,10 +1,10 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class HeaderScreen extends BaseScreen {
-    private menuSelector = BaseSelectors.menuSelector;
-    private cartSelector = BaseSelectors.cartButtonSelector;
-    private swagLogoSelector = BaseSelectors.swagLogoSelector;
+    private menuSelector = iOSSelectors.menuSelector;
+    private cartSelector = iOSSelectors.cartButtonSelector;
+    private swagLogoSelector = iOSSelectors.swagLogoSelector;
 
     async waitForDisplayedElements(): Promise<void> {
         await this.waitForDisplayed(this.menuSelector);

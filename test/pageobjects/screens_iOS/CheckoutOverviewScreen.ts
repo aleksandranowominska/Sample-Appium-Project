@@ -1,14 +1,14 @@
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 import { BaseScreen } from '../../utils/BaseScreen';
 
 export class CheckoutOverviewScreen extends BaseScreen {
-    private overviewTitleSelector = BaseSelectors.checkoutOverviewTitleSelector;
-    private overviewProductNameSelector = BaseSelectors.productNameSelector;
-    private overviewProductPriceSelector = BaseSelectors.productPriceSelector;
-    private itemTotalSelector = BaseSelectors.itemTotalSelector;
-    private taxSelector = BaseSelectors.taxSelector;
-    private totalPriceSelector = BaseSelectors.totalPriceSelector;
-    private finishButtonSelector = BaseSelectors.finishButtonSelector;
+    private overviewTitleSelector = iOSSelectors.checkoutOverviewTitleSelector;
+    private overviewProductNameSelector = iOSSelectors.productNameSelector;
+    private overviewProductPriceSelector = iOSSelectors.productPriceSelector;
+    private itemTotalSelector = iOSSelectors.itemTotalSelector;
+    private taxSelector = iOSSelectors.taxSelector;
+    private totalPriceSelector = iOSSelectors.totalPriceSelector;
+    private finishButtonSelector = iOSSelectors.finishButtonSelector;
 
     async verifyCheckoutOverviewElements(): Promise<boolean> {
         const elementsToCheck = [

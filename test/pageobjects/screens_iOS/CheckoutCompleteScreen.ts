@@ -1,12 +1,12 @@
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 import { BaseScreen } from '../../utils/BaseScreen';
 
 export class CheckoutCompleteScreen extends BaseScreen {
-    private checkoutCompleteTitleSelector = BaseSelectors.checkoutCompleteTitleSelector;
-    private thankYouMessageSelector = BaseSelectors.thankYouMessageSelector;
-    private orderDispatchedMessageSelector = BaseSelectors.orderDispatchedMessageSelector;
-    private ponyExpressImageSelector = BaseSelectors.ponyExpressImageSelector;
-    private backHomeButtonSelector = BaseSelectors.backHomeButtonSelector;
+    private checkoutCompleteTitleSelector = iOSSelectors.checkoutCompleteTitleSelector;
+    private thankYouMessageSelector = iOSSelectors.thankYouMessageSelector;
+    private orderDispatchedMessageSelector = iOSSelectors.orderDispatchedMessageSelector;
+    private ponyExpressImageSelector = iOSSelectors.ponyExpressImageSelector;
+    private backHomeButtonSelector = iOSSelectors.backHomeButtonSelector;
 
     async verifyCheckoutCompleteElements(): Promise<boolean> {
         const elementsToCheck = [

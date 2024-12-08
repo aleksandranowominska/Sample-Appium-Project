@@ -1,10 +1,10 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class FooterScreen extends BaseScreen {
-    private footerTextSelector = BaseSelectors.footerTextSelector;
-    private termsTextSelector = BaseSelectors.termsTextSelector;
-    private swagBotImageSelector = BaseSelectors.swagBotImageSelector;
+    private footerTextSelector = iOSSelectors.footerTextSelector;
+    private termsTextSelector = iOSSelectors.termsTextSelector;
+    private swagBotImageSelector = iOSSelectors.swagBotImageSelector;
 
     async verifyFooterElements(): Promise<boolean> {
         await this.scrollTo(this.footerTextSelector);

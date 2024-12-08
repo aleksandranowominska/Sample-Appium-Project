@@ -1,16 +1,16 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 import * as dotenv from 'dotenv';
 
 // Load environment variables from .env file
 dotenv.config();
 
 export class LoginScreen extends BaseScreen {
-    private swagLogoSelector = BaseSelectors.swagLogoSelector;
-    private usernameSelector = BaseSelectors.usernameSelector;
-    private passwordSelector = BaseSelectors.passwordSelector;
-    private loginButtonSelector = BaseSelectors.loginButtonSelector;
-    private loginBotSelector = BaseSelectors.loginBotSelector;
+    private swagLogoSelector = iOSSelectors.swagLogoSelector;
+    private usernameSelector = iOSSelectors.usernameSelector;
+    private passwordSelector = iOSSelectors.passwordSelector;
+    private loginButtonSelector = iOSSelectors.loginButtonSelector;
+    private loginBotSelector = iOSSelectors.loginBotSelector;
 
     // Check if all key elements on the login screen are displayed
     async areElementsDisplayed(): Promise<boolean> {

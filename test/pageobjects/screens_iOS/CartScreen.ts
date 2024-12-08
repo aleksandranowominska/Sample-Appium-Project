@@ -1,17 +1,17 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class CartScreen extends BaseScreen {
-    private yourCartSelector = BaseSelectors.yourCartSelector;
-    private qtySelector = BaseSelectors.qtySelector;
-    private descriptionSelector = BaseSelectors.descriptionSelector;
-    private amountSelector = BaseSelectors.amountSelector;
-    private productQtySelector = BaseSelectors.productQtySelector;
-    private productNameSelector = BaseSelectors.productNameSelector;
-    private productPriceSelector = BaseSelectors.productPriceSelector;
-    private removeButtonSelector = BaseSelectors.removeButtonSelector;
-    private continueShoppingButtonSelector = BaseSelectors.continueShoppingButtonSelector;
-    private checkoutButtonSelector = BaseSelectors.checkoutButtonSelector;
+    private yourCartSelector = iOSSelectors.yourCartSelector;
+    private qtySelector = iOSSelectors.qtySelector;
+    private descriptionSelector = iOSSelectors.descriptionSelector;
+    private amountSelector = iOSSelectors.amountSelector;
+    private productQtySelector = iOSSelectors.productQtySelector;
+    private productNameSelector = iOSSelectors.productNameSelector;
+    private productPriceSelector = iOSSelectors.productPriceSelector;
+    private removeButtonSelector = iOSSelectors.removeButtonSelector;
+    private continueShoppingButtonSelector = iOSSelectors.continueShoppingButtonSelector;
+    private checkoutButtonSelector = iOSSelectors.checkoutButtonSelector;
 
     // Method to verify if all cart elements are displayed
     async verifyCartElements(): Promise<boolean> {

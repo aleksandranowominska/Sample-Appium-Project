@@ -1,16 +1,16 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { BaseSelectors } from '../../utils/iOSSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class ProductListScreen extends BaseScreen {
-    protected productsTitleSelector = BaseSelectors.productsTitleSelector;
-    protected toggleButtonSelector = BaseSelectors.toggleButtonSelector;
-    protected modalSelectorButtonSelector = BaseSelectors.modalSelectorButtonSelector;
-    protected addToCartButtonSelector = BaseSelectors.addToCartButtonSelector;
-    protected removeButtonSelector = BaseSelectors.removeButtonSelector;
-    protected itemTitleSelector = BaseSelectors.itemTitleSelector;
-    protected priceSelector = BaseSelectors.priceSelector;
-    protected cartBadgeSelector = BaseSelectors.cartBadgeSelector;
-    protected cartButtonSelector = BaseSelectors.cartButtonSelector;
+    protected productsTitleSelector = iOSSelectors.productsTitleSelector;
+    protected toggleButtonSelector = iOSSelectors.toggleButtonSelector;
+    protected modalSelectorButtonSelector = iOSSelectors.modalSelectorButtonSelector;
+    protected addToCartButtonSelector = iOSSelectors.addToCartButtonSelector;
+    protected removeButtonSelector = iOSSelectors.removeButtonSelector;
+    protected itemTitleSelector = iOSSelectors.itemTitleSelector;
+    protected priceSelector = iOSSelectors.priceSelector;
+    protected cartBadgeSelector = iOSSelectors.cartBadgeSelector;
+    protected cartButtonSelector = iOSSelectors.cartButtonSelector;
 
     async verifyUniqueElements(): Promise<boolean> {
         await this.scrollTo(this.productsTitleSelector);
