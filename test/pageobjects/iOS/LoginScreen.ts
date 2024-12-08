@@ -1,16 +1,16 @@
 import { BaseScreen } from '../BaseScreen';
+import { BaseSelectors } from './BaseSelectors';
 import * as dotenv from 'dotenv';
 
 // Load environment variables from .env file
 dotenv.config();
 
 export class LoginScreen extends BaseScreen {
-    // Selectors for iOS elements
-    private swagLogoSelector = '//XCUIElementTypeImage[@name="assets/src/img/swag-labs-logo.png"]';
-    private usernameSelector = 'id=test-Username';
-    private passwordSelector = 'id=test-Password';
-    private loginButtonSelector = 'id=test-LOGIN';
-    private loginBotSelector = '//XCUIElementTypeImage[@name="assets/src/img/login-bot.png"]';
+    private swagLogoSelector = BaseSelectors.swagLogoSelector;
+    private usernameSelector = BaseSelectors.usernameSelector;
+    private passwordSelector = BaseSelectors.passwordSelector;
+    private loginButtonSelector = BaseSelectors.loginButtonSelector;
+    private loginBotSelector = BaseSelectors.loginBotSelector;
 
     // Check if all key elements on the login screen are displayed
     async areElementsDisplayed(): Promise<boolean> {
@@ -56,5 +56,6 @@ export class LoginScreen extends BaseScreen {
     
         await this.tapElement(this.loginButtonSelector);
         console.log('Login button tapped successfully.');
+
     }
 }

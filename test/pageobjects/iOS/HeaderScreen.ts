@@ -1,9 +1,10 @@
 import { BaseScreen } from '../BaseScreen';
+import { BaseSelectors } from './BaseSelectors';
 
 export class HeaderScreen extends BaseScreen {
-    private menuSelector = '//XCUIElementTypeOther[@name="test-Menu"]';
-    private cartSelector = '//XCUIElementTypeOther[@name="test-Cart"]';
-    private swagLogoSelector = '//XCUIElementTypeImage[@name="assets/src/img/swag-labs-logo.png"]';
+    private menuSelector = BaseSelectors.menuSelector;
+    private cartSelector = BaseSelectors.cartButtonSelector;
+    private swagLogoSelector = BaseSelectors.swagLogoSelector;
 
     async waitForDisplayedElements(): Promise<void> {
         await this.waitForDisplayed(this.menuSelector);

@@ -1,9 +1,10 @@
 import { BaseScreen } from '../BaseScreen';
+import { BaseSelectors } from './BaseSelectors';
 
 export class FooterScreen extends BaseScreen {
-    private footerTextSelector = '//XCUIElementTypeStaticText[@name="© 2024 Sauce Labs. All Rights Reserved."]';
-    private termsTextSelector = '//XCUIElementTypeStaticText[@name="Terms of Service | Privacy Policy"]';
-    private swagBotImageSelector = '//XCUIElementTypeImage[@name="assets/src/img/footer-swagbot.png"]';
+    private footerTextSelector = BaseSelectors.footerTextSelector;
+    private termsTextSelector = BaseSelectors.termsTextSelector;
+    private swagBotImageSelector = BaseSelectors.swagBotImageSelector;
 
     async verifyFooterElements(): Promise<boolean> {
         await this.scrollTo(this.footerTextSelector);
