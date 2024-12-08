@@ -31,10 +31,10 @@ export class BaseScreen {
 
     // Check if element is displayed within the timeout
     async isElementDisplayed(elementSelector: string) {
-        const el = await $(elementSelector);
         try {
-            return await el.waitForDisplayed({ timeout: ELEMENT_TIMEOUT });
-        } catch {
+            const el = await $(elementSelector);
+            return await el.isDisplayed();
+        } catch (error) {
             return false;
         }
     }

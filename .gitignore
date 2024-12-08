@@ -30,3 +30,6 @@ coverage/
 # Appium artifacts
 Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
 iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app
+
+# Environment variables file
+.env
