@@ -3,8 +3,6 @@ const ELEMENT_TIMEOUT = process.env.ELEMENT_TIMEOUT ? parseInt(process.env.ELEME
 
 export class BaseScreen {
     // Wait for an element to be displayed within the defined timeout
-    // elementSelector: string CSS or XPath or accessibility id selector
-    // returns: the located element
     async waitForDisplayed(elementSelector: string) {
         const el = await $(elementSelector);
         await el.waitForDisplayed({ timeout: ELEMENT_TIMEOUT });
@@ -36,6 +34,26 @@ export class BaseScreen {
             return await el.isDisplayed();
         } catch (error) {
             return false;
+        }
+    }
+
+    // Scroll to an element if it's not already visible
+    async scrollTo(elementSelector: string) {
+        const el = await $(elementSelector);
+        let isVisible = await el.isDisplayed();
+
+        // Try to scroll until the element is visible or timeout is reached
+        const MAX_SCROLL_ATTEMPTS = 10;
+        let scrollAttempts = 0;
+
+        while (!isVisible && scrollAttempts < MAX_SCROLL_ATTEMPTS) {
+            await browser.execute('mobile: scroll', { direction: 'down' });
+            isVisible = await el.isDisplayed();
+            scrollAttempts++;
+        }
+
+        if (!isVisible) {
+            throw new Error(`Element with selector "${elementSelector}" is not visible after scrolling.`);
         }
     }
 }
