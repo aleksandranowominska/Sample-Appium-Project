@@ -1,5 +1,5 @@
-import { BaseScreen } from '../BaseScreen';
-import { BaseSelectors } from './BaseSelectors';
+import { BaseScreen } from '../../utils/BaseScreen';
+import { BaseSelectors } from '../../utils/iOSSelectors';
 import * as dotenv from 'dotenv';
 
 // Load environment variables from .env file
@@ -50,10 +50,10 @@ export class LoginScreen extends BaseScreen {
         console.log('Logging in with username:', username);
         await this.typeText(this.usernameSelector, username);
         console.log('Username entered successfully.');
-    
+
         await this.typeText(this.passwordSelector, password);
         console.log('Password entered successfully.');
-    
+
         await this.tapElement(this.loginButtonSelector);
         console.log('Login button tapped successfully.');
 

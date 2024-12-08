@@ -1,5 +1,5 @@
-import { BaseScreen } from '../BaseScreen';
-import { BaseSelectors } from './BaseSelectors';
+import { BaseScreen } from '../../utils/BaseScreen';
+import { BaseSelectors } from '../../utils/iOSSelectors';
 
 export class ProductListScreen extends BaseScreen {
     protected productsTitleSelector = BaseSelectors.productsTitleSelector;
@@ -57,22 +57,22 @@ export class ProductListScreen extends BaseScreen {
 
     async navigateToCart(): Promise<void> {
         console.log('Navigating to the cart...');
-    
+
         // Find cart button
         const cartElement = await $(this.cartButtonSelector);
-    
+
         // Get element id
         const elementId = await cartElement.elementId;
-    
+
         // Get element cooridinates and dimensions
         const rect = await browser.getElementRect(elementId);
-    
+
         // Count coordinates of bottom right corner
         const x = Math.floor(rect.x + rect.width - 1); // right
         const y = Math.floor(rect.y + rect.height - 1); // bottom
-    
+
         console.log(`Clicking on cart button at coordinates: (${x}, ${y})`);
-    
+
         // perform touch action
         await driver.performActions([
             {
@@ -86,10 +86,10 @@ export class ProductListScreen extends BaseScreen {
                 ],
             },
         ]);
-    
+
         console.log('Tapped on the cart button in the bottom right corner.');
     }
-    
+
     public getItemTitleSelector(): string {
         return this.itemTitleSelector;
     }

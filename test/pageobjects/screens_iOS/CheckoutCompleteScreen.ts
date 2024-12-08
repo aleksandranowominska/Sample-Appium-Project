@@ -1,5 +1,5 @@
-import { BaseSelectors } from './BaseSelectors';
-import { BaseScreen } from '../BaseScreen';
+import { BaseSelectors } from '../../utils/iOSSelectors';
+import { BaseScreen } from '../../utils/BaseScreen';
 
 export class CheckoutCompleteScreen extends BaseScreen {
     private checkoutCompleteTitleSelector = BaseSelectors.checkoutCompleteTitleSelector;

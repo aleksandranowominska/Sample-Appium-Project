@@ -1,4 +1,4 @@
-import { BaseScreen } from '../pageobjects/BaseScreen';
+import { BaseScreen } from './BaseScreen';
 
 export class TestUtils extends BaseScreen {
     // Verify product details: name and price

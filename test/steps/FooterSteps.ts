@@ -1,4 +1,4 @@
-import { FooterScreen } from '../pageobjects/iOS/FooterScreen';
+import { FooterScreen } from '../pageobjects/screens_iOS/FooterScreen';
 
 export class FooterSteps {
     private footerScreen: FooterScreen;

@@ -1,4 +1,4 @@
-import { CheckoutCompleteScreen } from '../pageobjects/iOS/CheckoutCompleteScreen';
+import { CheckoutCompleteScreen } from '../pageobjects/screens_iOS/CheckoutCompleteScreen';
 
 export class CheckoutCompleteSteps {
     private checkoutCompleteScreen: CheckoutCompleteScreen;

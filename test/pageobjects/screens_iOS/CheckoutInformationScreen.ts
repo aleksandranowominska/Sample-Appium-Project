@@ -1,5 +1,5 @@
-import { BaseScreen } from '../BaseScreen';
-import { BaseSelectors } from './BaseSelectors';
+import { BaseScreen } from '../../utils/BaseScreen';
+import { BaseSelectors } from '../../utils/iOSSelectors';
 
 export class CheckoutInformationScreen extends BaseScreen {
     private checkoutInformationTitleSelector = BaseSelectors.checkoutInformationTitleSelector;

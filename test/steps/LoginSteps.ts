@@ -1,4 +1,4 @@
-import { LoginScreen } from '../pageobjects/iOS/LoginScreen';
+import { LoginScreen } from '../pageobjects/screens_iOS/LoginScreen';
 
 export class LoginSteps {
     private loginScreen: LoginScreen;

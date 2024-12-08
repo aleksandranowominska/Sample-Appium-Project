@@ -1,5 +1,5 @@
 import * as dotenv from 'dotenv';
-import { CheckoutInformationScreen } from '../pageobjects/iOS/CheckoutInformationScreen';
+import { CheckoutInformationScreen } from '../pageobjects/screens_iOS/CheckoutInformationScreen';
 
 // Load environment variables from .env file
 dotenv.config();

@@ -1,4 +1,4 @@
-import { ProductListScreen } from '../pageobjects/iOS/ProductListScreen';
+import { ProductListScreen } from '../pageobjects/screens_iOS/ProductListScreen';
 
 export class ProductListSteps {
     private productListScreen = new ProductListScreen();

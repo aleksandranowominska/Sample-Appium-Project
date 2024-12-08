@@ -1,5 +1,5 @@
-import { BaseSelectors } from './BaseSelectors';
-import { BaseScreen } from '../BaseScreen';
+import { BaseSelectors } from '../../utils/iOSSelectors';
+import { BaseScreen } from '../../utils/BaseScreen';
 
 export class CheckoutOverviewScreen extends BaseScreen {
     private overviewTitleSelector = BaseSelectors.checkoutOverviewTitleSelector;
@@ -19,7 +19,7 @@ export class CheckoutOverviewScreen extends BaseScreen {
             this.taxSelector,
             this.totalPriceSelector,
         ];
-    
+
         for (const selector of elementsToCheck) {
             await this.scrollTo(selector);
             const isDisplayed = await this.isElementDisplayed(selector);

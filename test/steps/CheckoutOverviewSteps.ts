@@ -1,4 +1,4 @@
-import { CheckoutOverviewScreen } from '../pageobjects/iOS/CheckoutOverviewScreen';
+import { CheckoutOverviewScreen } from '../pageobjects/screens_iOS/CheckoutOverviewScreen';
 
 export class CheckoutOverviewSteps {
     private checkoutOverviewScreen = new CheckoutOverviewScreen();

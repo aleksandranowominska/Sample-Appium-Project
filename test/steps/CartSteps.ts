@@ -1,4 +1,4 @@
-import { CartScreen } from '../pageobjects/iOS/CartScreen';
+import { CartScreen } from '../pageobjects/screens_iOS/CartScreen';
 
 export class CartSteps {
     private cartScreen = new CartScreen();

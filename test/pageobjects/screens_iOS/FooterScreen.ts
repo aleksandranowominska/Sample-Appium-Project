@@ -1,5 +1,5 @@
-import { BaseScreen } from '../BaseScreen';
-import { BaseSelectors } from './BaseSelectors';
+import { BaseScreen } from '../../utils/BaseScreen';
+import { BaseSelectors } from '../../utils/iOSSelectors';
 
 export class FooterScreen extends BaseScreen {
     private footerTextSelector = BaseSelectors.footerTextSelector;

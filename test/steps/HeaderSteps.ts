@@ -1,4 +1,4 @@
-import { HeaderScreen } from '../pageobjects/iOS/HeaderScreen';
+import { HeaderScreen } from '../pageobjects/screens_iOS/HeaderScreen';
 
 export class HeaderSteps {
     private headerScreen = new HeaderScreen();
