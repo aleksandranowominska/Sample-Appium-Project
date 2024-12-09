@@ -2,8 +2,8 @@ export class AndroidSelectors {
 
     // Header Selectors
     static menuSelector = '//android.view.ViewGroup[@content-desc="test-Menu"]';
-    static cartBadgeSelector = '//android.widget.TextView[@text="1"]'; // To check
-    static swagLogoSelector = '//android.widget.FrameLayout/android.widget.ImageView[2]'; // To check
+    static cartBadgeSelector = '//android.widget.TextView[@text="1"]';
+    static swagLogoSelector = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.ImageView[2]';
     static cartButtonSelector = '//android.view.ViewGroup[@content-desc="test-Cart"]';
 
     // Footer Selectors
