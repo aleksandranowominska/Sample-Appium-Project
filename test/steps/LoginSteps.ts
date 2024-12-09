@@ -1,16 +1,24 @@
-import { LoginScreen } from '../pageobjects/screens_iOS/LoginScreen';
+import { LoginScreen as LoginScreenIOS } from '../pageobjects/screens_iOS/LoginScreen';
+import { LoginScreen as LoginScreenAndroid } from '../pageobjects/screens_Android/LoginScreen';
 
 export class LoginSteps {
-    private loginScreen: LoginScreen;
+    private loginScreen: LoginScreenIOS | LoginScreenAndroid;
 
     constructor() {
-        this.loginScreen = new LoginScreen();
+        const platform = process.env.PLATFORM || 'iOS';
+        console.log(`Initializing LoginSteps for platform: ${platform}`);
+
+        if (platform === 'Android') {
+            this.loginScreen = new LoginScreenAndroid();
+        } else {
+            this.loginScreen = new LoginScreenIOS();
+        }
     }
 
     // Wait for splash screen to disappear
     async waitForSplashScreen(): Promise<void> {
         console.log('Waiting for splash screen to disappear...');
-        await browser.pause(2000); // Możesz to zmienić na bardziej dynamiczne rozwiązanie, np. czekanie na element
+        await browser.pause(2000);
     }
 
     // Verify all login screen elements are displayed
