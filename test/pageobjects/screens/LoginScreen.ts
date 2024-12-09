@@ -1,7 +1,8 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
 import { iOSSelectors } from '../../utils/iOSSelectors';
-import { waitForErrorMessage } from '../../utils/AndroidUtils';
+import { waitForErrorMessage as waitForErrorMessageAndroid } from '../../utils/AndroidUtils';
+import { waitForErrorMessage as waitForErrorMessageIOS } from '../../utils/iOSUtils';
 import { ErrorMessages } from '../../utils/constants/ErrorMessages';
 import * as dotenv from 'dotenv';
 
@@ -64,16 +65,20 @@ export class LoginScreen extends BaseScreen {
         await this.tapElement(this.loginButtonSelector);
         console.log('Login button tapped successfully.');
     }
+
+    // Log in without credentials
     async attemptLoginWithoutCredentials(): Promise<{ errorMessage: string; isErrorVisible: boolean }> {
         console.log('Attempting login without entering any credentials...');
         await this.tapElement(this.loginButtonSelector);
 
-        const errorMessage = await waitForErrorMessage(this.errorMessageSelector, ErrorMessages.USERNAME_REQUIRED);
+        const waitForError = driver.isIOS ? waitForErrorMessageIOS : waitForErrorMessageAndroid;
+        const errorMessage = await waitForError(this.errorMessageSelector, ErrorMessages.USERNAME_REQUIRED);
         console.log('Error message:', errorMessage);
 
         return { errorMessage, isErrorVisible: true };
     }
 
+    // Log in without password
     async attemptLoginWithOnlyUsername(): Promise<{ errorMessage: string; isErrorVisible: boolean }> {
         const username = process.env.USERNAME || 'test_user';
         console.log(`Attempting login with only username: ${username}`);
@@ -83,7 +88,8 @@ export class LoginScreen extends BaseScreen {
 
         await this.tapElement(this.loginButtonSelector);
 
-        const errorMessage = await waitForErrorMessage(this.errorMessageSelector, ErrorMessages.PASSWORD_REQUIRED);
+        const waitForError = driver.isIOS ? waitForErrorMessageIOS : waitForErrorMessageAndroid;
+        const errorMessage = await waitForError(this.errorMessageSelector, ErrorMessages.PASSWORD_REQUIRED);
         console.log('Error message:', errorMessage);
 
         return { errorMessage, isErrorVisible: true };

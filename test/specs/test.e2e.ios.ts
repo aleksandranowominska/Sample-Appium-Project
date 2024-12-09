@@ -90,4 +90,15 @@ describe('iOS E2E Test', async () => {
 
         console.log('Order placed successfully!');
     });
+
+    it('should display errors for empty fields while login', async () => {
+        await loginSteps.waitForSplashScreen();
+        await loginSteps.verifyLoginScreenElements();
+
+        // Verify error for empty fields
+        await loginSteps.verifyErrorForEmptyFields();
+
+        // Verify error for missing password
+        await loginSteps.verifyErrorForMissingPassword();
+    });
 });

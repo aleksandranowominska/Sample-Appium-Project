@@ -20,6 +20,15 @@ export async function scrollToElementAndroid(elementSelector: string): Promise<v
     }
 }
 
+/**
+ * Wait for a specific error message to appear on the Android screen.
+ * @param elementSelector - Selector for the error message container.
+ * @param expectedText - Expected text of the error message.
+ * @param maxRetries - Maximum number of retries to check for the error message (default: 5).
+ * @param retryInterval - Interval between retries in milliseconds (default: 1000ms).
+ * @returns The text of the error message.
+ * @throws Error if the message does not appear or does not contain the expected text.
+ */
 export async function waitForErrorMessage(
     errorContainerSelector: string,
     expectedText: string,
