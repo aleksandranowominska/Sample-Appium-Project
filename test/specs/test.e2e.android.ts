@@ -5,6 +5,7 @@ import { CartSteps } from '../steps/CartSteps';
 import { CheckoutInformationSteps } from '../steps/CheckoutInformationSteps';
 import { CheckoutOverviewSteps } from '../steps/CheckoutOverviewSteps';
 import { CheckoutCompleteSteps } from '../steps/CheckoutCompleteSteps';
+import { CommonTestUtils } from '../utils/CommonTestUtils';
 
 describe('Android E2E Tests', () => {
     const loginSteps = new LoginSteps();
@@ -14,9 +15,9 @@ describe('Android E2E Tests', () => {
     const checkoutInformationSteps = new CheckoutInformationSteps();
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
+    const commonTestUtils = new CommonTestUtils();
 
     it('Place order - happy path', async () => {
-
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
 
@@ -46,6 +47,9 @@ describe('Android E2E Tests', () => {
         // Log product details
         productListSteps.logSelectedProductDetails();
 
+        // Retrieve product details
+        const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
+
         // Navigate to the cart
         console.log('Navigating to the cart...');
         await productListSteps.proceedToCart();
@@ -58,6 +62,15 @@ describe('Android E2E Tests', () => {
         // Verify product quantity in the cart
         console.log('Verifying product quantity...');
         await cartSteps.verifyProductQuantity('1');
+
+        // Verify product details in the cart
+        console.log(`Verifying product details in cart: ${expectedName}, ${expectedPrice}`);
+        await commonTestUtils.verifyProductDetails(
+            cartSteps.getCartScreen().getProductNameSelector(),
+            cartSteps.getCartScreen().getProductPriceSelector(),
+            expectedName!,
+            expectedPrice!
+        );
 
         // Tap the checkout button
         console.log('Tapping the checkout button...');
@@ -72,6 +85,15 @@ describe('Android E2E Tests', () => {
         console.log('Filling out the checkout form and proceeding...');
         await checkoutInformationSteps.fillOutCheckoutFormAndContinue();
         console.log('Checkout form filled and proceeded successfully.');
+
+        // Verify product details in checkout overview
+        console.log(`Verifying product details in checkout overview: ${expectedName}, ${expectedPrice}`);
+        await commonTestUtils.verifyProductDetails(
+            checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductNameSelector(),
+            checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductPriceSelector(),
+            expectedName!,
+            expectedPrice!
+        );
 
         // Verify checkout overview screen elements
         console.log('Verifying checkout overview elements...');
@@ -90,8 +112,8 @@ describe('Android E2E Tests', () => {
 
         // Verify checkout complete screen elements
         console.log('Verifying checkout complete elements...');
-        const isCheckoutComplete = await checkoutCompleteSteps.verifyCheckoutCompleteElements();
-        console.log('Checkout complete screen elements verified:', isCheckoutComplete);
-        expect(isCheckoutComplete).toBe(true);
+        const elementsDisplayed = await checkoutCompleteSteps.verifyCheckoutCompleteElements();
+        expect(elementsDisplayed).toBe(true); // Check returned value
+        console.log('Checkout complete screen elements verified.');
     });
 });

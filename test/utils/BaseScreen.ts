@@ -1,3 +1,5 @@
+import { scrollToElementAndroid } from '../utils/AndroidUtils';
+import { scrollToElementiOS } from '../utils/iOSUtils';
 // ELEMENT_TIMEOUT can be dynamically set via process.env.ELEMENT_TIMEOUT
 const ELEMENT_TIMEOUT = process.env.ELEMENT_TIMEOUT ? parseInt(process.env.ELEMENT_TIMEOUT, 10) : 10000;
 
@@ -37,37 +39,12 @@ export class BaseScreen {
         }
     }
 
-    // Scroll to an element if it's not already visible
-    async scrollTo(elementSelector: string) {
-        const el = await $(elementSelector);
-        const MAX_SCROLL_ATTEMPTS = 10;
-        let isVisible = await el.isDisplayed();
-
-        for (let attempts = 0; attempts < MAX_SCROLL_ATTEMPTS && !isVisible; attempts++) {
-            try {
-                if (driver.isAndroid) {
-                    // Use 'scrollIntoView' for Android
-                    await el.scrollIntoView({ block: 'center', inline: 'nearest' });
-                } else if (driver.isIOS) {
-                    // For iOS, use 'mobile: scroll' with the element itself
-                    await browser.execute('mobile: scroll', {
-                        element: await el.elementId,
-                        toVisible: true,
-                    });
-                }
-                // Check visibility after each scroll
-                isVisible = await el.isDisplayed();
-            } catch (error) {
-                console.log(
-                    `Scroll attempt ${attempts + 1} failed: ${(error as Error).message}`
-                );
-            }
-        }
-
-        if (!isVisible) {
-            throw new Error(
-                `Element with selector "${elementSelector}" is not visible after ${MAX_SCROLL_ATTEMPTS} scroll attempts.`
-            );
+    async scrollTo(elementSelector: string): Promise<void> {
+        const platform = process.env.PLATFORM || 'iOS'; // Wartość domyślna to 'iOS'
+        if (platform === 'Android') {
+            await scrollToElementAndroid(elementSelector);
+        } else {
+            await scrollToElementiOS(elementSelector);
         }
     }
 }

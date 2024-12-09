@@ -1,6 +1,6 @@
 import { BaseScreen } from './BaseScreen';
 
-export class TestUtils extends BaseScreen {
+export class CommonTestUtils extends BaseScreen {
     // Verify product details: name and price
     async verifyProductDetails(
         actualNameSelector: string,

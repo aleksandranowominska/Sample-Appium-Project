@@ -1,20 +1,14 @@
-import { ProductListScreen as ProductListScreenIOS } from '../pageobjects/screens_iOS/ProductListScreen';
-import { ProductListScreen as ProductListScreenAndroid } from '../pageobjects/screens_Android/ProductListScreen';
+import { ProductListScreen } from '../pageobjects/screens/ProductListScreen';
 
 export class ProductListSteps {
-    private productListScreen: ProductListScreenIOS | ProductListScreenAndroid;
+    private productListScreen: ProductListScreen;
     private selectedProductName: string | null = null;
     private selectedProductPrice: string | null = null;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS'; // Domyślnie iOS, jeśli PLATFORM nie jest ustawiony
+        const platform = process.env.PLATFORM || 'iOS';
         console.log(`Initializing ProductListSteps for platform: ${platform}`);
-
-        if (platform === 'Android') {
-            this.productListScreen = new ProductListScreenAndroid();
-        } else {
-            this.productListScreen = new ProductListScreenIOS();
-        }
+        this.productListScreen = new ProductListScreen(platform);
     }
 
     async verifyProductListElements(): Promise<void> {

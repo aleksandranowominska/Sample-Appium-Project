@@ -1,18 +1,12 @@
-import { FooterScreen as FooterScreenIOS } from '../pageobjects/screens_iOS/FooterScreen';
-import { FooterScreen as FooterScreenAndroid } from '../pageobjects/screens_Android/FooterScreen';
+import { FooterScreen } from '../pageobjects/screens/FooterScreen';
 
 export class FooterSteps {
-    private footerScreen: FooterScreenIOS | FooterScreenAndroid;
+    private footerScreen: FooterScreen;
 
     constructor() {
         const platform = process.env.PLATFORM || 'iOS';
         console.log(`Initializing FooterSteps for platform: ${platform}`);
-
-        if (platform === 'Android') {
-            this.footerScreen = new FooterScreenAndroid();
-        } else {
-            this.footerScreen = new FooterScreenIOS();
-        }
+        this.footerScreen = new FooterScreen(platform);
     }
 
     async verifyFooter(): Promise<void> {

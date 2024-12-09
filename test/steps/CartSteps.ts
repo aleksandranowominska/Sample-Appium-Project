@@ -1,18 +1,10 @@
-import { CartScreen as CartScreenIOS } from '../pageobjects/screens_iOS/CartScreen';
-import { CartScreen as CartScreenAndroid } from '../pageobjects/screens_Android/CartScreen';
+import { CartScreen } from '../pageobjects/screens/CartScreen';
 
 export class CartSteps {
-    private cartScreen: CartScreenIOS | CartScreenAndroid;
+    private cartScreen: CartScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing CartSteps for platform: ${platform}`);
-
-        if (platform === 'Android') {
-            this.cartScreen = new CartScreenAndroid();
-        } else {
-            this.cartScreen = new CartScreenIOS();
-        }
+        this.cartScreen = new CartScreen();
     }
 
     async verifyCartElements(): Promise<void> {
@@ -35,8 +27,7 @@ export class CartSteps {
         console.log('Proceeded to checkout.');
     }
 
-    // Getter for CartScreen
-    getCartScreen(): CartScreenIOS | CartScreenAndroid {
+    getCartScreen(): CartScreen {
         return this.cartScreen;
     }
 }

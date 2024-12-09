@@ -1,18 +1,12 @@
-import { HeaderScreen as HeaderScreenIOS } from '../pageobjects/screens_iOS/HeaderScreen';
-import { HeaderScreen as HeaderScreenAndroid } from '../pageobjects/screens_Android/HeaderScreen';
+import { HeaderScreen } from '../pageobjects/screens/HeaderScreen';
 
 export class HeaderSteps {
-    private headerScreen: HeaderScreenIOS | HeaderScreenAndroid;
+    private headerScreen: HeaderScreen;
 
     constructor() {
         const platform = process.env.PLATFORM || 'iOS';
         console.log(`Initializing HeaderSteps for platform: ${platform}`);
-
-        if (platform === 'Android') {
-            this.headerScreen = new HeaderScreenAndroid();
-        } else {
-            this.headerScreen = new HeaderScreenIOS();
-        }
+        this.headerScreen = new HeaderScreen(platform);
     }
 
     async waitForHeaderElements(): Promise<void> {

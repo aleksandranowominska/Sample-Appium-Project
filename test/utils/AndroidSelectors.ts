@@ -3,8 +3,8 @@ export class AndroidSelectors {
     // Header Selectors
     static menuSelector = '//android.view.ViewGroup[@content-desc="test-Menu"]';
     static cartBadgeSelector = '//android.widget.TextView[@text="1"]';
-    static swagLogoSelector = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.ImageView[2]';
     static cartButtonSelector = '//android.view.ViewGroup[@content-desc="test-Cart"]';
+    static headerSwagLogoSelector = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.ImageView[2]';
 
     // Footer Selectors
     static footerTextSelector = '//android.widget.TextView[@text="© 2024 Sauce Labs. All Rights Reserved."]';
@@ -12,6 +12,7 @@ export class AndroidSelectors {
     static swagBotImageSelector = '//android.widget.ScrollView[@content-desc="test-PRODUCTS"]/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView';
 
     // Login Selectors
+    static swagLogoSelector = '//android.widget.ScrollView[@content-desc="test-Login"]/android.view.ViewGroup/android.widget.ImageView[1]';
     static usernameSelector = '//android.widget.EditText[@content-desc="test-Username"]';
     static passwordSelector = '//android.widget.EditText[@content-desc="test-Password"]';
     static loginButtonSelector = '//android.view.ViewGroup[@content-desc="test-LOGIN"]';

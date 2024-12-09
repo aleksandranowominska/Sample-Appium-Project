@@ -1,22 +1,16 @@
 import * as dotenv from 'dotenv';
-import { CheckoutOverviewScreen as CheckoutOverviewScreenIOS } from '../pageobjects/screens_iOS/CheckoutOverviewScreen';
-import { CheckoutOverviewScreen as CheckoutOverviewScreenAndroid } from '../pageobjects/screens_Android/CheckoutOverviewScreen';
+import { CheckoutOverviewScreen } from '../pageobjects/screens/CheckoutOverviewScreen';
 
 // Load environment variables from .env file
 dotenv.config();
 
 export class CheckoutOverviewSteps {
-    private checkoutOverviewScreen: CheckoutOverviewScreenIOS | CheckoutOverviewScreenAndroid;
+    private checkoutOverviewScreen: CheckoutOverviewScreen;
 
     constructor() {
         const platform = process.env.PLATFORM || 'iOS';
         console.log(`Initializing CheckoutOverviewSteps for platform: ${platform}`);
-
-        if (platform === 'Android') {
-            this.checkoutOverviewScreen = new CheckoutOverviewScreenAndroid();
-        } else {
-            this.checkoutOverviewScreen = new CheckoutOverviewScreenIOS();
-        }
+        this.checkoutOverviewScreen = new CheckoutOverviewScreen(platform);
     }
 
     async verifyCheckoutOverviewElements(): Promise<void> {
@@ -40,7 +34,7 @@ export class CheckoutOverviewSteps {
     }
 
     // Getter for CheckoutOverviewScreen
-    getCheckoutOverviewScreen(): CheckoutOverviewScreenIOS | CheckoutOverviewScreenAndroid {
+    getCheckoutOverviewScreen(): CheckoutOverviewScreen {
         return this.checkoutOverviewScreen;
     }
 }

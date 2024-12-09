@@ -5,7 +5,7 @@ import { CartSteps } from '../steps/CartSteps';
 import { CheckoutInformationSteps } from '../steps/CheckoutInformationSteps';
 import { CheckoutOverviewSteps } from '../steps/CheckoutOverviewSteps';
 import { CheckoutCompleteSteps } from '../steps/CheckoutCompleteSteps';
-import { TestUtils } from '../utils/TestUtils';
+import { CommonTestUtils } from '../utils/CommonTestUtils';
 
 describe('iOS E2E Test', async () => {
     const loginSteps = new LoginSteps();
@@ -15,7 +15,7 @@ describe('iOS E2E Test', async () => {
     const checkoutInformationSteps = new CheckoutInformationSteps();
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
-    const testUtils = new TestUtils();
+    const commonTestUtils = new CommonTestUtils();
 
     it('Place order - happy path', async () => {
         // Wait for splash screen to disappear
@@ -52,7 +52,7 @@ describe('iOS E2E Test', async () => {
         // Verify product details using TestUtils
         const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
         console.log(`Verifying product details in cart: ${expectedName}, ${expectedPrice}`);
-        await testUtils.verifyProductDetails(
+        await commonTestUtils.verifyProductDetails(
             cartSteps.getCartScreen().getProductNameSelector(),
             cartSteps.getCartScreen().getProductPriceSelector(),
             expectedName!,
@@ -66,7 +66,7 @@ describe('iOS E2E Test', async () => {
 
         // Verify product details in checkout overview using TestUtils
         console.log(`Verifying product details in checkout overview: ${expectedName}, ${expectedPrice}`);
-        await testUtils.verifyProductDetails(
+        await commonTestUtils.verifyProductDetails(
             checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductNameSelector(),
             checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductPriceSelector(),
             expectedName!,

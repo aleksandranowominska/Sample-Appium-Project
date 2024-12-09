@@ -1,22 +1,18 @@
 import * as dotenv from 'dotenv';
-import { CheckoutInformationScreen as CheckoutInformationScreenIOS } from '../pageobjects/screens_iOS/CheckoutInformationScreen';
-import { CheckoutInformationScreen as CheckoutInformationScreenAndroid } from '../pageobjects/screens_Android/CheckoutInformationScreen';
+import { CheckoutInformationScreen } from '../pageobjects/screens/CheckoutInformationScreen';
 
 // Load environment variables from .env file
 dotenv.config();
 
 export class CheckoutInformationSteps {
-    private checkoutInformationScreen: CheckoutInformationScreenIOS | CheckoutInformationScreenAndroid;
+    private checkoutInformationScreen: CheckoutInformationScreen;
 
     constructor() {
         const platform = process.env.PLATFORM || 'iOS';
         console.log(`Initializing CheckoutInformationSteps for platform: ${platform}`);
 
-        if (platform === 'Android') {
-            this.checkoutInformationScreen = new CheckoutInformationScreenAndroid();
-        } else {
-            this.checkoutInformationScreen = new CheckoutInformationScreenIOS();
-        }
+        // Pass platform to dynamically select selectors
+        this.checkoutInformationScreen = new CheckoutInformationScreen(platform);
     }
 
     async verifyCheckoutInformationElements(): Promise<void> {
