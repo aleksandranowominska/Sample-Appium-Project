@@ -30,7 +30,7 @@ export class AndroidSelectors {
     static yourCartSelector = '//android.widget.TextView[@text="YOUR CART"]';
     static qtySelector = '//android.widget.TextView[@text="QTY"]';
     static descriptionSelector = '//android.widget.TextView[@text="DESCRIPTION"]';
-    static productQtySelector = '(//android.widget.TextView[@text="1"])[2]'; // To check
+    static productQtySelector = '(//android.widget.TextView[@text="1"])[2]';
     static productNameSelector = '//android.widget.TextView[@text="Sauce Labs Backpack"]';
     static productPriceSelector = '//android.widget.TextView[@text="$29.99"]';
     static continueShoppingButtonSelector = '//android.view.ViewGroup[@content-desc="test-CONTINUE SHOPPING"]';

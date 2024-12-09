@@ -1,11 +1,19 @@
 import { LoginSteps } from '../steps/LoginSteps';
 import { HeaderSteps } from '../steps/HeaderSteps';
 import { ProductListSteps } from '../steps/ProductListSteps';
+import { CartSteps } from '../steps/CartSteps';
+import { CheckoutInformationSteps } from '../steps/CheckoutInformationSteps';
+import { CheckoutOverviewSteps } from '../steps/CheckoutOverviewSteps';
+import { CheckoutCompleteSteps } from '../steps/CheckoutCompleteSteps';
 
 describe('Android E2E Tests', () => {
     const loginSteps = new LoginSteps();
     const headerSteps = new HeaderSteps();
     const productListSteps = new ProductListSteps();
+    const cartSteps = new CartSteps();
+    const checkoutInformationSteps = new CheckoutInformationSteps();
+    const checkoutOverviewSteps = new CheckoutOverviewSteps();
+    const checkoutCompleteSteps = new CheckoutCompleteSteps();
 
     it('Place order - happy path', async () => {
 
@@ -43,10 +51,47 @@ describe('Android E2E Tests', () => {
         await productListSteps.proceedToCart();
         console.log('Successfully navigated to the cart screen.');
 
-        //TODO: To delete
-        // Wait for 5 seconds to observe the state of the app - for development purpose
-        console.log('Waiting for 5 seconds to observe the app...');
-        await browser.pause(5000);
-        console.log('Test execution completed.');
+        // Verify cart elements
+        console.log('Verifying cart elements...');
+        await cartSteps.verifyCartElements();
+
+        // Verify product quantity in the cart
+        console.log('Verifying product quantity...');
+        await cartSteps.verifyProductQuantity('1');
+
+        // Tap the checkout button
+        console.log('Tapping the checkout button...');
+        await cartSteps.tapCheckoutButton();
+
+        // Verify checkout information screen elements
+        console.log('Verifying checkout information elements...');
+        await checkoutInformationSteps.verifyCheckoutInformationElements();
+        console.log('Checkout information elements verified successfully.');
+
+        // Fill out checkout form and continue
+        console.log('Filling out the checkout form and proceeding...');
+        await checkoutInformationSteps.fillOutCheckoutFormAndContinue();
+        console.log('Checkout form filled and proceeded successfully.');
+
+        // Verify checkout overview screen elements
+        console.log('Verifying checkout overview elements...');
+        await checkoutOverviewSteps.verifyCheckoutOverviewElements();
+        console.log('Checkout overview elements verified successfully.');
+
+        // Verify total price
+        console.log('Verifying total price calculation...');
+        await checkoutOverviewSteps.verifyTotalPrice();
+        console.log('Total price calculation verified successfully.');
+
+        // Tap the finish button to complete the checkout
+        console.log('Tapping the finish button...');
+        await checkoutOverviewSteps.tapFinish();
+        console.log('Checkout process completed successfully.');
+
+        // Verify checkout complete screen elements
+        console.log('Verifying checkout complete elements...');
+        const isCheckoutComplete = await checkoutCompleteSteps.verifyCheckoutCompleteElements();
+        console.log('Checkout complete screen elements verified:', isCheckoutComplete);
+        expect(isCheckoutComplete).toBe(true);
     });
 });
