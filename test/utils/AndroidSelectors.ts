@@ -16,7 +16,8 @@ export class AndroidSelectors {
     static usernameSelector = '//android.widget.EditText[@content-desc="test-Username"]';
     static passwordSelector = '//android.widget.EditText[@content-desc="test-Password"]';
     static loginButtonSelector = '//android.view.ViewGroup[@content-desc="test-LOGIN"]';
-    static loginBotSelector = '//android.widget.ScrollView[@content-desc="test-Login"]/android.view.ViewGroup/android.widget.ImageView[1]'; // Weryfikacja może być potrzebna
+    static loginBotSelector = '//android.widget.ScrollView[@content-desc="test-Login"]/android.view.ViewGroup/android.widget.ImageView[1]';
+    static errorMessageSelector = '//android.view.ViewGroup[@content-desc="test-Error message"]';
 
     // Product list selectors
     static productsTitleSelector = '//android.widget.TextView[@text="PRODUCTS"]';

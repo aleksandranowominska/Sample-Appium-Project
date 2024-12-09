@@ -1,6 +1,8 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
 import { iOSSelectors } from '../../utils/iOSSelectors';
+import { waitForErrorMessage } from '../../utils/AndroidUtils';
+import { ErrorMessages } from '../../utils/constants/ErrorMessages';
 import * as dotenv from 'dotenv';
 
 // Load environment variables from .env file
@@ -12,6 +14,7 @@ export class LoginScreen extends BaseScreen {
     private passwordSelector: string;
     private loginButtonSelector: string;
     private loginBotSelector: string;
+    private errorMessageSelector: string;
 
     constructor(platform: string) {
         super();
@@ -22,6 +25,7 @@ export class LoginScreen extends BaseScreen {
         this.passwordSelector = selectors.passwordSelector;
         this.loginButtonSelector = selectors.loginButtonSelector;
         this.loginBotSelector = selectors.loginBotSelector;
+        this.errorMessageSelector = selectors.errorMessageSelector;
     }
 
     // Check if all key elements on the login screen are displayed
@@ -59,5 +63,29 @@ export class LoginScreen extends BaseScreen {
 
         await this.tapElement(this.loginButtonSelector);
         console.log('Login button tapped successfully.');
+    }
+    async attemptLoginWithoutCredentials(): Promise<{ errorMessage: string; isErrorVisible: boolean }> {
+        console.log('Attempting login without entering any credentials...');
+        await this.tapElement(this.loginButtonSelector);
+
+        const errorMessage = await waitForErrorMessage(this.errorMessageSelector, ErrorMessages.USERNAME_REQUIRED);
+        console.log('Error message:', errorMessage);
+
+        return { errorMessage, isErrorVisible: true };
+    }
+
+    async attemptLoginWithOnlyUsername(): Promise<{ errorMessage: string; isErrorVisible: boolean }> {
+        const username = process.env.USERNAME || 'test_user';
+        console.log(`Attempting login with only username: ${username}`);
+
+        await this.typeText(this.usernameSelector, username);
+        console.log('Username entered successfully.');
+
+        await this.tapElement(this.loginButtonSelector);
+
+        const errorMessage = await waitForErrorMessage(this.errorMessageSelector, ErrorMessages.PASSWORD_REQUIRED);
+        console.log('Error message:', errorMessage);
+
+        return { errorMessage, isErrorVisible: true };
     }
 }

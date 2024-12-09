@@ -16,6 +16,9 @@ export class iOSSelectors {
     static passwordSelector = '//XCUIElementTypeSecureTextField[@name="test-Password"]';
     static loginButtonSelector = '//XCUIElementTypeOther[@name="test-LOGIN"]';
     static loginBotSelector = '//XCUIElementTypeImage[@name="assets/src/img/login-bot.png"]';
+    static errorMessageSelector: string;
+    static usernameErrorSelector: string;
+    static passwordErrorSelector: string;
 
     // Product list selectors
     static productsTitleSelector = '//XCUIElementTypeStaticText[@name="PRODUCTS"]';

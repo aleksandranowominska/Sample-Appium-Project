@@ -19,3 +19,38 @@ export async function scrollToElementAndroid(elementSelector: string): Promise<v
         );
     }
 }
+
+export async function waitForErrorMessage(
+    errorContainerSelector: string,
+    expectedText: string,
+    maxRetries = 5,
+    retryInterval = 1000
+): Promise<string> {
+    console.log(`Waiting for error container "${errorContainerSelector}" to be visible...`);
+    const errorContainer = await $(errorContainerSelector);
+    const isVisible = await errorContainer.isDisplayed();
+
+    if (!isVisible) {
+        throw new Error(`Error container "${errorContainerSelector}" did not appear.`);
+    }
+
+    console.log(`Waiting for error message "${expectedText}" to appear...`);
+    let errorMessage = '';
+
+    for (let i = 0; i < maxRetries; i++) {
+        errorMessage = await errorContainer.getText();
+        if (errorMessage.trim() === expectedText) {
+            return errorMessage; // Return the error message if it matches
+        }
+        await browser.pause(retryInterval);
+    }
+
+    // If the message is still not found, check page source as fallback
+    console.log(`Error message "${expectedText}" not found in container. Checking entire screen...`);
+    const pageSource = await browser.getPageSource();
+    if (pageSource.includes(expectedText)) {
+        return expectedText; // Return expected text if found in page source
+    }
+
+    throw new Error(`Error message "${expectedText}" did not appear within ${maxRetries * retryInterval}ms.`);
+}

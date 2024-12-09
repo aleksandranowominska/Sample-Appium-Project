@@ -34,4 +34,26 @@ export class LoginSteps {
         await this.loginScreen.login();
         console.log('Login completed successfully.');
     }
+
+    // Attempt login without credentials and verify errors
+    async verifyErrorForEmptyFields(): Promise<void> {
+        console.log('Verifying error for empty fields...');
+        const { errorMessage, isErrorVisible } = await this.loginScreen.attemptLoginWithoutCredentials();
+
+        console.log('Error message received:', errorMessage);
+        expect(errorMessage).toContain('Username is required');
+        expect(isErrorVisible).toBe(true);
+        console.log('Error for empty fields verified successfully.');
+    }
+
+    // Attempt login with only username and verify errors
+    async verifyErrorForMissingPassword(): Promise<void> {
+        console.log('Verifying error for missing password...');
+        const { errorMessage, isErrorVisible } = await this.loginScreen.attemptLoginWithOnlyUsername();
+
+        console.log('Error message received:', errorMessage);
+        expect(errorMessage).toContain('Password is required');
+        expect(isErrorVisible).toBe(true);
+        console.log('Error for missing password verified successfully.');
+    }
 }

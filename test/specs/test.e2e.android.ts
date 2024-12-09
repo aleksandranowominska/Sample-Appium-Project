@@ -17,7 +17,7 @@ describe('Android E2E Tests', () => {
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
     const commonTestUtils = new CommonTestUtils();
 
-    it('Place order - happy path', async () => {
+    it('should place order - happy path', async () => {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
 
@@ -115,5 +115,16 @@ describe('Android E2E Tests', () => {
         const elementsDisplayed = await checkoutCompleteSteps.verifyCheckoutCompleteElements();
         expect(elementsDisplayed).toBe(true); // Check returned value
         console.log('Checkout complete screen elements verified.');
+    });
+
+    it('should display errors for empty fields while login', async () => {
+        await loginSteps.waitForSplashScreen();
+        await loginSteps.verifyLoginScreenElements();
+
+        // Verify error for empty fields
+        await loginSteps.verifyErrorForEmptyFields();
+
+        // Verify error for missing password
+        await loginSteps.verifyErrorForMissingPassword();
     });
 });

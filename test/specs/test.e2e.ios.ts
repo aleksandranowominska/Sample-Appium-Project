@@ -87,7 +87,7 @@ describe('iOS E2E Test', async () => {
         const areCompleteScreenElementsVisible = await checkoutCompleteSteps.verifyCheckoutCompleteElements();
         expect(areCompleteScreenElementsVisible).toBe(true);
         console.log('All elements on Checkout Complete screen are visible.');
-        
+
         console.log('Order placed successfully!');
     });
 });
