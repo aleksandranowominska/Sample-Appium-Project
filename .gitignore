@@ -31,5 +31,12 @@ coverage/
 Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
 iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app
 
+# Allure results and reports
+allure-results/
+allure-report/
+
+# Spec reporter output (if any)
+spec-results/
+
 # Environment variables file
 .env

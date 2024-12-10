@@ -1,3 +1,5 @@
+import { Reporters } from '@wdio/types';
+
 const PLATFORM = process.env.PLATFORM || 'Android';
 
 // Set default values depending on the selected platform
@@ -63,5 +65,18 @@ export const config: WebdriverIO.Config = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 60000
-    }
+    },
+
+    // Reporters configuration
+    reporters: [
+        'spec', // Spec reporter to log detailed test execution
+        [
+            'allure',
+            {
+                outputDir: './allure-results', // Directory for Allure results
+                disableWebdriverStepsReporting: true,
+                disableWebdriverScreenshotsReporting: false,
+            }
+        ]
+    ] as Reporters.ReporterEntry[]
 };
