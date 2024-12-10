@@ -16,6 +16,23 @@ describe('Android E2E Tests', () => {
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
     const commonTestUtils = new CommonTestUtils();
+    const APP_ID = process.env.APP_ID_ANDROID || 'com.swaglabsmobileapp';
+
+    // Restart the app before each test
+    beforeEach(async () => {
+        console.log('Restarting the app...');
+        await driver.execute('mobile: terminateApp', { appId: APP_ID });
+        console.log('App terminated successfully.');
+        await driver.execute('mobile: activateApp', { appId: APP_ID });
+        console.log('App restarted successfully.');
+    });
+
+    // Close the app after each test
+    afterEach(async () => {
+        console.log('Terminating the app...');
+        await driver.execute('mobile: terminateApp', { appId: APP_ID });
+        console.log('App terminated successfully.');
+    });
 
     it('should place order - happy path', async () => {
         // Wait for splash screen to disappear
@@ -120,32 +137,32 @@ describe('Android E2E Tests', () => {
     it('should remove item from the cart on Android', async () => {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
-    
+
         // Verify login screen is visible
         await loginSteps.verifyPageIsVisible();
-    
+
         // Perform login
         await loginSteps.logIn();
-    
+
         // Verify product list screen is visible
         await productListSteps.verifyPageIsVisible();
-    
+
         // Add the first product to cart
         await productListSteps.addFirstProductToCart();
-    
+
         // Log product details
         const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
         console.log(`Selected product: ${expectedName}, ${expectedPrice}`);
-    
+
         // Navigate to the cart
         await productListSteps.proceedToCart();
-    
+
         // Verify cart screen is visible
         await cartSteps.verifyPageIsVisible();
-    
+
         // Verify product quantity
         await cartSteps.verifyProductQuantity('1');
-    
+
         // Verify product details
         await commonTestUtils.verifyProductDetails(
             cartSteps.getCartScreen().getProductNameSelector(),
@@ -153,10 +170,10 @@ describe('Android E2E Tests', () => {
             expectedName!,
             expectedPrice!
         );
-    
+
         // Remove the product and verify it's removed
         await cartSteps.removeProductAndVerifyRemoval(expectedName!);
-    });    
+    });
 
     it('should display errors for empty fields while login', async () => {
         await loginSteps.waitForSplashScreen();

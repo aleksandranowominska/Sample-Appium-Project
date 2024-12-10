@@ -16,27 +16,24 @@ describe('iOS E2E Test', async () => {
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
     const commonTestUtils = new CommonTestUtils();
+    const BUNDLE_ID = process.env.APP_BUNDLE_ID_IOS || 'com.saucelabs.SwagLabsMobileApp';
 
+    // Restart the app before each test
     beforeEach(async () => {
         console.log('Reinstalling the app...');
-        const bundleId = process.env.APP_BUNDLE_ID || 'com.saucelabs.SwagLabsMobileApp';
         const appPath = '/Users/olanowominska/Developer/appium-task/iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app';
-    
-        await driver.execute('mobile: removeApp', { bundleId });
+        await driver.execute('mobile: removeApp', { BUNDLE_ID });
         console.log('App removed.');
-    
         await driver.execute('mobile: installApp', { app: appPath });
         console.log('App reinstalled successfully.');
-    
-        await driver.execute('mobile: launchApp', { bundleId });
+        await driver.execute('mobile: launchApp', { BUNDLE_ID });
         console.log('App launched successfully.');
     });
-      
 
+    // Close the app after each test
     afterEach(async () => {
         console.log('Terminating the app...');
-        const bundleId = process.env.APP_BUNDLE_ID!;
-        await driver.execute('mobile: terminateApp', { bundleId });
+        await driver.execute('mobile: terminateApp', { BUNDLE_ID });
         console.log('App terminated successfully.');
     });
 
@@ -117,32 +114,32 @@ describe('iOS E2E Test', async () => {
     it('should remove item from the cart', async () => {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
-    
+
         // Verify login screen is visible
         await loginSteps.verifyPageIsVisible();
-    
+
         // Perform login
         await loginSteps.logIn();
-    
+
         // Verify product list screen is visible
         await productListSteps.verifyPageIsVisible();
-    
+
         // Add the first product to cart
         await productListSteps.addFirstProductToCart();
-    
+
         // Log product details
         const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
         console.log(`Selected product: ${expectedName}, ${expectedPrice}`);
-    
+
         // Navigate to the cart
         await productListSteps.proceedToCart();
-    
+
         // Verify cart screen is visible
         await cartSteps.verifyPageIsVisible();
-    
+
         // Verify product quantity
         await cartSteps.verifyProductQuantity('1');
-    
+
         // Verify product details
         await commonTestUtils.verifyProductDetails(
             cartSteps.getCartScreen().getProductNameSelector(),
@@ -150,7 +147,7 @@ describe('iOS E2E Test', async () => {
             expectedName!,
             expectedPrice!
         );
-    
+
         // Remove the product and verify it's removed
         await cartSteps.removeProductAndVerifyRemoval(expectedName!);
     });

@@ -35,11 +35,15 @@ export class ProductListScreen extends BaseScreen {
      */
     async isAnyAddToCartButtonVisible(): Promise<boolean> {
         console.log('Checking if any "Add to Cart" button is visible...');
-        const addToCartButtonsDisplayed = await this.isElementDisplayed(this.addToCartButtonSelector);
-
-        console.log('"Add to Cart" button display status:', addToCartButtonsDisplayed);
-
-        return addToCartButtonsDisplayed;
+    
+        try {
+            await this.waitForDisplayed(this.addToCartButtonSelector);
+            console.log('"Add to Cart" button is visible.');
+            return true;
+        } catch (error) {
+            console.log('"Add to Cart" button is not visible within the timeout.');
+            return false;
+        }
     }
 
     /**
