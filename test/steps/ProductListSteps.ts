@@ -11,6 +11,22 @@ export class ProductListSteps {
         this.productListScreen = new ProductListScreen(platform);
     }
 
+    /**
+     * Verifies if the product list page is visible by checking for "Add to Cart" buttons.
+     * Throws an error if no "Add to Cart" button is displayed.
+     * @returns {Promise<void>} - Resolves once the visibility is confirmed.
+     */
+    async verifyPageIsVisible(): Promise<void> {
+        console.log('Verifying if the product list page is visible...');
+        const isPageVisible = await this.productListScreen.isAnyAddToCartButtonVisible();
+        console.log('Is the product list page visible ("Add to Cart" button displayed):', isPageVisible);
+
+        if (!isPageVisible) {
+            throw new Error('The product list page is not visible. No "Add to Cart" button is displayed.');
+        }
+
+        expect(isPageVisible).toBe(true);
+    }
     async verifyProductListElements(): Promise<void> {
         console.log('Verifying unique elements in the product list...');
         const uniqueElementsDisplayed = await this.productListScreen.verifyUniqueElements();

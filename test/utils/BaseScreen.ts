@@ -47,4 +47,17 @@ export class BaseScreen {
             await scrollToElementiOS(elementSelector);
         }
     }
+
+    async waitForElementToDisappear(elementSelector: string, timeout = 5000): Promise<boolean> {
+        console.log(`Waiting for element "${elementSelector}" to disappear...`);
+        try {
+            const element = await $(elementSelector);
+            await element.waitForDisplayed({ reverse: true, timeout });
+            console.log(`Element "${elementSelector}" has disappeared.`);
+            return true;
+        } catch (error) {
+            console.error(`Element "${elementSelector}" did not disappear within the timeout.`);
+            return false;
+        }
+    } 
 }

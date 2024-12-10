@@ -15,7 +15,22 @@ export class LoginSteps {
         await browser.pause(2000);
     }
 
-    // Verify all login screen elements are displayed
+    /**
+     * Verifies if the login page is visible by checking the presence of the login button.
+     * Throws an error if the login button is not displayed.
+     * @returns {Promise<void>} - Resolves once the visibility is confirmed.
+     */
+    async verifyPageIsVisible(): Promise<void> {
+        console.log('Verifying if the page is visible...');
+        const isPageVisible = await this.loginScreen.isLoginButtonVisible();
+        console.log('Is the page visible (login button displayed):', isPageVisible);
+
+        if (!isPageVisible) {
+            throw new Error('The page is not visible. Login button is not displayed.');
+        }
+
+        expect(isPageVisible).toBe(true);
+    }
     async verifyLoginScreenElements(): Promise<void> {
         console.log('Verifying login screen elements...');
         const elementsDisplayed = await this.loginScreen.areElementsDisplayed();

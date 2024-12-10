@@ -29,6 +29,18 @@ export class ProductListScreen extends BaseScreen {
         this.cartButtonSelector = selectors.cartButtonSelector;
     }
 
+    /**
+     * Checks if at least one "Add to Cart" button is visible.
+     * @returns {Promise<boolean>} - True if at least one button is visible, otherwise false.
+     */
+    async isAnyAddToCartButtonVisible(): Promise<boolean> {
+        console.log('Checking if any "Add to Cart" button is visible...');
+        const addToCartButtonsDisplayed = await this.isElementDisplayed(this.addToCartButtonSelector);
+
+        console.log('"Add to Cart" button display status:', addToCartButtonsDisplayed);
+
+        return addToCartButtonsDisplayed;
+    }
     async verifyUniqueElements(): Promise<boolean> {
         await this.scrollTo(this.productsTitleSelector);
         const productsTitleDisplayed = await this.isElementDisplayed(this.productsTitleSelector);

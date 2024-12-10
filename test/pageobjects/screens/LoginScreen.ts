@@ -29,7 +29,17 @@ export class LoginScreen extends BaseScreen {
         this.errorMessageSelector = selectors.errorMessageSelector;
     }
 
-    // Check if all key elements on the login screen are displayed
+    /**
+     * Checks if the login button is visible on the login screen.
+     * @returns {Promise<boolean>} - True if the login button is visible, otherwise false.
+     */
+    async isLoginButtonVisible(): Promise<boolean> {
+        const isLoginButtonDisplayed = await this.isElementDisplayed(this.loginButtonSelector);
+
+        console.log('Login button display status:', isLoginButtonDisplayed);
+
+        return isLoginButtonDisplayed;
+    }
     async areElementsDisplayed(): Promise<boolean> {
         const elementsStatus: { [key: string]: boolean } = {};
 
