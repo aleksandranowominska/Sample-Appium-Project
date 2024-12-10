@@ -17,7 +17,7 @@ describe('iOS E2E Test', async () => {
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
     const commonTestUtils = new CommonTestUtils();
 
-    it('Place order - happy path', async () => {
+    it('should place order - happy path', async () => {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
 
@@ -89,6 +89,47 @@ describe('iOS E2E Test', async () => {
         console.log('All elements on Checkout Complete screen are visible.');
 
         console.log('Order placed successfully!');
+    });
+
+    it('should remove item from the cart', async () => {
+        // Wait for splash screen to disappear
+        await loginSteps.waitForSplashScreen();
+    
+        // Verify login screen is visible
+        await loginSteps.verifyPageIsVisible();
+    
+        // Perform login
+        await loginSteps.logIn();
+    
+        // Verify product list screen is visible
+        await productListSteps.verifyPageIsVisible();
+    
+        // Add the first product to cart
+        await productListSteps.addFirstProductToCart();
+    
+        // Log product details
+        const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
+        console.log(`Selected product: ${expectedName}, ${expectedPrice}`);
+    
+        // Navigate to the cart
+        await productListSteps.proceedToCart();
+    
+        // Verify cart screen is visible
+        await cartSteps.verifyPageIsVisible();
+    
+        // Verify product quantity
+        await cartSteps.verifyProductQuantity('1');
+    
+        // Verify product details
+        await commonTestUtils.verifyProductDetails(
+            cartSteps.getCartScreen().getProductNameSelector(),
+            cartSteps.getCartScreen().getProductPriceSelector(),
+            expectedName!,
+            expectedPrice!
+        );
+    
+        // Remove the product and verify it's removed
+        await cartSteps.removeProductAndVerifyRemoval(expectedName!);
     });
 
     it('should display errors for empty fields while login', async () => {

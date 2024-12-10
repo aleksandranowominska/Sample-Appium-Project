@@ -40,6 +40,11 @@ export class LoginScreen extends BaseScreen {
 
         return isLoginButtonDisplayed;
     }
+
+    /**
+     * Verifies if all key elements on the login screen are displayed.
+     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     */
     async areElementsDisplayed(): Promise<boolean> {
         const elementsStatus: { [key: string]: boolean } = {};
 
@@ -56,7 +61,11 @@ export class LoginScreen extends BaseScreen {
         return allElementsDisplayed;
     }
 
-    // Log in using credentials from .env
+    /**
+     * Logs in using credentials provided in the `.env` file.
+     * Throws an error if USERNAME or PASSWORD is missing.
+     * @returns {Promise<void>} - Resolves once the login is performed.
+     */
     async login(): Promise<void> {
         const username = process.env.USERNAME || '';
         const password = process.env.PASSWORD || '';
@@ -76,7 +85,10 @@ export class LoginScreen extends BaseScreen {
         console.log('Login button tapped successfully.');
     }
 
-    // Log in without credentials
+    /**
+     * Attempts to log in without entering any credentials.
+     * @returns {Promise<{ errorMessage: string; isErrorVisible: boolean }>} - Returns the error message and its visibility.
+     */
     async attemptLoginWithoutCredentials(): Promise<{ errorMessage: string; isErrorVisible: boolean }> {
         console.log('Attempting login without entering any credentials...');
         await this.tapElement(this.loginButtonSelector);
@@ -88,7 +100,10 @@ export class LoginScreen extends BaseScreen {
         return { errorMessage, isErrorVisible: true };
     }
 
-    // Log in without password
+    /**
+     * Attempts to log in using only a username without a password.
+     * @returns {Promise<{ errorMessage: string; isErrorVisible: boolean }>} - Returns the error message and its visibility.
+     */
     async attemptLoginWithOnlyUsername(): Promise<{ errorMessage: string; isErrorVisible: boolean }> {
         const username = process.env.USERNAME || 'test_user';
         console.log(`Attempting login with only username: ${username}`);

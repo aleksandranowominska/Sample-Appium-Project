@@ -1,7 +1,18 @@
 import { BaseScreen } from './BaseScreen';
 
 export class CommonTestUtils extends BaseScreen {
-    // Verify product details: name and price
+    /**
+     * Verifies the product details, including name and price.
+     * Compares the actual product name and price retrieved from the UI with the expected values.
+     * Logs the comparison details and throws an error if there is a mismatch.
+     * 
+     * @param {string} actualNameSelector - The selector for the product name on the UI.
+     * @param {string} actualPriceSelector - The selector for the product price on the UI.
+     * @param {string} expectedName - The expected product name.
+     * @param {string} expectedPrice - The expected product price.
+     * @returns {Promise<void>} - Resolves if the product details match the expected values.
+     * @throws {Error} - Throws an error if the product name or price does not match the expected values.
+     */
     async verifyProductDetails(
         actualNameSelector: string,
         actualPriceSelector: string,

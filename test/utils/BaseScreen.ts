@@ -4,32 +4,54 @@ import { scrollToElementiOS } from '../utils/iOSUtils';
 const ELEMENT_TIMEOUT = process.env.ELEMENT_TIMEOUT ? parseInt(process.env.ELEMENT_TIMEOUT, 10) : 10000;
 
 export class BaseScreen {
-    // Wait for an element to be displayed within the defined timeout
+    /**
+     * Waits for an element to be displayed within the defined timeout.
+     * @param {string} elementSelector - The selector of the element to wait for.
+     * @returns {Promise<WebdriverIO.Element>} - Resolves with the element once it is displayed.
+     */
     async waitForDisplayed(elementSelector: string) {
         const el = await $(elementSelector);
         await el.waitForDisplayed({ timeout: ELEMENT_TIMEOUT });
         return el;
     }
 
-    // Click on an element safely, waiting for it to be displayed first
+    /**
+     * Clicks on an element safely by waiting for it to be displayed first.
+     * @param {string} elementSelector - The selector of the element to tap.
+     * @returns {Promise<void>} - Resolves once the click action is performed.
+     */
     async tapElement(elementSelector: string) {
         const el = await this.waitForDisplayed(elementSelector);
         await el.click();
     }
 
-    // Type text into an element (e.g. input field), after waiting for it to be displayed
+    /**
+     * Types text into an element (e.g., an input field) after waiting for it to be displayed.
+     * @param {string} elementSelector - The selector of the input field.
+     * @param {string} text - The text to type into the input field.
+     * @returns {Promise<void>} - Resolves once the text is typed.
+     */
     async typeText(elementSelector: string, text: string) {
         const el = await this.waitForDisplayed(elementSelector);
         await el.setValue(text);
     }
 
-    // Get text from an element, waiting for it to be displayed first
+    /**
+     * Gets the text content of an element, waiting for it to be displayed first.
+     * @param {string} elementSelector - The selector of the element.
+     * @returns {Promise<string>} - Resolves with the text content of the element.
+     */
     async getElementText(elementSelector: string) {
         const el = await this.waitForDisplayed(elementSelector);
         return el.getText();
     }
 
-    // Check if element is displayed within the timeout
+     /**
+     * Checks if an element is displayed within the timeout period.
+     * Returns `false` if the element does not exist or is not displayed.
+     * @param {string} elementSelector - The selector of the element to check.
+     * @returns {Promise<boolean>} - True if the element is displayed, otherwise false.
+     */
     async isElementDisplayed(elementSelector: string) {
         try {
             const el = await $(elementSelector);
@@ -39,6 +61,12 @@ export class BaseScreen {
         }
     }
 
+    /**
+     * Scrolls to an element based on the current platform.
+     * Uses platform-specific utilities for Android and iOS.
+     * @param {string} elementSelector - The selector of the element to scroll to.
+     * @returns {Promise<void>} - Resolves once the scrolling action is completed.
+     */
     async scrollTo(elementSelector: string): Promise<void> {
         const platform = process.env.PLATFORM || 'iOS'; // Wartość domyślna to 'iOS'
         if (platform === 'Android') {
@@ -48,6 +76,13 @@ export class BaseScreen {
         }
     }
 
+     /**
+     * Waits for an element to disappear within a specified timeout.
+     * Logs the process and returns `true` if the element disappears.
+     * @param {string} elementSelector - The selector of the element to wait for.
+     * @param {number} [timeout=5000] - Timeout in milliseconds (default: 5000ms).
+     * @returns {Promise<boolean>} - True if the element disappears, otherwise false.
+     */
     async waitForElementToDisappear(elementSelector: string, timeout = 5000): Promise<boolean> {
         console.log(`Waiting for element "${elementSelector}" to disappear...`);
         try {

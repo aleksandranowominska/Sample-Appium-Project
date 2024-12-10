@@ -20,6 +20,14 @@ export class FooterScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Verifies if all elements in the footer section are displayed.
+     * The elements include:
+     * - Footer text
+     * - Terms and conditions text
+     * - Swag Bot image
+     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     */
     async verifyFooterElements(): Promise<boolean> {
         // Scroll to and verify footer text
         await this.scrollTo(this.footerTextSelector);

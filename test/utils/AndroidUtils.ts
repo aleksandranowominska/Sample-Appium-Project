@@ -1,3 +1,10 @@
+/**
+ * Scrolls to an element on an Android screen.
+ * Performs a maximum number of attempts to ensure the element becomes visible.
+ * @param {string} elementSelector - The selector of the element to scroll to.
+ * @returns {Promise<void>} - Resolves when the element is successfully scrolled into view.
+ * @throws {Error} - Throws an error if the element is not visible after the maximum number of scroll attempts.
+ */
 export async function scrollToElementAndroid(elementSelector: string): Promise<void> {
     const el = await $(elementSelector);
     const MAX_SCROLL_ATTEMPTS = 10;
@@ -21,13 +28,15 @@ export async function scrollToElementAndroid(elementSelector: string): Promise<v
 }
 
 /**
- * Wait for a specific error message to appear on the Android screen.
- * @param elementSelector - Selector for the error message container.
- * @param expectedText - Expected text of the error message.
- * @param maxRetries - Maximum number of retries to check for the error message (default: 5).
- * @param retryInterval - Interval between retries in milliseconds (default: 1000ms).
- * @returns The text of the error message.
- * @throws Error if the message does not appear or does not contain the expected text.
+ * Waits for a specific error message to appear on the Android screen.
+ * Checks for the message text within the specified error container.
+ * Retries at intervals if the message is not immediately visible.
+ * @param {string} errorContainerSelector - Selector for the error message container.
+ * @param {string} expectedText - Expected text of the error message.
+ * @param {number} [maxRetries=5] - Maximum number of retries to check for the error message.
+ * @param {number} [retryInterval=1000] - Interval between retries in milliseconds.
+ * @returns {Promise<string>} - The text of the error message if it appears.
+ * @throws {Error} - Throws an error if the message does not appear or does not match the expected text.
  */
 export async function waitForErrorMessage(
     errorContainerSelector: string,

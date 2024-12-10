@@ -27,6 +27,13 @@ export class ProductListSteps {
 
         expect(isPageVisible).toBe(true);
     }
+
+    /**
+     * Verifies all unique and key elements on the product list page are displayed.
+     * Checks for product titles, prices, and "Add to Cart" buttons.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>} - Resolves once all elements are verified.
+     */
     async verifyProductListElements(): Promise<void> {
         console.log('Verifying unique elements in the product list...');
         const uniqueElementsDisplayed = await this.productListScreen.verifyUniqueElements();
@@ -39,6 +46,12 @@ export class ProductListSteps {
         expect(productAndButtonsDisplayed).toBe(true);
     }
 
+    /**
+     * Adds the first product from the list to the cart.
+     * Stores the product's name and price for later use.
+     * Verifies that the product is successfully added to the cart.
+     * @returns {Promise<void>} - Resolves once the product is added to the cart.
+     */
     async addFirstProductToCart(): Promise<void> {
         console.log('Adding the first product to cart...');
 
@@ -56,12 +69,19 @@ export class ProductListSteps {
         expect(addedToCart).toBe(true);
     }
 
+    /**
+     * Proceeds to the cart page from the product list page.
+     * @returns {Promise<void>} - Resolves once the cart page is loaded.
+     */
     async proceedToCart(): Promise<void> {
         console.log('Proceeding to the cart...');
         await this.productListScreen.navigateToCart();
         console.log('Navigated to the cart screen.');
     }
 
+    /**
+     * Logs the details of the selected product that was added to the cart.
+     */
     logSelectedProductDetails(): void {
         if (this.selectedProductName && this.selectedProductPrice) {
             console.log(`Added product to cart: ${this.selectedProductName}, Price: ${this.selectedProductPrice}`);
@@ -70,6 +90,10 @@ export class ProductListSteps {
         }
     }
 
+    /**
+     * Returns the details (name and price) of the selected product.
+     * @returns {{ name: string | null; price: string | null }} - An object containing the product name and price.
+     */
     getProductDetails(): { name: string | null; price: string | null } {
         return {
             name: this.selectedProductName,
@@ -77,10 +101,18 @@ export class ProductListSteps {
         };
     }
 
+    /**
+     * Returns the name of the selected product.
+     * @returns {string | null} - The name of the product or null if no product was selected.
+     */
     getSelectedProductName(): string | null {
         return this.selectedProductName;
     }
 
+    /**
+     * Returns the price of the selected product.
+     * @returns {string | null} - The price of the product or null if no product was selected.
+     */
     getSelectedProductPrice(): string | null {
         return this.selectedProductPrice;
     }

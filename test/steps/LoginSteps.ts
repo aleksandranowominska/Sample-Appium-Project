@@ -9,7 +9,11 @@ export class LoginSteps {
         this.loginScreen = new LoginScreen(platform);
     }
 
-    // Wait for splash screen to disappear
+    /**
+     * Waits for the splash screen to disappear.
+     * Simulates a delay to ensure the app is ready for interaction.
+     * @returns {Promise<void>} - Resolves after a pause.
+     */
     async waitForSplashScreen(): Promise<void> {
         console.log('Waiting for splash screen to disappear...');
         await browser.pause(2000);
@@ -31,6 +35,12 @@ export class LoginSteps {
 
         expect(isPageVisible).toBe(true);
     }
+
+    /**
+     * Verifies if all elements on the login screen are displayed.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>} - Resolves once all elements are verified.
+     */
     async verifyLoginScreenElements(): Promise<void> {
         console.log('Verifying login screen elements...');
         const elementsDisplayed = await this.loginScreen.areElementsDisplayed();
@@ -43,14 +53,22 @@ export class LoginSteps {
         expect(elementsDisplayed).toBe(true);
     }
 
-    // Log in with credentials from .env
+    /**
+     * Logs in using credentials provided in the `.env` file.
+     * Throws an error if login fails.
+     * @returns {Promise<void>} - Resolves once the login is completed successfully.
+     */
     async logIn(): Promise<void> {
         console.log('Logging in...');
         await this.loginScreen.login();
         console.log('Login completed successfully.');
     }
 
-    // Attempt login without credentials and verify errors
+    /**
+     * Attempts to log in without providing any credentials and verifies the error message.
+     * Asserts that the error message contains 'Username is required'.
+     * @returns {Promise<void>} - Resolves once the error message is verified.
+     */
     async verifyErrorForEmptyFields(): Promise<void> {
         console.log('Verifying error for empty fields...');
         const { errorMessage, isErrorVisible } = await this.loginScreen.attemptLoginWithoutCredentials();
@@ -61,7 +79,11 @@ export class LoginSteps {
         console.log('Error for empty fields verified successfully.');
     }
 
-    // Attempt login with only username and verify errors
+    /**
+     * Attempts to log in with only a username and verifies the error message.
+     * Asserts that the error message contains 'Password is required'.
+     * @returns {Promise<void>} - Resolves once the error message is verified.
+     */
     async verifyErrorForMissingPassword(): Promise<void> {
         console.log('Verifying error for missing password...');
         const { errorMessage, isErrorVisible } = await this.loginScreen.attemptLoginWithOnlyUsername();

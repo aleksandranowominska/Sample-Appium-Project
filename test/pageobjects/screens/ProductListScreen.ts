@@ -41,6 +41,11 @@ export class ProductListScreen extends BaseScreen {
 
         return addToCartButtonsDisplayed;
     }
+
+    /**
+     * Verifies if unique elements specific to the product list screen are visible.
+     * @returns {Promise<boolean>} - True if all elements are visible, otherwise false.
+     */
     async verifyUniqueElements(): Promise<boolean> {
         await this.scrollTo(this.productsTitleSelector);
         const productsTitleDisplayed = await this.isElementDisplayed(this.productsTitleSelector);
@@ -57,6 +62,10 @@ export class ProductListScreen extends BaseScreen {
         return productsTitleDisplayed && toggleButtonDisplayed && modalSelectorButtonDisplayed;
     }
 
+    /**
+     * Verifies if product titles, prices, and "Add to Cart" buttons are visible.
+     * @returns {Promise<boolean>} - True if all elements are visible, otherwise false.
+     */
     async verifyProductAndAddToCartButtons(): Promise<boolean> {
         await this.scrollTo(this.itemTitleSelector);
         const itemsDisplayed = await this.isElementDisplayed(this.itemTitleSelector);
@@ -74,6 +83,10 @@ export class ProductListScreen extends BaseScreen {
         return itemsDisplayed && pricesDisplayed && addToCartButtonsDisplayed;
     }
 
+    /**
+     * Checks if an item is added to the cart by verifying the presence of the "Remove" button and cart badge.
+     * @returns {Promise<boolean>} - True if both elements are visible, otherwise false.
+     */
     async checkIfElementAddedToCart(): Promise<boolean> {
         const removeButtonDisplayed = await this.isElementDisplayed(this.removeButtonSelector);
         console.log('Remove button displayed:', removeButtonDisplayed);
@@ -84,27 +97,25 @@ export class ProductListScreen extends BaseScreen {
         return removeButtonDisplayed && cartBadgeDisplayed;
     }
 
+    /**
+     * Navigates to the cart page.
+     * Uses platform-specific methods for iOS and Android.
+     * @returns {Promise<void>} - Resolves once the navigation is complete.
+     */
     async navigateToCart(): Promise<void> {
         console.log('Navigating to the cart...');
 
         if (this.platform === 'iOS') {
             console.log('iOS-specific cart navigation using coordinates...');
-            // Find cart button
             const cartElement = await $(this.cartButtonSelector);
-
-            // Get element id
             const elementId = await cartElement.elementId;
-
-            // Get element coordinates and dimensions
             const rect = await browser.getElementRect(elementId);
 
-            // Calculate coordinates of bottom right corner
-            const x = Math.floor(rect.x + rect.width - 1); // right
-            const y = Math.floor(rect.y + rect.height - 1); // bottom
+            const x = Math.floor(rect.x + rect.width - 1);
+            const y = Math.floor(rect.y + rect.height - 1);
 
             console.log(`Clicking on cart button at coordinates: (${x}, ${y})`);
 
-            // Perform touch action
             await driver.performActions([
                 {
                     type: 'pointer',
@@ -131,14 +142,26 @@ export class ProductListScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Returns the selector for item titles.
+     * @returns {string} - The item title selector.
+     */
     public getItemTitleSelector(): string {
         return this.itemTitleSelector;
     }
 
+    /**
+     * Returns the selector for product prices.
+     * @returns {string} - The price selector.
+     */
     public getPriceSelector(): string {
         return this.priceSelector;
     }
 
+    /**
+     * Returns the selector for "Add to Cart" buttons.
+     * @returns {string} - The "Add to Cart" button selector.
+     */
     public getAddToCartButtonSelector(): string {
         return this.addToCartButtonSelector;
     }

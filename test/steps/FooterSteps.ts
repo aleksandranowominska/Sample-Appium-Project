@@ -9,6 +9,11 @@ export class FooterSteps {
         this.footerScreen = new FooterScreen(platform);
     }
 
+    /**
+     * Verifies if all footer elements are displayed on the screen.
+     * Logs the result and throws an error if any element is not displayed.
+     * @returns {Promise<void>} - Resolves once all footer elements are verified.
+     */
     async verifyFooter(): Promise<void> {
         console.log('Verifying footer elements...');
         const allFooterElementsDisplayed = await this.footerScreen.verifyFooterElements();

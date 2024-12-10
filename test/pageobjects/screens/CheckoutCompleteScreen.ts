@@ -12,7 +12,10 @@ export class CheckoutCompleteScreen extends BaseScreen {
         this.selectors = platform === 'Android' ? AndroidSelectors : iOSSelectors;
     }
 
-    // Verify all elements on the checkout complete screen
+    /**
+     * Verifies if all key elements on the checkout complete screen are displayed.
+     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     */
     async verifyCheckoutCompleteElements(): Promise<boolean> {
         const elementsToCheck = [
             this.selectors.checkoutCompleteTitleSelector,

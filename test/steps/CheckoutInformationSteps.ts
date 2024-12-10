@@ -15,6 +15,11 @@ export class CheckoutInformationSteps {
         this.checkoutInformationScreen = new CheckoutInformationScreen(platform);
     }
 
+    /**
+     * Verifies if all key elements on the checkout information screen are displayed.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>} - Resolves once all elements are verified.
+     */
     async verifyCheckoutInformationElements(): Promise<void> {
         console.log('Verifying checkout information elements...');
         const elementsDisplayed = await this.checkoutInformationScreen.verifyCheckoutInformationElements();
@@ -22,6 +27,11 @@ export class CheckoutInformationSteps {
         expect(elementsDisplayed).toBe(true);
     }
 
+    /**
+     * Fills out the checkout form using data from the `.env` file and proceeds by tapping the "Continue" button.
+     * Throws an error if any required data is missing in the `.env` file.
+     * @returns {Promise<void>} - Resolves once the form is completed and the "Continue" button is tapped.
+     */
     async fillOutCheckoutFormAndContinue(): Promise<void> {
         const firstName = process.env.FIRST_NAME || '';
         const lastName = process.env.LAST_NAME || '';

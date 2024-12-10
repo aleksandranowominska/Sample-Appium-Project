@@ -15,6 +15,10 @@ export class CheckoutInformationScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Verifies if all elements on the checkout information screen are displayed.
+     * @returns {Promise<boolean>} - Returns true if all elements are displayed, otherwise false.
+     */
     async verifyCheckoutInformationElements(): Promise<boolean> {
         const elementsToCheck = [
             this.selectors.checkoutInformationTitleSelector,
@@ -35,6 +39,12 @@ export class CheckoutInformationScreen extends BaseScreen {
         return allElementsDisplayed;
     }
 
+    /**
+     * Fills out the checkout form with the provided information.
+     * @param {string} firstName - The first name to enter in the form.
+     * @param {string} lastName - The last name to enter in the form.
+     * @param {string} zipCode - The zip/postal code to enter in the form.
+     */
     async fillOutCheckoutForm(firstName: string, lastName: string, zipCode: string): Promise<void> {
         console.log('Filling out the checkout form...');
         await this.typeText(this.selectors.firstNameFieldSelector, firstName);
@@ -47,12 +57,18 @@ export class CheckoutInformationScreen extends BaseScreen {
         console.log('Entered zip/postal code:', zipCode);
     }
 
+    /**
+     * Taps on the Continue button to proceed with the checkout process.
+     */
     async tapContinue(): Promise<void> {
         console.log('Tapping on the Continue button...');
         await this.tapElement(this.selectors.continueButtonSelector);
         console.log('Tapped on the Continue button.');
     }
 
+    /**
+     * Taps on the Cancel button to cancel the checkout process.
+     */
     async tapCancel(): Promise<void> {
         console.log('Tapping on the Cancel button...');
         await this.tapElement(this.selectors.cancelButtonSelector);

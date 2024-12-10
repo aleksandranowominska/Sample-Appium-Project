@@ -1,5 +1,13 @@
 import { browser } from '@wdio/globals';
 
+/**
+ * Scrolls to an element on an iOS screen.
+ * Attempts to make the element visible by performing a maximum number of scrolls.
+ * 
+ * @param {string} elementSelector - The selector of the element to scroll to.
+ * @returns {Promise<void>} - Resolves when the element is successfully scrolled into view.
+ * @throws {Error} - Throws an error if the element is not visible after the maximum number of scroll attempts.
+ */
 export async function scrollToElementiOS(elementSelector: string): Promise<void> {
     const el = await $(elementSelector);
     const MAX_SCROLL_ATTEMPTS = 10;
@@ -23,12 +31,14 @@ export async function scrollToElementiOS(elementSelector: string): Promise<void>
 }
 
 /**
- * Wait for a specific error message to appear on the iOS screen.
- * @param elementSelector - Selector for the error message container.
- * @param expectedText - Expected text of the error message.
- * @param timeout - Maximum time to wait for the error message.
- * @returns The text of the error message.
- * @throws Error if the message does not appear or does not contain the expected text.
+ * Waits for a specific error message to appear on the iOS screen.
+ * Verifies the text of the error message and logs the result.
+ * 
+ * @param {string} elementSelector - Selector for the error message container.
+ * @param {string} expectedText - Expected text of the error message.
+ * @param {number} [timeout=10000] - Maximum time to wait for the error message (default: 10,000ms).
+ * @returns {Promise<string>} - Resolves with the text of the error message if it appears and matches.
+ * @throws {Error} - Throws an error if the message does not appear or does not match the expected text.
  */
 export async function waitForErrorMessage(
     elementSelector: string,

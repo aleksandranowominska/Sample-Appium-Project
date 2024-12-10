@@ -15,6 +15,10 @@ export class CheckoutOverviewScreen extends BaseScreen {
         }
     }
 
+    /**
+     * Verifies if all key elements on the checkout overview screen are displayed.
+     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     */
     async verifyCheckoutOverviewElements(): Promise<boolean> {
         const elementsToCheck = [
             this.selectors.checkoutOverviewTitleSelector,
@@ -36,6 +40,10 @@ export class CheckoutOverviewScreen extends BaseScreen {
         return true;
     }
 
+    /**
+     * Verifies that the total price displayed on the screen is correct by summing up item total and tax.
+     * @returns {Promise<boolean>} - True if the total price matches the sum, otherwise false.
+     */
     async verifyTotalPrice(): Promise<boolean> {
         await this.scrollTo(this.selectors.itemTotalSelector);
         const itemTotal = parseFloat((await this.getElementText(this.selectors.itemTotalSelector)).replace('Item total: $', ''));
@@ -50,6 +58,9 @@ export class CheckoutOverviewScreen extends BaseScreen {
         return total === itemTotal + tax;
     }
 
+    /**
+     * Taps on the "Finish" button to complete the checkout process.
+     */
     async tapFinish(): Promise<void> {
         await this.scrollTo(this.selectors.finishButtonSelector);
         console.log('Tapping Finish button...');
@@ -57,11 +68,18 @@ export class CheckoutOverviewScreen extends BaseScreen {
         console.log('Finish button tapped.');
     }
 
-    // Getters for selectors to be used externally
+    /**
+     * Returns the selector for the product name element on the overview screen.
+     * @returns {string} - The selector for the product name element.
+     */
     public getOverviewProductNameSelector(): string {
         return this.selectors.productNameSelector;
     }
 
+    /**
+     * Returns the selector for the product price element on the overview screen.
+     * @returns {string} - The selector for the product price element.
+     */
     public getOverviewProductPriceSelector(): string {
         return this.selectors.productPriceSelector;
     }
