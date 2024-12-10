@@ -10,12 +10,35 @@ import { CommonTestUtils } from '../utils/CommonTestUtils';
 describe('iOS E2E Test', async () => {
     const loginSteps = new LoginSteps();
     const headerSteps = new HeaderSteps();
-    const productListSteps = new ProductListSteps();;
+    const productListSteps = new ProductListSteps();
     const cartSteps = new CartSteps();
     const checkoutInformationSteps = new CheckoutInformationSteps();
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
     const commonTestUtils = new CommonTestUtils();
+
+    beforeEach(async () => {
+        console.log('Reinstalling the app...');
+        const bundleId = process.env.APP_BUNDLE_ID || 'com.saucelabs.SwagLabsMobileApp';
+        const appPath = '/Users/olanowominska/Developer/appium-task/iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app';
+    
+        await driver.execute('mobile: removeApp', { bundleId });
+        console.log('App removed.');
+    
+        await driver.execute('mobile: installApp', { app: appPath });
+        console.log('App reinstalled successfully.');
+    
+        await driver.execute('mobile: launchApp', { bundleId });
+        console.log('App launched successfully.');
+    });
+      
+
+    afterEach(async () => {
+        console.log('Terminating the app...');
+        const bundleId = process.env.APP_BUNDLE_ID!;
+        await driver.execute('mobile: terminateApp', { bundleId });
+        console.log('App terminated successfully.');
+    });
 
     it('should place order - happy path', async () => {
         // Wait for splash screen to disappear
