@@ -1,5 +1,6 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
+import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class SortPopupScreen extends BaseScreen {
     private sortModalTitleSelector: string;
@@ -8,13 +9,30 @@ export class SortPopupScreen extends BaseScreen {
     private sortByPriceLowToHighSelector: string;
     private sortByPriceHighToLowSelector: string;
 
-    constructor() {
+    constructor(platform: string) {
         super();
-        this.sortModalTitleSelector = AndroidSelectors.sortModalTitleSelector;
-        this.sortByNameAscSelector = AndroidSelectors.sortByNameAscSelector;
-        this.sortByNameDescSelector = AndroidSelectors.sortByNameDescSelector;
-        this.sortByPriceLowToHighSelector = AndroidSelectors.sortByPriceLowToHighSelector;
-        this.sortByPriceHighToLowSelector = AndroidSelectors.sortByPriceHighToLowSelector;
+        const isAndroid = platform === 'Android';
+
+        // Initialize selectors based on platform
+        this.sortModalTitleSelector = isAndroid
+            ? AndroidSelectors.sortModalTitleSelector
+            : iOSSelectors.sortModalTitleSelector;
+
+        this.sortByNameAscSelector = isAndroid
+            ? AndroidSelectors.sortByNameAscSelector
+            : iOSSelectors.sortByNameAscSelector;
+
+        this.sortByNameDescSelector = isAndroid
+            ? AndroidSelectors.sortByNameDescSelector
+            : iOSSelectors.sortByNameDescSelector;
+
+        this.sortByPriceLowToHighSelector = isAndroid
+            ? AndroidSelectors.sortByPriceLowToHighSelector
+            : iOSSelectors.sortByPriceLowToHighSelector;
+
+        this.sortByPriceHighToLowSelector = isAndroid
+            ? AndroidSelectors.sortByPriceHighToLowSelector
+            : iOSSelectors.sortByPriceHighToLowSelector;
     }
 
     /**
@@ -100,9 +118,9 @@ export class SortPopupScreen extends BaseScreen {
     }
 
     /**
-    * Returns the selector for "Sort Modal Title".
-    * @returns {string} - Selector for the sort modal title.
-    */
+     * Returns the selector for "Sort Modal Title".
+     * @returns {string} - Selector for the sort modal title.
+     */
     public getSortModalTitleSelector(): string {
         return this.sortModalTitleSelector;
     }
@@ -138,5 +156,4 @@ export class SortPopupScreen extends BaseScreen {
     public getSortByPriceHighToLowSelector(): string {
         return this.sortByPriceHighToLowSelector;
     }
-
 }

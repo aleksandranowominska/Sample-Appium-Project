@@ -26,7 +26,14 @@ export class iOSSelectors {
     static removeButtonSelector = '//XCUIElementTypeOther[@name="test-REMOVE"]';
     static itemTitleSelector = '//XCUIElementTypeStaticText[@name="test-Item title"]';
     static priceSelector = '//XCUIElementTypeStaticText[@name="test-Price"]';
-    static productItemTitleSelector: string;
+    static productItemTitleSelector = '//XCUIElementTypeStaticText[@name="test-Item title"]';
+
+    // Sort Modal Selectors
+    static sortModalTitleSelector = '//XCUIElementTypeOther[@name="Sort items by..."]';
+    static sortByNameAscSelector = '//XCUIElementTypeOther[@name="Name (A to Z)"]';
+    static sortByNameDescSelector = '//XCUIElementTypeOther[@name="Name (Z to A)"]';
+    static sortByPriceLowToHighSelector = '//XCUIElementTypeOther[@name="Price (low to high)"]';
+    static sortByPriceHighToLowSelector = '//XCUIElementTypeOther[@name="Price (high to low)"]';
 
     // Cart-specific selectors
     static yourCartSelector = '//XCUIElementTypeStaticText[@name="YOUR CART"]';

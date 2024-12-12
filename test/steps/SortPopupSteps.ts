@@ -1,12 +1,13 @@
 import { SortPopupScreen } from "../pageobjects/screens/SortPopupScreen";
 import { SortOptions } from "../utils/constants/Constants";
 
-
 export class SortPopupSteps {
     private sortPopupScreen: SortPopupScreen;
 
     constructor() {
-        this.sortPopupScreen = new SortPopupScreen();
+        const platform = process.env.PLATFORM || 'iOS';
+        console.log(`Initializing SortPopupSteps for platform: ${platform}`);
+        this.sortPopupScreen = new SortPopupScreen(platform);
     }
 
     /**

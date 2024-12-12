@@ -5,6 +5,8 @@ import { CartSteps } from '../steps/CartSteps';
 import { CheckoutInformationSteps } from '../steps/CheckoutInformationSteps';
 import { CheckoutOverviewSteps } from '../steps/CheckoutOverviewSteps';
 import { CheckoutCompleteSteps } from '../steps/CheckoutCompleteSteps';
+import { SortOptions } from '../utils/constants/Constants';
+import { SortPopupSteps } from '../steps/SortPopupSteps';
 import { CommonTestUtils } from '../utils/CommonTestUtils';
 
 describe('iOS E2E Test', async () => {
@@ -15,25 +17,23 @@ describe('iOS E2E Test', async () => {
     const checkoutInformationSteps = new CheckoutInformationSteps();
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
+    const sortPopupSteps = new SortPopupSteps();
     const commonTestUtils = new CommonTestUtils();
     const BUNDLE_ID = process.env.APP_BUNDLE_ID_IOS || 'com.saucelabs.SwagLabsMobileApp';
 
     // Restart the app before each test
     beforeEach(async () => {
-        console.log('Reinstalling the app...');
-        const appPath = '/Users/olanowominska/Developer/appium-task/iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app';
-        await driver.execute('mobile: removeApp', { BUNDLE_ID });
-        console.log('App removed.');
-        await driver.execute('mobile: installApp', { app: appPath });
-        console.log('App reinstalled successfully.');
-        await driver.execute('mobile: launchApp', { BUNDLE_ID });
-        console.log('App launched successfully.');
+        console.log('Restarting the app...');
+        await driver.execute('mobile: terminateApp', { bundleId: BUNDLE_ID });
+        console.log('App terminated successfully.');
+        await driver.execute('mobile: activateApp', { bundleId: BUNDLE_ID });
+        console.log('App restarted successfully.');
     });
 
     // Close the app after each test
     afterEach(async () => {
         console.log('Terminating the app...');
-        await driver.execute('mobile: terminateApp', { BUNDLE_ID });
+        await driver.execute('mobile: terminateApp', { bundleId: BUNDLE_ID });
         console.log('App terminated successfully.');
     });
 
@@ -150,6 +150,37 @@ describe('iOS E2E Test', async () => {
 
         // Remove the product and verify it's removed
         await cartSteps.removeProductAndVerifyRemoval(expectedName!);
+    });
+
+    it('should sort the product with name', async () => {
+        // Wait for splash screen to disappear
+        await loginSteps.waitForSplashScreen();
+
+        // Verify login screen is visible
+        await loginSteps.verifyPageIsVisible();
+
+        // Perform login
+        await loginSteps.logIn();
+
+        // Verify product list screen is visible
+        await productListSteps.verifyPageIsVisible();
+
+        // Toggle the view to ListView (from GridView)
+        console.log('Toggling to ListView...');
+        await productListSteps.toggleProductView();
+        console.log('Successfully toggled to ListView.');
+
+        // Open the modal for sorting or filtering products
+        console.log('Opening filter/sort modal...');
+        await productListSteps.openFilterOrSortModal();
+        console.log('Filter/sort modal opened successfully.');
+
+        // Apply the sort filter
+        await sortPopupSteps.applySortOption(SortOptions.NAME_ASC);
+
+        // Fetch and verify the sorted product titles
+        const sortedTitles = await productListSteps.fetchAndVerifySortedProductTitles(true);
+        console.log('Products are sorted correctly in ascending order:', sortedTitles);
     });
 
     it('should display errors for empty fields while login', async () => {
