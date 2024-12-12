@@ -2,13 +2,13 @@ import { Reporters } from '@wdio/types';
 
 const PLATFORM = process.env.PLATFORM || 'Android';
 
-// Set default values depending on the selected platform
-const DEFAULT_DEVICE_NAME = PLATFORM === 'Android' ? 'R5CX14742XK' : 'iPhone 16';
-const DEFAULT_PLATFORM_VERSION = PLATFORM === 'Android' ? '14' : '18.1';
+// Default configurations
+const DEFAULT_DEVICE_NAME = PLATFORM === 'Android' ? 'Android Emulator' : 'iPhone 13';
+const DEFAULT_PLATFORM_VERSION = PLATFORM === 'Android' ? '12' : '16.0';
 const DEFAULT_AUTOMATION_NAME = PLATFORM === 'Android' ? 'UiAutomator2' : 'XCUITest';
 const DEFAULT_APP_PATH = PLATFORM === 'Android'
-    ? '/Users/olanowominska/Developer/appium-task/Android.SauceLabs.Mobile.Sample.app.2.7.1.apk'
-    : '/Users/olanowominska/Developer/appium-task/iOS.Simulator.SauceLabs.Mobile.Sample.app.2.7.1.app';
+    ? './apps/Android.SauceLabs.Mobile.Sample.app.apk'
+    : './apps/iOS.Simulator.SauceLabs.Mobile.Sample.app.app';
 
 // Retrieve values from process.env or use default ones
 const DEVICE_NAME = process.env.DEVICE_NAME || DEFAULT_DEVICE_NAME;
@@ -29,7 +29,7 @@ const baseCapabilities: WebdriverIO.Capabilities & { [key: string]: string | boo
     'appium:platformVersion': PLATFORM_VERSION,
     'appium:automationName': AUTOMATION_NAME,
     'appium:app': APP_PATH,
-    'appium:aaptExecPath': '/Users/olanowominska/Library/Android/sdk/build-tools/34.0.0/aapt2',
+    'appium:aaptExecPath': process.env.AAPT_EXEC_PATH || '/path/to/aapt2',
     'appium:appWaitActivity': 'com.swaglabsmobileapp.SplashActivity,com.swaglabsmobileapp.*'
 };
 
