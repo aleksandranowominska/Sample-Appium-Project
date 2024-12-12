@@ -6,6 +6,8 @@ import { CheckoutInformationSteps } from '../steps/CheckoutInformationSteps';
 import { CheckoutOverviewSteps } from '../steps/CheckoutOverviewSteps';
 import { CheckoutCompleteSteps } from '../steps/CheckoutCompleteSteps';
 import { CommonTestUtils } from '../utils/CommonTestUtils';
+import { SortPopupSteps } from '../steps/SortPopupSteps';
+import { SortOptions } from '../utils/constants/Constants';
 
 describe('Android E2E Tests', () => {
     const loginSteps = new LoginSteps();
@@ -16,6 +18,7 @@ describe('Android E2E Tests', () => {
     const checkoutOverviewSteps = new CheckoutOverviewSteps();
     const checkoutCompleteSteps = new CheckoutCompleteSteps();
     const commonTestUtils = new CommonTestUtils();
+    const sortPopupSteps = new SortPopupSteps();
     const APP_ID = process.env.APP_ID_ANDROID || 'com.swaglabsmobileapp';
 
     // Restart the app before each test
@@ -134,7 +137,7 @@ describe('Android E2E Tests', () => {
         console.log('Checkout complete screen elements verified.');
     });
 
-    it('should remove item from the cart on Android', async () => {
+    it('should remove item from the cart', async () => {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
 
@@ -173,6 +176,37 @@ describe('Android E2E Tests', () => {
 
         // Remove the product and verify it's removed
         await cartSteps.removeProductAndVerifyRemoval(expectedName!);
+    });
+
+    it('should sort the product with name', async () => {
+        // Wait for splash screen to disappear
+        await loginSteps.waitForSplashScreen();
+
+        // Verify login screen is visible
+        await loginSteps.verifyPageIsVisible();
+
+        // Perform login
+        await loginSteps.logIn();
+
+        // Verify product list screen is visible
+        await productListSteps.verifyPageIsVisible();
+
+        // Toggle the view to ListView (from GridView)
+        console.log('Toggling to ListView...');
+        await productListSteps.toggleProductView();
+        console.log('Successfully toggled to ListView.');
+
+        // Open the modal for sorting or filtering products
+        console.log('Opening filter/sort modal...');
+        await productListSteps.openFilterOrSortModal();
+        console.log('Filter/sort modal opened successfully.');
+
+        // Apply the sort filter
+        await sortPopupSteps.applySortOption(SortOptions.NAME_ASC);
+
+        // Fetch and verify the sorted product titles
+        const sortedTitles = await productListSteps.fetchAndVerifySortedProductTitles(true);
+        console.log('Products are sorted correctly in ascending order:', sortedTitles);
     });
 
     it('should display errors for empty fields while login', async () => {

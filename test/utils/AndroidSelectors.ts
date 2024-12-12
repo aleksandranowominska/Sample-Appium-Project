@@ -27,6 +27,14 @@ export class AndroidSelectors {
     static removeButtonSelector = '//android.view.ViewGroup[@content-desc="test-REMOVE"]';
     static itemTitleSelector = '//android.widget.TextView[@content-desc="test-Item title" and @text="Sauce Labs Backpack"]';
     static priceSelector = '//android.widget.TextView[@content-desc="test-Price" and @text="$29.99"]';
+    static productItemTitleSelector = '//android.widget.TextView[@content-desc="test-Item title"]';
+
+    // Sort Modal Selectors
+    static sortModalTitleSelector = '//android.widget.TextView[@text="Sort items by..."]';
+    static sortByNameAscSelector = '//android.widget.TextView[@text="Name (A to Z)"]';
+    static sortByNameDescSelector = '//android.widget.TextView[@text="Name (Z to A)"]';
+    static sortByPriceLowToHighSelector = '//android.widget.TextView[@text="Price (low to high)"]';
+    static sortByPriceHighToLowSelector = '//android.widget.TextView[@text="Price (high to low)"]';
 
     // Cart-specific selectors
     static yourCartSelector = '//android.widget.TextView[@text="YOUR CART"]';

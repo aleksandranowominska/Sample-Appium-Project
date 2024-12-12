@@ -26,6 +26,7 @@ export class iOSSelectors {
     static removeButtonSelector = '//XCUIElementTypeOther[@name="test-REMOVE"]';
     static itemTitleSelector = '//XCUIElementTypeStaticText[@name="test-Item title"]';
     static priceSelector = '//XCUIElementTypeStaticText[@name="test-Price"]';
+    static productItemTitleSelector: string;
 
     // Cart-specific selectors
     static yourCartSelector = '//XCUIElementTypeStaticText[@name="YOUR CART"]';

@@ -47,6 +47,25 @@ export class ProductListSteps {
     }
 
     /**
+    * Fetches all product titles from the product list by scrolling.
+    * @returns {Promise<string[]>} - A list of product titles.
+    */
+    async fetchAndVerifySortedProductTitles(ascending: boolean): Promise<void> {
+        console.log('Fetching and verifying sorted product titles...');
+        const productTitles = await this.productListScreen.getProductTitles();
+
+        const isSortedCorrectly = this.productListScreen.verifyProductOrder(productTitles, ascending);
+
+        if (!isSortedCorrectly) {
+            throw new Error(
+                `Products are not sorted in ${ascending ? 'ascending' : 'descending'} order.`
+            );
+        }
+
+        console.log('Products are sorted correctly.');
+    }
+
+    /**
      * Adds the first product from the list to the cart.
      * Stores the product's name and price for later use.
      * Verifies that the product is successfully added to the cart.
@@ -91,6 +110,37 @@ export class ProductListSteps {
     }
 
     /**
+     * Toggles the product view to List View.
+     * Ensures the action is performed successfully.
+     * @returns {Promise<void>} - Resolves when the view is toggled.
+     */
+    async toggleProductView(): Promise<void> {
+        console.log('Starting step: Toggle product view...');
+        try {
+            await this.productListScreen.toggleToListView();
+            console.log('Successfully toggled the product view to List View in step.');
+        } catch (error) {
+            console.error('Failed to toggle product view to List View in step:', error);
+            throw error;
+        }
+    }
+
+    /**
+    * Opens the modal for filtering or sorting products.
+    * @returns {Promise<void>} - Resolves when the modal is opened.
+    */
+    async openFilterOrSortModal(): Promise<void> {
+        console.log('Step: Opening the filter or sort modal...');
+        try {
+            await this.productListScreen.clickModalSelectorButton();
+            console.log('Successfully opened the filter or sort modal.');
+        } catch (error) {
+            console.error('Failed to open the filter or sort modal:', error);
+            throw error;
+        }
+    }
+
+    /**
      * Returns the details (name and price) of the selected product.
      * @returns {{ name: string | null; price: string | null }} - An object containing the product name and price.
      */
@@ -99,6 +149,16 @@ export class ProductListSteps {
             name: this.selectedProductName,
             price: this.selectedProductPrice,
         };
+    }
+
+    /**
+    * Verifies if the product titles are sorted in ascending or descending order.
+    * @param {string[]} productTitles - A list of product titles.
+    * @param {boolean} ascending - True for ascending (A to Z); False for descending (Z to A).
+    * @returns {boolean} - True if the products are sorted correctly; False otherwise.
+    */
+    verifyProductsAreSorted(productTitles: string[], ascending: boolean): boolean {
+        return this.productListScreen.verifyProductOrder(productTitles, ascending);
     }
 
     /**
