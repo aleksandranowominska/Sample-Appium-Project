@@ -35,36 +35,4 @@ export class CommonTestUtils extends BaseScreen {
             throw new Error(`Product price mismatch: expected "${expectedPrice}", but got "${actualPrice}"`);
         }
     }
-
-    /**
-     * Scrolls within the product list container to locate a specific element.
-     * Uses the scrollTo method from BaseScreen.
-     * @param {string} elementSelector - The selector of the element to scroll to.
-     * @returns {Promise<void>} - Resolves once the element is visible or the end of the list is reached.
-     */
-    async scrollToElement(elementSelector: string): Promise<void> {
-        console.log(`Starting to scroll to the element: ${elementSelector}...`);
-
-        while (true) {
-            // Check if the target element is visible
-            const isElementVisible = await this.isElementDisplayed(elementSelector);
-            if (isElementVisible) {
-                console.log(`Element ${elementSelector} is visible. Stopping scroll.`);
-                break;
-            }
-
-            // Scroll to the target element using the BaseScreen's scrollTo method
-            try {
-                await this.scrollTo(elementSelector);
-            } catch (error) {
-                console.error(`Scrolling to element ${elementSelector} failed:`, (error as Error).message);
-                break;
-            }
-
-            // Pause briefly to allow content to load
-            await browser.pause(1000);
-        }
-
-        console.log(`Finished scrolling to the element: ${elementSelector}.`);
-    }
 }

@@ -1,7 +1,8 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
 import { iOSSelectors } from '../../utils/iOSSelectors';
-import { CommonTestUtils } from '../../utils/CommonTestUtils';
+import { scrollToElementAndroid } from '../../utils/AndroidUtils';
+import { scrollToElementiOS } from '../../utils/iOSUtils';
 
 export class ProductListScreen extends BaseScreen {
     protected productsTitleSelector: string;
@@ -33,6 +34,56 @@ export class ProductListScreen extends BaseScreen {
         this.productItemTitleSelector = selectors.productItemTitleSelector;
         this.footerTextSelector = selectors.footerTextSelector;
     }
+
+    /**
+     * Fetches all product titles from the list by scrolling within the container until the footer is visible.
+     * @returns {Promise<string[]>} - An array of product titles.
+     */
+        async getProductTitles(): Promise<string[]> {
+            console.log('Fetching all product titles from the list...');
+            const titles: string[] = [];
+            const seenTitles = new Set<string>();
+            const productItemTitleSelector = this.productItemTitleSelector;
+    
+            while (true) {
+                console.log(`Fetching visible product titles on ${this.platform}...`);
+    
+                // Get all visible product titles within the container
+                const elements = await $$(productItemTitleSelector);
+                for (const element of elements) {
+                    if (await element.isDisplayed()) {
+                        const title = await element.getText();
+                        if (!seenTitles.has(title)) {
+                            seenTitles.add(title);
+                            titles.push(title);
+                        }
+                    }
+                }
+    
+                // Scroll to the footer using platform-specific scrolling
+                try {
+                    console.log('Scrolling to footer...');
+                    if (this.platform === 'Android') {
+                        await scrollToElementAndroid(this.footerTextSelector);
+                    } else {
+                        await scrollToElementiOS(this.footerTextSelector);
+                    }
+                } catch (error) {
+                    console.error('Failed to scroll to footer:', (error as Error).message);
+                    break;
+                }
+    
+                // Break if footer becomes visible
+                const isFooterVisible = await this.isElementDisplayed(this.footerTextSelector);
+                if (isFooterVisible) {
+                    console.log('Footer is visible. All product titles loaded.');
+                    break;
+                }
+            }
+    
+            console.log('Retrieved product titles:', titles);
+            return titles;
+        }
 
     /**
     * Checks if at least one "Add to Cart" button is visible.
@@ -168,43 +219,6 @@ export class ProductListScreen extends BaseScreen {
             console.error('Failed to toggle to List View:', error);
             throw error;
         }
-    }
-
-    /**
-    * Fetches all product titles from the list by scrolling within the container until the footer is visible.
-    * @returns {Promise<string[]>} - An array of product titles.
-    */
-    async getProductTitles(): Promise<string[]> {
-        console.log('Fetching all product titles from the list...');
-        const titles: string[] = [];
-        const seenTitles = new Set<string>();
-        const utils = new CommonTestUtils();
-        const productItemTitleSelector = AndroidSelectors.productItemTitleSelector;
-
-        while (true) {
-            // Get all visible product titles within the container
-            const elements = await $$(productItemTitleSelector);
-            for (const element of elements) {
-                if (await element.isDisplayed()) {
-                    const title = await element.getText();
-                    if (!seenTitles.has(title)) {
-                        seenTitles.add(title);
-                        titles.push(title);
-                    }
-                }
-            }
-
-            // Scroll to the footer
-            await utils.scrollToElement(this.footerTextSelector);
-
-            // Break if all titles are loaded
-            if (await this.isElementDisplayed(this.footerTextSelector)) {
-                break;
-            }
-        }
-
-        console.log('Retrieved product titles:', titles);
-        return titles;
     }
 
     /**
