@@ -95,10 +95,47 @@ describe('Android E2E Tests', () => {
         await checkoutInformationSteps.verifyCheckoutInformationElements();
         console.log('Checkout information elements verified successfully.');
 
-        // Fill out checkout form and continue
+        // Fill out checkout form
         console.log('Filling out the checkout form and proceeding...');
         await checkoutInformationSteps.fillOutCheckoutForm();
+        console.log('Checkout form filled successfully.');
+    });
+
+    it('should verify order details on checkout overview screen', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+         // Add the first product to cart
+        await productListSteps.addFirstProductToCart();
+        console.log('First product added to cart successfully.');
+
+        // Log product details
+        productListSteps.logSelectedProductDetails();
+
+        // Retrieve product details
+        const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
+
+         // Navigate to the cart
+        await productListSteps.proceedToCart();
+        console.log('Successfully navigated to the cart screen.'); 
+
+        // Tap the checkout button
+        console.log('Tapping the checkout button...');
+        await cartSteps.tapCheckoutButton();
+
+        // Fill out checkout form and continue
+        console.log('Filling out the checkout form and proceeding...');
+        await checkoutInformationSteps.fillOutCheckoutForm(true);
         console.log('Checkout form filled and proceeded successfully.');
+
+        // Verify product details in checkout overview
+        console.log(`Verifying product details in checkout overview: ${expectedName}, ${expectedPrice}`);
+        await commonTestUtils.verifyProductDetails(
+            checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductNameSelector(),
+            checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductPriceSelector(),
+            expectedName!,
+            expectedPrice!
+        );
     });
 
     it('should place order - happy path', async () => {

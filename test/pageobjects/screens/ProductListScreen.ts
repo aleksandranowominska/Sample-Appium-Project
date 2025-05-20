@@ -145,7 +145,7 @@ export class ProductListScreen extends BaseScreen {
     * @returns {Promise<void>} - Resolves once the navigation is complete.
     */
     async navigateToCart(): Promise<void> {
-        console.log('Navigating to the cart (Android)...');
+        console.log('Navigating to the cart...');
         try {
             await $(this.cartButtonSelector).click();
             console.log('Tapped on the cart button successfully.');
