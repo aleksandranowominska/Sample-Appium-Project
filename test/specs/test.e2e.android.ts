@@ -63,6 +63,7 @@ describe('Android E2E Tests', () => {
         console.log('Verifying product quantity...');
         await cartSteps.verifyProductQuantity('1');
         console.log('Product quantity verified successfully.');
+
         // Verify product details in the cart
         console.log(`Verifying product details in cart: ${expectedName}, ${expectedPrice}`);
         await commonTestUtils.verifyProductDetails(
@@ -180,20 +181,12 @@ describe('Android E2E Tests', () => {
     });
 
     it('should remove item from the cart', async () => {
-        // Wait for splash screen to disappear
-        await loginSteps.waitForSplashScreen();
-
-        // Verify login screen is visible
-        await loginSteps.verifyPageIsVisible();
-
-        // Perform login
-        await loginSteps.logIn();
-
-        // Verify product list screen is visible
-        await productListSteps.verifyPageIsVisible();
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
 
         // Add the first product to cart
         await productListSteps.addFirstProductToCart();
+        console.log('First product added to cart successfully.');
 
         // Log product details
         const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
@@ -201,6 +194,7 @@ describe('Android E2E Tests', () => {
 
         // Navigate to the cart
         await productListSteps.proceedToCart();
+        console.log('Successfully navigated to the cart screen.'); 
 
         // Verify cart screen is visible
         await cartSteps.verifyPageIsVisible();
