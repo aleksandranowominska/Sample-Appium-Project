@@ -136,85 +136,6 @@ describe('Android E2E Tests', () => {
             expectedName!,
             expectedPrice!
         );
-    });
-
-    it('should place order - happy path', async () => {
-        // Wait for splash screen to disappear
-        await loginSteps.waitForSplashScreen();
-
-        // Verify login screen elements
-        await loginSteps.verifyLoginScreenElements();
-        console.log('Login screen elements verified successfully.');
-
-        // Perform login
-        await loginSteps.logIn();
-        console.log('Login process completed successfully.');
-
-        // Wait for header elements to appear
-        console.log('Waiting for header elements to appear...');
-        await headerSteps.waitForHeaderElements();
-        console.log('Header elements are displayed successfully.');
-
-        // Verify product list elements
-        console.log('Verifying product list elements...');
-        await productListSteps.verifyProductListElements();
-        console.log('Product list elements verified successfully.');
-
-        // Add the first product to cart
-        console.log('Adding the first product to cart...');
-        await productListSteps.addFirstProductToCart();
-        console.log('First product added to cart successfully.');
-
-        // Log product details
-        productListSteps.logSelectedProductDetails();
-
-        // Retrieve product details
-        const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails();
-
-        // Navigate to the cart
-        console.log('Navigating to the cart...');
-        await productListSteps.proceedToCart();
-        console.log('Successfully navigated to the cart screen.');
-
-        // Verify cart elements
-        console.log('Verifying cart elements...');
-        await cartSteps.verifyCartElements();
-
-        // Verify product quantity in the cart
-        console.log('Verifying product quantity...');
-        await cartSteps.verifyProductQuantity('1');
-
-        // Verify product details in the cart
-        console.log(`Verifying product details in cart: ${expectedName}, ${expectedPrice}`);
-        await commonTestUtils.verifyProductDetails(
-            cartSteps.getCartScreen().getProductNameSelector(),
-            cartSteps.getCartScreen().getProductPriceSelector(),
-            expectedName!,
-            expectedPrice!
-        );
-
-        // Tap the checkout button
-        console.log('Tapping the checkout button...');
-        await cartSteps.tapCheckoutButton();
-
-        // Verify checkout information screen elements
-        console.log('Verifying checkout information elements...');
-        await checkoutInformationSteps.verifyCheckoutInformationElements();
-        console.log('Checkout information elements verified successfully.');
-
-        // Fill out checkout form and continue
-        console.log('Filling out the checkout form and proceeding...');
-        await checkoutInformationSteps.fillOutCheckoutForm(true);
-        console.log('Checkout form filled and proceeded successfully.');
-
-        // Verify product details in checkout overview
-        console.log(`Verifying product details in checkout overview: ${expectedName}, ${expectedPrice}`);
-        await commonTestUtils.verifyProductDetails(
-            checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductNameSelector(),
-            checkoutOverviewSteps.getCheckoutOverviewScreen().getOverviewProductPriceSelector(),
-            expectedName!,
-            expectedPrice!
-        );
 
         // Verify checkout overview screen elements
         console.log('Verifying checkout overview elements...');
@@ -225,6 +146,28 @@ describe('Android E2E Tests', () => {
         console.log('Verifying total price calculation...');
         await checkoutOverviewSteps.verifyTotalPrice();
         console.log('Total price calculation verified successfully.');
+    });
+
+    it('should place order - happy path', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+         // Add the first product to cart
+        await productListSteps.addFirstProductToCart();
+        console.log('First product added to cart successfully.');
+
+         // Navigate to the cart
+        await productListSteps.proceedToCart();
+        console.log('Successfully navigated to the cart screen.'); 
+
+        // Tap the checkout button
+        console.log('Tapping the checkout button...');
+        await cartSteps.tapCheckoutButton();
+
+        // Fill out checkout form and continue
+        console.log('Filling out the checkout form and proceeding...');
+        await checkoutInformationSteps.fillOutCheckoutForm(true);
+        console.log('Checkout form filled and proceeded successfully.');
 
         // Tap the finish button to complete the checkout
         console.log('Tapping the finish button...');
