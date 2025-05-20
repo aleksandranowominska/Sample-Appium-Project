@@ -35,4 +35,24 @@ export class CommonTestUtils extends BaseScreen {
             throw new Error(`Product price mismatch: expected "${expectedPrice}", but got "${actualPrice}"`);
         }
     }
+
+    /**
+     * Logs in to a standard account by waiting for splash screen, verifying login screen elements, and performing login.
+     * Assumes loginSteps provides waitForSplashScreen, verifyLoginScreenElements, and logIn methods.
+     * 
+     * @param {any} loginSteps - An object with login step methods.
+     * @returns {Promise<void>} - Resolves when the login process is complete.
+     */
+    async loginToStandardAccount(loginSteps: any): Promise<void> {
+        // Wait for splash screen to disappear
+        await loginSteps.waitForSplashScreen();
+
+        // Verify login screen elements
+        await loginSteps.verifyLoginScreenElements();
+        console.log('Login screen elements verified successfully.');
+
+        // Perform login
+        await loginSteps.logIn();
+        console.log('Login process completed successfully.');
+    }
 }

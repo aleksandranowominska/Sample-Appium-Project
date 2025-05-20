@@ -37,6 +37,48 @@ describe('Android E2E Tests', () => {
         console.log('App terminated successfully.');
     });
 
+    it('should add product to the cart', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+        // Wait for header elements to appear
+        console.log('Waiting for header elements to appear...');
+        await headerSteps.waitForHeaderElements();
+        console.log('Header elements are displayed successfully.');
+
+        // Add the first product to cart
+        await productListSteps.addFirstProductToCart();
+        console.log('First product added to cart successfully.');
+
+        // Log product details
+        productListSteps.logSelectedProductDetails();
+
+        // Retrieve product details
+        const { name: expectedName, price: expectedPrice } = productListSteps.getProductDetails(); 
+
+        // Navigate to the cart
+        await productListSteps.proceedToCart();
+        console.log('Successfully navigated to the cart screen.'); 
+
+        // Verify cart elements
+        await cartSteps.verifyCartElements();
+        console.log('Cart elements verified successfully.');
+
+        // Verify product quantity in the cart
+        console.log('Verifying product quantity...');
+        await cartSteps.verifyProductQuantity('1');
+        console.log('Product quantity verified successfully.');
+        // Verify product details in the cart
+        console.log(`Verifying product details in cart: ${expectedName}, ${expectedPrice}`);
+        await commonTestUtils.verifyProductDetails(
+            cartSteps.getCartScreen().getProductNameSelector(),
+            cartSteps.getCartScreen().getProductPriceSelector(),
+            expectedName!,
+            expectedPrice!
+        );
+            console.log('Product details in cart verified successfully.');
+        });
+
     it('should place order - happy path', async () => {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
