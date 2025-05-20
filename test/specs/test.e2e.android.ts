@@ -247,7 +247,7 @@ describe('Android E2E Tests', () => {
 
     it('should display errors for empty fields while login', async () => {
         await loginSteps.waitForSplashScreen();
-        await loginSteps.verifyLoginScreenElements();
+        await loginSteps.verifyPageIsVisible();
 
         // Verify error for empty fields
         await loginSteps.verifyErrorForEmptyFields();
