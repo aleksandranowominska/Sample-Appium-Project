@@ -41,9 +41,10 @@ export class CommonTestUtils extends BaseScreen {
      * Assumes loginSteps provides waitForSplashScreen, verifyLoginScreenElements, and logIn methods.
      * 
      * @param {any} loginSteps - An object with login step methods.
+     * @param {any} headerSteps - An object with header step methods.
      * @returns {Promise<void>} - Resolves when the login process is complete.
      */
-    async loginToStandardAccount(loginSteps: any): Promise<void> {
+    async loginToStandardAccount(loginSteps: any, headerSteps: any): Promise<void> {
         // Wait for splash screen to disappear
         await loginSteps.waitForSplashScreen();
 
@@ -54,5 +55,10 @@ export class CommonTestUtils extends BaseScreen {
         // Perform login
         await loginSteps.logIn();
         console.log('Login process completed successfully.');
+
+        // Wait for header elements to appear
+        console.log('Waiting for header elements to appear...');
+        await headerSteps.waitForHeaderElements();
+        console.log('Header elements are displayed successfully.');
     }
 }

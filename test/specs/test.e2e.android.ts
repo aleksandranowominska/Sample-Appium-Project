@@ -41,11 +41,6 @@ describe('Android E2E Tests', () => {
         // Login to standard account using CommonTestUtils helper
         await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
 
-        // Wait for header elements to appear
-        console.log('Waiting for header elements to appear...');
-        await headerSteps.waitForHeaderElements();
-        console.log('Header elements are displayed successfully.');
-
         // Add the first product to cart
         await productListSteps.addFirstProductToCart();
         console.log('First product added to cart successfully.');
@@ -78,6 +73,10 @@ describe('Android E2E Tests', () => {
         );
             console.log('Product details in cart verified successfully.');
         });
+
+    it('shouldopen shopping cart and fill out the form', async () => {
+        // TODO: Implement this test
+    });
 
     it('should place order - happy path', async () => {
         // Wait for splash screen to disappear
