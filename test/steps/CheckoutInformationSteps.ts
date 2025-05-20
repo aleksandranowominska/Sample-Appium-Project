@@ -8,11 +8,8 @@ export class CheckoutInformationSteps {
     private checkoutInformationScreen: CheckoutInformationScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing CheckoutInformationSteps for platform: ${platform}`);
-
-        // Pass platform to dynamically select selectors
-        this.checkoutInformationScreen = new CheckoutInformationScreen(platform);
+        console.log('Initializing CheckoutInformationSteps for Android');
+        this.checkoutInformationScreen = new CheckoutInformationScreen();
     }
 
     /**

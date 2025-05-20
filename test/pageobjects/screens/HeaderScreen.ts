@@ -1,24 +1,16 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
-import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class HeaderScreen extends BaseScreen {
     private menuSelector: string;
     private cartSelector: string;
     private swagLogoSelector: string;
 
-    constructor(platform: string) {
+    constructor() {
         super();
-        // Assign selectors dynamically based on the platform
-        if (platform === 'Android') {
-            this.menuSelector = AndroidSelectors.menuSelector;
-            this.cartSelector = AndroidSelectors.cartButtonSelector;
-            this.swagLogoSelector = AndroidSelectors.headerSwagLogoSelector;
-        } else {
-            this.menuSelector = iOSSelectors.menuSelector;
-            this.cartSelector = iOSSelectors.cartButtonSelector;
-            this.swagLogoSelector = iOSSelectors.swagLogoSelector;
-        }
+        this.menuSelector = AndroidSelectors.menuSelector;
+        this.cartSelector = AndroidSelectors.cartButtonSelector;
+        this.swagLogoSelector = AndroidSelectors.headerSwagLogoSelector;
     }
 
     /**

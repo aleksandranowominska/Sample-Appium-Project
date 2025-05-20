@@ -1,34 +1,25 @@
 import { Reporters } from '@wdio/types';
+import path from 'path';
 
-const PLATFORM = process.env.PLATFORM || 'Android';
+const ACTIVE = {
+    deviceName: 'Android Emulator',
+    platformVersion: '13',
+    automationName: 'UiAutomator2',
+    appPath: path.resolve(__dirname, 'Android.SauceLabs.Mobile.Sample.app.2.7.1.apk'),
+    specs: ['./test/specs/test.e2e.android.ts']
+};
 
-// Default configurations
-const DEFAULT_DEVICE_NAME = PLATFORM === 'Android' ? 'Android Emulator' : 'iPhone 13';
-const DEFAULT_PLATFORM_VERSION = PLATFORM === 'Android' ? '12' : '16.0';
-const DEFAULT_AUTOMATION_NAME = PLATFORM === 'Android' ? 'UiAutomator2' : 'XCUITest';
-const DEFAULT_APP_PATH = PLATFORM === 'Android'
-    ? './apps/Android.SauceLabs.Mobile.Sample.app.apk'
-    : './apps/iOS.Simulator.SauceLabs.Mobile.Sample.app.app';
+console.log('==== WDIO CONFIGURATION ====');
+console.log('DEVICE_NAME:', ACTIVE.deviceName);
+console.log('APP_PATH:', ACTIVE.appPath);
+console.log('AUTOMATION_NAME:', ACTIVE.automationName);
 
-// Retrieve values from process.env or use default ones
-const DEVICE_NAME = process.env.DEVICE_NAME || DEFAULT_DEVICE_NAME;
-const PLATFORM_VERSION = process.env.PLATFORM_VERSION || DEFAULT_PLATFORM_VERSION;
-const AUTOMATION_NAME = process.env.AUTOMATION_NAME || DEFAULT_AUTOMATION_NAME;
-const APP_PATH = process.env.APP_PATH || DEFAULT_APP_PATH;
-const WAITFOR_TIMEOUT = process.env.WAITFOR_TIMEOUT ? parseInt(process.env.WAITFOR_TIMEOUT, 10) : 10000;
-
-// Define test specs based on the platform
-const TEST_SPECS = PLATFORM === 'Android'
-    ? './test/specs/test.e2e.android.ts'
-    : './test/specs/test.e2e.iOS.ts';
-
-// Basic capabilities based on environment variables
 const baseCapabilities: WebdriverIO.Capabilities & { [key: string]: string | boolean } = {
-    platformName: PLATFORM,
-    'appium:deviceName': DEVICE_NAME,
-    'appium:platformVersion': PLATFORM_VERSION,
-    'appium:automationName': AUTOMATION_NAME,
-    'appium:app': APP_PATH,
+    platformName: 'Android',
+    'appium:deviceName': ACTIVE.deviceName,
+    'appium:platformVersion': ACTIVE.platformVersion,
+    'appium:automationName': ACTIVE.automationName,
+    'appium:app': ACTIVE.appPath,
     'appium:aaptExecPath': process.env.AAPT_EXEC_PATH || '/path/to/aapt2',
     'appium:appWaitActivity': 'com.swaglabsmobileapp.SplashActivity,com.swaglabsmobileapp.*'
 };
@@ -36,46 +27,37 @@ const baseCapabilities: WebdriverIO.Capabilities & { [key: string]: string | boo
 export const config: WebdriverIO.Config = {
     runner: 'local',
     tsConfigPath: './tsconfig.json',
-
     // Define test specs
-    specs: [TEST_SPECS],
+    specs: ACTIVE.specs,
     exclude: [],
-
-    maxInstances: 10,
-
     // Appium server connection
+    maxInstances: 1,
     hostname: 'localhost',
     port: 4723,
     path: '/',
-
     capabilities: [baseCapabilities],
-
     logLevel: 'info',
-
     // If >0, wdio will stop after given number of test failures
     bail: 0,
-
     // Timeouts
-    waitforTimeout: WAITFOR_TIMEOUT,
+    waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
-
     framework: 'mocha',
-
     mochaOpts: {
         ui: 'bdd',
         timeout: 60000
     },
-
     // Reporters configuration
     reporters: [
         'spec', // Spec reporter to log detailed test execution
+        'spec',
         [
             'allure',
             {
                 outputDir: './allure-results', // Directory for Allure results
                 disableWebdriverStepsReporting: true,
-                disableWebdriverScreenshotsReporting: false,
+                disableWebdriverScreenshotsReporting: false
             }
         ]
     ] as Reporters.ReporterEntry[]

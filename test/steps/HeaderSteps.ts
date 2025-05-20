@@ -4,9 +4,8 @@ export class HeaderSteps {
     private headerScreen: HeaderScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing HeaderSteps for platform: ${platform}`);
-        this.headerScreen = new HeaderScreen(platform);
+        console.log('Initializing HeaderSteps for Android');
+        this.headerScreen = new HeaderScreen();
     }
 
     /**

@@ -1,6 +1,5 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
-import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class SortPopupScreen extends BaseScreen {
     private sortModalTitleSelector: string;
@@ -9,30 +8,13 @@ export class SortPopupScreen extends BaseScreen {
     private sortByPriceLowToHighSelector: string;
     private sortByPriceHighToLowSelector: string;
 
-    constructor(platform: string) {
+    constructor() {
         super();
-        const isAndroid = platform === 'Android';
-
-        // Initialize selectors based on platform
-        this.sortModalTitleSelector = isAndroid
-            ? AndroidSelectors.sortModalTitleSelector
-            : iOSSelectors.sortModalTitleSelector;
-
-        this.sortByNameAscSelector = isAndroid
-            ? AndroidSelectors.sortByNameAscSelector
-            : iOSSelectors.sortByNameAscSelector;
-
-        this.sortByNameDescSelector = isAndroid
-            ? AndroidSelectors.sortByNameDescSelector
-            : iOSSelectors.sortByNameDescSelector;
-
-        this.sortByPriceLowToHighSelector = isAndroid
-            ? AndroidSelectors.sortByPriceLowToHighSelector
-            : iOSSelectors.sortByPriceLowToHighSelector;
-
-        this.sortByPriceHighToLowSelector = isAndroid
-            ? AndroidSelectors.sortByPriceHighToLowSelector
-            : iOSSelectors.sortByPriceHighToLowSelector;
+        this.sortModalTitleSelector = AndroidSelectors.sortModalTitleSelector;
+        this.sortByNameAscSelector = AndroidSelectors.sortByNameAscSelector;
+        this.sortByNameDescSelector = AndroidSelectors.sortByNameDescSelector;
+        this.sortByPriceLowToHighSelector = AndroidSelectors.sortByPriceLowToHighSelector;
+        this.sortByPriceHighToLowSelector = AndroidSelectors.sortByPriceHighToLowSelector;
     }
 
     /**

@@ -1,16 +1,13 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { iOSSelectors } from '../../utils/iOSSelectors';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
 
 export class CartScreen extends BaseScreen {
-    private selectors: typeof iOSSelectors | typeof AndroidSelectors;
+    private selectors: typeof AndroidSelectors;
     private removeButtonSelector: string;
 
     constructor() {
         super();
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing CartScreen for platform: ${platform}`);
-        this.selectors = platform === 'Android' ? AndroidSelectors : iOSSelectors;
+        this.selectors = AndroidSelectors;
         this.removeButtonSelector = this.selectors.removeButtonSelector;
     }
 

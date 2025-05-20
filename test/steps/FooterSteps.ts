@@ -4,9 +4,8 @@ export class FooterSteps {
     private footerScreen: FooterScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing FooterSteps for platform: ${platform}`);
-        this.footerScreen = new FooterScreen(platform);
+        console.log('Initializing FooterSteps for Android');
+        this.footerScreen = new FooterScreen();
     }
 
     /**

@@ -5,9 +5,8 @@ export class SortPopupSteps {
     private sortPopupScreen: SortPopupScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing SortPopupSteps for platform: ${platform}`);
-        this.sortPopupScreen = new SortPopupScreen(platform);
+        console.log(`Initializing SortPopupSteps for Android`);
+        this.sortPopupScreen = new SortPopupScreen();
     }
 
     /**

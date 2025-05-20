@@ -1,23 +1,16 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
-import { iOSSelectors } from '../../utils/iOSSelectors';
 
 export class FooterScreen extends BaseScreen {
     private footerTextSelector: string;
     private termsTextSelector: string;
     private swagBotImageSelector: string;
 
-    constructor(platform: string) {
+    constructor() {
         super();
-        if (platform === 'Android') {
-            this.footerTextSelector = AndroidSelectors.footerTextSelector;
-            this.termsTextSelector = AndroidSelectors.termsTextSelector;
-            this.swagBotImageSelector = AndroidSelectors.swagBotImageSelector;
-        } else {
-            this.footerTextSelector = iOSSelectors.footerTextSelector;
-            this.termsTextSelector = iOSSelectors.termsTextSelector;
-            this.swagBotImageSelector = iOSSelectors.swagBotImageSelector;
-        }
+        this.footerTextSelector = AndroidSelectors.footerTextSelector;
+        this.termsTextSelector = AndroidSelectors.termsTextSelector;
+        this.swagBotImageSelector = AndroidSelectors.swagBotImageSelector;
     }
 
     /**

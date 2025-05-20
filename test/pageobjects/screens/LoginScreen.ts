@@ -1,8 +1,6 @@
 import { BaseScreen } from '../../utils/BaseScreen';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
-import { iOSSelectors } from '../../utils/iOSSelectors';
 import { waitForErrorMessage as waitForErrorMessageAndroid } from '../../utils/AndroidUtils';
-import { waitForErrorMessage as waitForErrorMessageIOS } from '../../utils/iOSUtils';
 import { ErrorMessages } from '../../utils/constants/ErrorMessages';
 import * as dotenv from 'dotenv';
 
@@ -17,9 +15,9 @@ export class LoginScreen extends BaseScreen {
     private loginBotSelector: string;
     private errorMessageSelector: string;
 
-    constructor(platform: string) {
+    constructor() {
         super();
-        const selectors = platform === 'Android' ? AndroidSelectors : iOSSelectors;
+        const selectors = AndroidSelectors;
 
         this.swagLogoSelector = selectors.swagLogoSelector;
         this.usernameSelector = selectors.usernameSelector;
@@ -93,8 +91,7 @@ export class LoginScreen extends BaseScreen {
         console.log('Attempting login without entering any credentials...');
         await this.tapElement(this.loginButtonSelector);
 
-        const waitForError = driver.isIOS ? waitForErrorMessageIOS : waitForErrorMessageAndroid;
-        const errorMessage = await waitForError(this.errorMessageSelector, ErrorMessages.USERNAME_REQUIRED);
+        const errorMessage = await waitForErrorMessageAndroid(this.errorMessageSelector, ErrorMessages.USERNAME_REQUIRED);
         console.log('Error message:', errorMessage);
 
         return { errorMessage, isErrorVisible: true };
@@ -113,8 +110,7 @@ export class LoginScreen extends BaseScreen {
 
         await this.tapElement(this.loginButtonSelector);
 
-        const waitForError = driver.isIOS ? waitForErrorMessageIOS : waitForErrorMessageAndroid;
-        const errorMessage = await waitForError(this.errorMessageSelector, ErrorMessages.PASSWORD_REQUIRED);
+        const errorMessage = await waitForErrorMessageAndroid(this.errorMessageSelector, ErrorMessages.PASSWORD_REQUIRED);
         console.log('Error message:', errorMessage);
 
         return { errorMessage, isErrorVisible: true };

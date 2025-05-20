@@ -1,18 +1,12 @@
 import { BaseScreen } from '../../utils/BaseScreen';
-import { iOSSelectors } from '../../utils/iOSSelectors';
 import { AndroidSelectors } from '../../utils/AndroidSelectors';
 
 export class CheckoutInformationScreen extends BaseScreen {
-    private selectors: typeof iOSSelectors | typeof AndroidSelectors;
+    private selectors: typeof AndroidSelectors;
 
-    constructor(platform: string) {
+    constructor() {
         super();
-        // Assign selectors dynamically based on the platform
-        if (platform === 'Android') {
-            this.selectors = AndroidSelectors;
-        } else {
-            this.selectors = iOSSelectors;
-        }
+        this.selectors = AndroidSelectors;
     }
 
     /**

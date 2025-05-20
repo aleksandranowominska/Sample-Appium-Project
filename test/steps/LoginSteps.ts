@@ -4,9 +4,8 @@ export class LoginSteps {
     private loginScreen: LoginScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing LoginSteps for platform: ${platform}`);
-        this.loginScreen = new LoginScreen(platform);
+        console.log(`Initializing LoginSteps for Android`);
+        this.loginScreen = new LoginScreen();
     }
 
     /**

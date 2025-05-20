@@ -6,9 +6,8 @@ export class ProductListSteps {
     private selectedProductPrice: string | null = null;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing ProductListSteps for platform: ${platform}`);
-        this.productListScreen = new ProductListScreen(platform);
+        console.log(`Initializing ProductListSteps for Android`);
+        this.productListScreen = new ProductListScreen();
     }
 
     /**
@@ -47,9 +46,9 @@ export class ProductListSteps {
     }
 
     /**
-    * Fetches all product titles from the product list by scrolling.
-    * @returns {Promise<string[]>} - A list of product titles.
-    */
+     * Fetches all product titles from the product list by scrolling.
+     * @returns {Promise<void>} - A list of product titles.
+     */
     async fetchAndVerifySortedProductTitles(ascending: boolean): Promise<void> {
         console.log('Fetching and verifying sorted product titles...');
         const productTitles = await this.productListScreen.getProductTitles();
@@ -126,9 +125,9 @@ export class ProductListSteps {
     }
 
     /**
-    * Opens the modal for filtering or sorting products.
-    * @returns {Promise<void>} - Resolves when the modal is opened.
-    */
+     * Opens the modal for filtering or sorting products.
+     * @returns {Promise<void>} - Resolves when the modal is opened.
+     */
     async openFilterOrSortModal(): Promise<void> {
         console.log('Step: Opening the filter or sort modal...');
         try {
@@ -152,11 +151,11 @@ export class ProductListSteps {
     }
 
     /**
-    * Verifies if the product titles are sorted in ascending or descending order.
-    * @param {string[]} productTitles - A list of product titles.
-    * @param {boolean} ascending - True for ascending (A to Z); False for descending (Z to A).
-    * @returns {boolean} - True if the products are sorted correctly; False otherwise.
-    */
+     * Verifies if the product titles are sorted in ascending or descending order.
+     * @param {string[]} productTitles - A list of product titles.
+     * @param {boolean} ascending - True for ascending (A to Z); False for descending (Z to A).
+     * @returns {boolean} - True if the products are sorted correctly; False otherwise.
+     */
     verifyProductsAreSorted(productTitles: string[], ascending: boolean): boolean {
         return this.productListScreen.verifyProductOrder(productTitles, ascending);
     }

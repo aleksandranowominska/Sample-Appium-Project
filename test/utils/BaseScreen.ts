@@ -1,5 +1,5 @@
 import { scrollToElementAndroid } from '../utils/AndroidUtils';
-import { scrollToElementiOS } from '../utils/iOSUtils';
+
 // ELEMENT_TIMEOUT can be dynamically set via process.env.ELEMENT_TIMEOUT
 const ELEMENT_TIMEOUT = process.env.ELEMENT_TIMEOUT ? parseInt(process.env.ELEMENT_TIMEOUT, 10) : 10000;
 
@@ -47,11 +47,11 @@ export class BaseScreen {
     }
 
     /**
-    * Checks if an element is displayed within the timeout period.
-    * Returns `false` if the element does not exist or is not displayed.
-    * @param {string} elementSelector - The selector of the element to check.
-    * @returns {Promise<boolean>} - True if the element is displayed, otherwise false.
-    */
+     * Checks if an element is displayed within the timeout period.
+     * Returns `false` if the element does not exist or is not displayed.
+     * @param {string} elementSelector - The selector of the element to check.
+     * @returns {Promise<boolean>} - True if the element is displayed, otherwise false.
+     */
     async isElementDisplayed(elementSelector: string) {
         try {
             const el = await $(elementSelector);
@@ -62,31 +62,22 @@ export class BaseScreen {
     }
 
     /**
-     * Scrolls to an element based on the current platform.
-     * Uses platform-specific utilities for Android and iOS.
+     * Scrolls to an element using Android-specific utility.
      * @param {string} elementSelector - The selector of the element to scroll to.
      * @returns {Promise<void>} - Resolves once the scrolling action is completed.
      */
     async scrollTo(elementSelector: string): Promise<void> {
-        const platform = process.env.PLATFORM || 'iOS';
-        const element = await $(elementSelector);
-
-        if (platform === 'Android') {
-            console.log(`Scrolling to element on Android: ${elementSelector}`);
-            await element.scrollIntoView();
-        } else {
-            console.log(`Scrolling to element on iOS: ${elementSelector}`);
-            await element.scrollIntoView();
-        }
+        console.log(`Scrolling to element on Android: ${elementSelector}`);
+        await scrollToElementAndroid(elementSelector);
     }
-    
+
     /**
-    * Waits for an element to disappear within a specified timeout.
-    * Logs the process and returns `true` if the element disappears.
-    * @param {string} elementSelector - The selector of the element to wait for.
-    * @param {number} [timeout=5000] - Timeout in milliseconds (default: 5000ms).
-    * @returns {Promise<boolean>} - True if the element disappears, otherwise false.
-    */
+     * Waits for an element to disappear within a specified timeout.
+     * Logs the process and returns `true` if the element disappears.
+     * @param {string} elementSelector - The selector of the element to wait for.
+     * @param {number} [timeout=5000] - Timeout in milliseconds (default: 5000ms).
+     * @returns {Promise<boolean>} - True if the element disappears, otherwise false.
+     */
     async waitForElementToDisappear(elementSelector: string, timeout = 5000): Promise<boolean> {
         console.log(`Waiting for element "${elementSelector}" to disappear...`);
         try {

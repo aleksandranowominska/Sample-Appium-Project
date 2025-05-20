@@ -8,9 +8,8 @@ export class CheckoutOverviewSteps {
     private checkoutOverviewScreen: CheckoutOverviewScreen;
 
     constructor() {
-        const platform = process.env.PLATFORM || 'iOS';
-        console.log(`Initializing CheckoutOverviewSteps for platform: ${platform}`);
-        this.checkoutOverviewScreen = new CheckoutOverviewScreen(platform);
+        console.log('Initializing CheckoutOverviewSteps for Android');
+        this.checkoutOverviewScreen = new CheckoutOverviewScreen();
     }
 
     /**
