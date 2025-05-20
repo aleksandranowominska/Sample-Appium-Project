@@ -74,8 +74,31 @@ describe('Android E2E Tests', () => {
             console.log('Product details in cart verified successfully.');
         });
 
-    it('shouldopen shopping cart and fill out the form', async () => {
-        // TODO: Implement this test
+    it('should open shopping cart and fill out the form', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+         // Add the first product to cart
+        await productListSteps.addFirstProductToCart();
+        console.log('First product added to cart successfully.');
+
+         // Navigate to the cart
+        await productListSteps.proceedToCart();
+        console.log('Successfully navigated to the cart screen.'); 
+
+        // Tap the checkout button
+        console.log('Tapping the checkout button...');
+        await cartSteps.tapCheckoutButton();
+
+        // Verify checkout information screen elements
+        console.log('Verifying checkout information elements...');
+        await checkoutInformationSteps.verifyCheckoutInformationElements();
+        console.log('Checkout information elements verified successfully.');
+
+        // Fill out checkout form and continue
+        console.log('Filling out the checkout form and proceeding...');
+        await checkoutInformationSteps.fillOutCheckoutForm();
+        console.log('Checkout form filled and proceeded successfully.');
     });
 
     it('should place order - happy path', async () => {
@@ -144,7 +167,7 @@ describe('Android E2E Tests', () => {
 
         // Fill out checkout form and continue
         console.log('Filling out the checkout form and proceeding...');
-        await checkoutInformationSteps.fillOutCheckoutFormAndContinue();
+        await checkoutInformationSteps.fillOutCheckoutForm(true);
         console.log('Checkout form filled and proceeded successfully.');
 
         // Verify product details in checkout overview

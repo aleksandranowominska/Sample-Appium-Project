@@ -29,7 +29,7 @@ export class CheckoutInformationSteps {
      * Throws an error if any required data is missing in the `.env` file.
      * @returns {Promise<void>} - Resolves once the form is completed and the "Continue" button is tapped.
      */
-    async fillOutCheckoutFormAndContinue(): Promise<void> {
+    async fillOutCheckoutForm(tapContinue: boolean = true): Promise<void> {
         const firstName = process.env.FIRST_NAME || '';
         const lastName = process.env.LAST_NAME || '';
         const zipCode = process.env.ZIP_CODE || '';
@@ -40,6 +40,9 @@ export class CheckoutInformationSteps {
 
         console.log(`Filling out checkout form with: ${firstName}, ${lastName}, ${zipCode}`);
         await this.checkoutInformationScreen.fillOutCheckoutForm(firstName, lastName, zipCode);
-        await this.checkoutInformationScreen.tapContinue();
+
+        if (tapContinue) {
+            await this.checkoutInformationScreen.tapContinue();
+        }
     }
 }
