@@ -10,10 +10,11 @@ export class CheckoutInformationScreen extends BaseScreen {
     }
 
     /**
-     * Verifies if all elements on the checkout information screen are displayed.
-     * @returns {Promise<boolean>} - Returns true if all elements are displayed, otherwise false.
+     * Asserts that all elements on the checkout information screen are displayed.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>}
      */
-    async verifyCheckoutInformationElements(): Promise<boolean> {
+    async assertCheckoutInformationElementsVisible(): Promise<void> {
         const elementsToCheck = [
             this.selectors.checkoutInformationTitleSelector,
             this.selectors.firstNameFieldSelector,
@@ -23,14 +24,22 @@ export class CheckoutInformationScreen extends BaseScreen {
             this.selectors.continueButtonSelector,
         ];
 
-        const elementsDisplayed = await Promise.all(
-            elementsToCheck.map((selector) => this.isElementDisplayed(selector))
-        );
+        console.log('Asserting visibility of checkout information screen elements...');
+        const failedElements: string[] = [];
 
-        const allElementsDisplayed = elementsDisplayed.every((displayed) => displayed === true);
-        console.log('All checkout information elements are displayed:', allElementsDisplayed);
+        for (const selector of elementsToCheck) {
+            const isDisplayed = await this.isElementDisplayed(selector);
+            console.log(`Element ${selector} is displayed: ${isDisplayed}`);
+            if (!isDisplayed) {
+                failedElements.push(selector);
+            }
+        }
 
-        return allElementsDisplayed;
+        if (failedElements.length > 0) {
+            throw new Error(`Missing checkout information elements: ${failedElements.join(', ')}`);
+        }
+
+        console.log('All checkout information elements are visible.');
     }
 
     /**

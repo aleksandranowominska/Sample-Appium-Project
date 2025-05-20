@@ -31,7 +31,7 @@ export class CartSteps {
      */
     async verifyCartElements(): Promise<void> {
         console.log('Verifying cart elements...');
-        const cartElementsDisplayed = await this.cartScreen.verifyCartElements();
+        const cartElementsDisplayed = await this.cartScreen.assertCartElementsVisible();
         console.log('All cart elements are displayed:', cartElementsDisplayed);
         expect(cartElementsDisplayed).toBe(true);
     }

@@ -42,14 +42,7 @@ export class LoginSteps {
      */
     async verifyLoginScreenElements(): Promise<void> {
         console.log('Verifying login screen elements...');
-        const elementsDisplayed = await this.loginScreen.areElementsDisplayed();
-        console.log('All elements displayed:', elementsDisplayed);
-
-        if (!elementsDisplayed) {
-            throw new Error('Not all login screen elements are displayed. Check logs for details.');
-        }
-
-        expect(elementsDisplayed).toBe(true);
+        await this.loginScreen.assertLoginScreenElementsVisible();
     }
 
     /**

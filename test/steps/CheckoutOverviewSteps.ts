@@ -19,9 +19,7 @@ export class CheckoutOverviewSteps {
      */
     async verifyCheckoutOverviewElements(): Promise<void> {
         console.log('Verifying checkout overview elements...');
-        const elementsDisplayed = await this.checkoutOverviewScreen.verifyCheckoutOverviewElements();
-        console.log('All checkout overview elements are displayed:', elementsDisplayed);
-        expect(elementsDisplayed).toBe(true);
+        await this.checkoutOverviewScreen.assertCheckoutOverviewElementsVisible();
     }
 
     /**
@@ -32,7 +30,7 @@ export class CheckoutOverviewSteps {
      */
     async verifyTotalPrice(): Promise<void> {
         console.log('Verifying total price calculation...');
-        const totalMatches = await this.checkoutOverviewScreen.verifyTotalPrice();
+        const totalMatches = await this.checkoutOverviewScreen.assertTotalPriceCorrect();
         console.log('Total price calculation is correct:', totalMatches);
         expect(totalMatches).toBe(true);
     }

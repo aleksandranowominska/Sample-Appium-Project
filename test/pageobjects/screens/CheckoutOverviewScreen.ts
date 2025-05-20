@@ -10,10 +10,11 @@ export class CheckoutOverviewScreen extends BaseScreen {
     }
 
     /**
-     * Verifies if all key elements on the checkout overview screen are displayed.
-     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     * Asserts that all key elements on the checkout overview screen are displayed.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>}
      */
-    async verifyCheckoutOverviewElements(): Promise<boolean> {
+    async assertCheckoutOverviewElementsVisible(): Promise<void> {
         const elementsToCheck = [
             this.selectors.checkoutOverviewTitleSelector,
             this.selectors.productNameSelector,
@@ -23,22 +24,31 @@ export class CheckoutOverviewScreen extends BaseScreen {
             this.selectors.totalPriceSelector,
         ];
 
+        console.log('Asserting visibility of checkout overview screen elements...');
+        const failedElements: string[] = [];
+
         for (const selector of elementsToCheck) {
             await this.scrollTo(selector);
             const isDisplayed = await this.isElementDisplayed(selector);
             console.log(`Element ${selector} is displayed: ${isDisplayed}`);
             if (!isDisplayed) {
-                return false;
+                failedElements.push(selector);
             }
         }
-        return true;
+
+        if (failedElements.length > 0) {
+            throw new Error(`Missing checkout overview elements: ${failedElements.join(', ')}`);
+        }
+
+        console.log('All checkout overview elements are visible.');
     }
 
     /**
-     * Verifies that the total price displayed on the screen is correct by summing up item total and tax.
-     * @returns {Promise<boolean>} - True if the total price matches the sum, otherwise false.
+     * Asserts that the total price is calculated correctly (item total + tax).
+     * Throws an error if the values don't match.
+     * @returns {Promise<void>}
      */
-    async verifyTotalPrice(): Promise<boolean> {
+    async assertTotalPriceCorrect(): Promise<void> {
         await this.scrollTo(this.selectors.itemTotalSelector);
         const itemTotal = parseFloat((await this.getElementText(this.selectors.itemTotalSelector)).replace('Item total: $', ''));
 
@@ -48,8 +58,15 @@ export class CheckoutOverviewScreen extends BaseScreen {
         await this.scrollTo(this.selectors.totalPriceSelector);
         const total = parseFloat((await this.getElementText(this.selectors.totalPriceSelector)).replace('Total: $', ''));
 
-        console.log(`Item total: ${itemTotal}, Tax: ${tax}, Calculated Total: ${itemTotal + tax}, Actual Total: ${total}`);
-        return total === itemTotal + tax;
+        const expectedTotal = +(itemTotal + tax).toFixed(2);
+
+        console.log(`Item total: ${itemTotal}, Tax: ${tax}, Expected Total: ${expectedTotal}, Displayed Total: ${total}`);
+
+        if (total !== expectedTotal) {
+            throw new Error(`Total price mismatch: expected ${expectedTotal}, got ${total}`);
+        }
+
+        console.log('Total price is correct.');
     }
 
     /**

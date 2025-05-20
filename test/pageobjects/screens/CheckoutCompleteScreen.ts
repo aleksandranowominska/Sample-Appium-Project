@@ -10,10 +10,11 @@ export class CheckoutCompleteScreen extends BaseScreen {
     }
 
     /**
-     * Verifies if all key elements on the checkout complete screen are displayed.
-     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     * Asserts that all key elements on the checkout complete screen are displayed.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>}
      */
-    async verifyCheckoutCompleteElements(): Promise<boolean> {
+    async assertCheckoutCompleteElementsVisible(): Promise<void> {
         const elementsToCheck = [
             this.selectors.checkoutCompleteTitleSelector,
             this.selectors.thankYouMessageSelector,
@@ -22,16 +23,25 @@ export class CheckoutCompleteScreen extends BaseScreen {
             this.selectors.backHomeButtonSelector,
         ];
 
-        console.log('Verifying checkout complete elements...');
+        console.log('Asserting checkout complete elements visibility...');
+        const failedElements: string[] = [];
+
         for (const selector of elementsToCheck) {
-            await this.scrollTo(selector); // Scroll to ensure element is visible
+            await this.scrollTo(selector);
             const isDisplayed = await this.isElementDisplayed(selector);
             console.log(`Element ${selector} is displayed: ${isDisplayed}`);
             if (!isDisplayed) {
-                return false;
+                failedElements.push(selector);
             }
         }
 
-        return true;
+        if (failedElements.length > 0) {
+            throw new Error(
+                `The following checkout complete screen elements were not visible: ${failedElements.join(', ')}`
+            );
+        }
+
+        console.log('All checkout complete elements are visible.');
     }
+
 }

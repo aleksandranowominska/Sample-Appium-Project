@@ -35,14 +35,10 @@ export class ProductListSteps {
      */
     async verifyProductListElements(): Promise<void> {
         console.log('Verifying unique elements in the product list...');
-        const uniqueElementsDisplayed = await this.productListScreen.verifyUniqueElements();
-        console.log('All unique product list elements are displayed:', uniqueElementsDisplayed);
-        expect(uniqueElementsDisplayed).toBe(true);
+        await this.productListScreen.assertProductListHeaderElementsVisible();
 
         console.log('Verifying product items and Add to Cart buttons...');
-        const productAndButtonsDisplayed = await this.productListScreen.verifyProductAndAddToCartButtons();
-        console.log('Products and Add to Cart buttons are displayed:', productAndButtonsDisplayed);
-        expect(productAndButtonsDisplayed).toBe(true);
+        await this.productListScreen.assertProductItemsAndButtonsVisible();
     }
 
     /**

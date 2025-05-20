@@ -16,12 +16,7 @@ export class SortPopupSteps {
     async verifySortModalElements(): Promise<void> {
         console.log('Verifying the sort modal and its elements...');
         await this.sortPopupScreen.waitForSortModalTitle();
-
-        const areSortOptionsVisible = await this.sortPopupScreen.verifySortOptionsVisibility();
-        if (!areSortOptionsVisible) {
-            throw new Error('Some or all sort options are not visible in the sort modal.');
-        }
-        console.log('All sort options are visible.');
+        await this.sortPopupScreen.assertSortOptionsVisible();
     }
 
     /**

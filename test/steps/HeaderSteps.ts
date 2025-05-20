@@ -16,6 +16,6 @@ export class HeaderSteps {
      */
     async waitForHeaderElements(): Promise<void> {
         console.log('Waiting for header elements to be displayed...');
-        await this.headerScreen.waitForDisplayedElements();
+        await this.headerScreen.assertHeaderElementsVisible();
     }
 }

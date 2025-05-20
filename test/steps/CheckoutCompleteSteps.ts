@@ -12,10 +12,9 @@ export class CheckoutCompleteSteps {
      * Logs the status of each element and returns a boolean indicating the result.
      * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
      */
-    async verifyCheckoutCompleteElements(): Promise<boolean> {
+    async verifyCheckoutCompleteElements(): Promise<void> {
         console.log('Verifying checkout complete elements...');
-        const elementsDisplayed = await this.checkoutCompleteScreen.verifyCheckoutCompleteElements();
-        console.log('All checkout complete elements are displayed:', elementsDisplayed);
+        const elementsDisplayed = await this.checkoutCompleteScreen.assertCheckoutCompleteElementsVisible();
         return elementsDisplayed;
     }
 }

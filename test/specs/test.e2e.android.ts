@@ -176,9 +176,7 @@ describe('Android E2E Tests', () => {
 
         // Verify checkout complete screen elements
         console.log('Verifying checkout complete elements...');
-        const elementsDisplayed = await checkoutCompleteSteps.verifyCheckoutCompleteElements();
-        expect(elementsDisplayed).toBe(true); // Check returned value
-        console.log('Checkout complete screen elements verified.');
+        await checkoutCompleteSteps.verifyCheckoutCompleteElements();
     });
 
     it('should remove item from the cart', async () => {

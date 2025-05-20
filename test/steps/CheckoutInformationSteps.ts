@@ -19,9 +19,7 @@ export class CheckoutInformationSteps {
      */
     async verifyCheckoutInformationElements(): Promise<void> {
         console.log('Verifying checkout information elements...');
-        const elementsDisplayed = await this.checkoutInformationScreen.verifyCheckoutInformationElements();
-        console.log('All checkout information elements are displayed:', elementsDisplayed);
-        expect(elementsDisplayed).toBe(true);
+        await this.checkoutInformationScreen.assertCheckoutInformationElementsVisible();
     }
 
     /**

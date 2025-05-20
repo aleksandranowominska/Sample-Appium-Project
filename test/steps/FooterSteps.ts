@@ -15,11 +15,6 @@ export class FooterSteps {
      */
     async verifyFooter(): Promise<void> {
         console.log('Verifying footer elements...');
-        const allFooterElementsDisplayed = await this.footerScreen.verifyFooterElements();
-        console.log('All footer elements displayed:', allFooterElementsDisplayed);
-
-        if (!allFooterElementsDisplayed) {
-            throw new Error('Not all footer elements are displayed correctly');
-        }
+        await this.footerScreen.assertFooterElementsVisible();
     }
 }

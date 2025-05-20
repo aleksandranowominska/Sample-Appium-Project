@@ -33,35 +33,36 @@ export class SortPopupScreen extends BaseScreen {
     }
 
     /**
-     * Verifies that all sort options are visible in the modal.
-     * @returns {Promise<boolean>} - True if all sort options are visible, otherwise false.
+     * Asserts that all sort options are visible in the modal.
+     * Throws an error if any option is not visible.
+     * @returns {Promise<void>}
      */
-    async verifySortOptionsVisibility(): Promise<boolean> {
-        console.log('Verifying the visibility of all sort options...');
-        try {
-            const sortModalTitleVisible = await this.isElementDisplayed(this.sortModalTitleSelector);
-            const sortByNameAscVisible = await this.isElementDisplayed(this.sortByNameAscSelector);
-            const sortByNameDescVisible = await this.isElementDisplayed(this.sortByNameDescSelector);
-            const sortByPriceLowToHighVisible = await this.isElementDisplayed(this.sortByPriceLowToHighSelector);
-            const sortByPriceHighToLowVisible = await this.isElementDisplayed(this.sortByPriceHighToLowSelector);
+    async assertSortOptionsVisible(): Promise<void> {
+        console.log('Asserting visibility of all sort options...');
 
-            console.log('Sort modal title visible:', sortModalTitleVisible);
-            console.log('Sort by Name (A to Z) visible:', sortByNameAscVisible);
-            console.log('Sort by Name (Z to A) visible:', sortByNameDescVisible);
-            console.log('Sort by Price (low to high) visible:', sortByPriceLowToHighVisible);
-            console.log('Sort by Price (high to low) visible:', sortByPriceHighToLowVisible);
+        const elements = [
+            { name: 'Sort modal title', selector: this.sortModalTitleSelector },
+            { name: 'Sort by Name (A to Z)', selector: this.sortByNameAscSelector },
+            { name: 'Sort by Name (Z to A)', selector: this.sortByNameDescSelector },
+            { name: 'Sort by Price (low to high)', selector: this.sortByPriceLowToHighSelector },
+            { name: 'Sort by Price (high to low)', selector: this.sortByPriceHighToLowSelector },
+        ];
 
-            return (
-                sortModalTitleVisible &&
-                sortByNameAscVisible &&
-                sortByNameDescVisible &&
-                sortByPriceLowToHighVisible &&
-                sortByPriceHighToLowVisible
-            );
-        } catch (error) {
-            console.error('Failed to verify sort options visibility:', error);
-            throw error;
+        const missing: string[] = [];
+
+        for (const { name, selector } of elements) {
+            const visible = await this.isElementDisplayed(selector);
+            console.log(`${name} visible: ${visible}`);
+            if (!visible) {
+                missing.push(name);
+            }
         }
+
+        if (missing.length > 0) {
+            throw new Error(`Missing sort options: ${missing.join(', ')}`);
+        }
+
+        console.log('All sort options are visible.');
     }
 
     /**

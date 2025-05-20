@@ -14,30 +14,40 @@ export class FooterScreen extends BaseScreen {
     }
 
     /**
-     * Verifies if all elements in the footer section are displayed.
-     * The elements include:
-     * - Footer text
-     * - Terms and conditions text
-     * - Swag Bot image
-     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
-     */
-    async verifyFooterElements(): Promise<boolean> {
-        // Scroll to and verify footer text
+    * Asserts that all footer elements are displayed.
+    * The elements include:
+    * - Footer text
+    * - Terms and conditions text
+    * - Swag Bot image
+    * Throws an error if any element is not visible.
+    * @returns {Promise<void>}
+    */
+    async assertFooterElementsVisible(): Promise<void> {
+        const failedElements: string[] = [];
+
+        // Footer text
         await this.scrollTo(this.footerTextSelector);
         const footerTextDisplayed = await this.isElementDisplayed(this.footerTextSelector);
         console.log('Footer text displayed:', footerTextDisplayed);
+        if (!footerTextDisplayed) failedElements.push('footerText');
 
-        // Scroll to and verify terms text
+        // Terms text
         await this.scrollTo(this.termsTextSelector);
         const termsTextDisplayed = await this.isElementDisplayed(this.termsTextSelector);
         console.log('Terms text displayed:', termsTextDisplayed);
+        if (!termsTextDisplayed) failedElements.push('termsText');
 
-        // Scroll to and verify swag bot image
+        // Swag Bot image
         await this.scrollTo(this.swagBotImageSelector);
         const swagBotImageDisplayed = await this.isElementDisplayed(this.swagBotImageSelector);
         console.log('Swag Bot image displayed:', swagBotImageDisplayed);
+        if (!swagBotImageDisplayed) failedElements.push('swagBotImage');
 
-        // Return true only if all elements are displayed
-        return footerTextDisplayed && termsTextDisplayed && swagBotImageDisplayed;
+        if (failedElements.length > 0) {
+            throw new Error(`Missing footer elements: ${failedElements.join(', ')}`);
+        }
+
+        console.log('All footer elements are visible.');
     }
+
 }

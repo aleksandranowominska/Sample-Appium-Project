@@ -40,23 +40,34 @@ export class LoginScreen extends BaseScreen {
     }
 
     /**
-     * Verifies if all key elements on the login screen are displayed.
-     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     * Asserts that all key elements on the login screen are displayed.
+     * Throws an error if any element is not visible.
+     * @returns {Promise<void>}
      */
-    async areElementsDisplayed(): Promise<boolean> {
-        const elementsStatus: { [key: string]: boolean } = {};
+    async assertLoginScreenElementsVisible(): Promise<void> {
+        const elementsToCheck = [
+            { name: 'Swag logo', selector: this.swagLogoSelector },
+            { name: 'Username field', selector: this.usernameSelector },
+            { name: 'Password field', selector: this.passwordSelector },
+            { name: 'Login button', selector: this.loginButtonSelector },
+            { name: 'Login bot', selector: this.loginBotSelector }
+        ];
 
-        elementsStatus['Swag logo'] = await this.isElementDisplayed(this.swagLogoSelector);
-        elementsStatus['Username field'] = await this.isElementDisplayed(this.usernameSelector);
-        elementsStatus['Password field'] = await this.isElementDisplayed(this.passwordSelector);
-        elementsStatus['Login button'] = await this.isElementDisplayed(this.loginButtonSelector);
-        elementsStatus['Login bot'] = await this.isElementDisplayed(this.loginBotSelector);
+        const failedElements: string[] = [];
 
-        console.log('Elements display status:', elementsStatus);
+        for (const { name, selector } of elementsToCheck) {
+            const isDisplayed = await this.isElementDisplayed(selector);
+            console.log(`${name} displayed: ${isDisplayed}`);
+            if (!isDisplayed) {
+                failedElements.push(name);
+            }
+        }
 
-        // Check if all elements are displayed
-        const allElementsDisplayed = Object.values(elementsStatus).every((status) => status);
-        return allElementsDisplayed;
+        if (failedElements.length > 0) {
+            throw new Error(`The following login screen elements are missing: ${failedElements.join(', ')}`);
+        }
+
+        console.log('All login screen elements are visible.');
     }
 
     /**

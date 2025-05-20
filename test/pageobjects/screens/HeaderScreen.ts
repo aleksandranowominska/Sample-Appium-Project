@@ -14,27 +14,39 @@ export class HeaderScreen extends BaseScreen {
     }
 
     /**
-     * Waits for all key header elements to be displayed on the screen.
+     * Asserts that all key header elements are displayed.
      * The elements include:
      * - Menu button
      * - Cart button
      * - Swag logo
-     * Logs a message for each element as it becomes visible.
-     * @returns {Promise<void>} - Resolves once all elements are displayed.
+     * Throws an error if any element is not visible.
+     * @returns {Promise<void>}
      */
-    async waitForDisplayedElements(): Promise<void> {
-        console.log('Waiting for header elements to be displayed...');
-        
-        // Wait for the menu button to be displayed
-        await this.waitForDisplayed(this.menuSelector);
-        console.log('Menu selector displayed.');
+    async assertHeaderElementsVisible(): Promise<void> {
+        console.log('Asserting visibility of header elements...');
+        const failedElements: string[] = [];
 
-        // Wait for the cart button to be displayed
-        await this.waitForDisplayed(this.cartSelector);
-        console.log('Cart button displayed.');
+        const elements = [
+            { name: 'menuSelector', selector: this.menuSelector },
+            { name: 'cartSelector', selector: this.cartSelector },
+            { name: 'swagLogoSelector', selector: this.swagLogoSelector },
+        ];
 
-        // Wait for the swag logo to be displayed
-        await this.waitForDisplayed(this.swagLogoSelector);
-        console.log('Swag logo displayed.');
+        for (const { name, selector } of elements) {
+            try {
+                await this.waitForDisplayed(selector);
+                console.log(`${name} displayed.`);
+            } catch (error) {
+                console.error(`${name} NOT displayed.`);
+                failedElements.push(name);
+            }
+        }
+
+        if (failedElements.length > 0) {
+            throw new Error(`Header elements not visible: ${failedElements.join(', ')}`);
+        }
+
+        console.log('All header elements are visible.');
     }
+
 }

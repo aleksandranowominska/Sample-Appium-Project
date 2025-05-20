@@ -25,10 +25,11 @@ export class CartScreen extends BaseScreen {
     }
 
     /**
-     * Verifies if all key elements on the cart screen are displayed.
-     * @returns {Promise<boolean>} - True if all elements are displayed, otherwise false.
+     * Asserts that all key elements on the cart screen are displayed.
+     * Throws an error if any element is missing.
+     * @returns {Promise<void>}
      */
-    async verifyCartElements(): Promise<boolean> {
+    async assertCartElementsVisible(): Promise<void> {
         const elementsToCheck = [
             this.selectors.yourCartSelector,
             this.selectors.qtySelector,
@@ -39,23 +40,27 @@ export class CartScreen extends BaseScreen {
             this.selectors.checkoutButtonSelector,
         ];
 
-        console.log('Verifying cart elements...');
-        const elementsDisplayed = await Promise.all(
-            elementsToCheck.map(async (selector) => {
-                try {
-                    const isDisplayed = await this.isElementDisplayed(selector);
-                    console.log(`Element ${selector} displayed: ${isDisplayed}`);
-                    return isDisplayed;
-                } catch (error) {
-                    console.error(`Error checking element ${selector}:`, error);
-                    return false;
-                }
-            })
-        );
+        console.log('Asserting cart elements visibility...');
+        const failedElements: string[] = [];
 
-        console.log('Cart elements displayed status:', elementsDisplayed);
-        return elementsDisplayed.every((displayed) => displayed === true);
+        for (const selector of elementsToCheck) {
+            try {
+                const isDisplayed = await this.isElementDisplayed(selector);
+                console.log(`Element ${selector} displayed: ${isDisplayed}`);
+                if (!isDisplayed) failedElements.push(selector);
+            } catch (error) {
+                console.error(`Error checking element ${selector}:`, error);
+                failedElements.push(selector);
+            }
+        }
+
+        if (failedElements.length > 0) {
+            throw new Error(`Some cart elements were not displayed: ${failedElements.join(', ')}`);
+        }
+
+        console.log('All cart elements are visible.');
     }
+
 
     /**
      * Verifies if the displayed product quantity matches the expected quantity.

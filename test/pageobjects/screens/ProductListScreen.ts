@@ -85,44 +85,59 @@ export class ProductListScreen extends BaseScreen {
     }
 
     /**
-    * Verifies if unique elements specific to the product list screen are visible.
-    * @returns {Promise<boolean>} - True if all elements are visible, otherwise false.
-    */
-    async verifyUniqueElements(): Promise<boolean> {
-        await this.scrollTo(this.productsTitleSelector);
-        const productsTitleDisplayed = await this.isElementDisplayed(this.productsTitleSelector);
-        console.log('Products title displayed:', productsTitleDisplayed);
+     * Asserts that the key header elements on the product list screen are displayed.
+     * Throws an error if any element is not visible.
+     * @returns {Promise<void>}
+     */
+    async assertProductListHeaderElementsVisible(): Promise<void> {
+        const elements = [
+            { name: 'Products Title', selector: this.productsTitleSelector },
+            { name: 'Toggle Button', selector: this.toggleButtonSelector },
+            { name: 'Modal Selector Button', selector: this.modalSelectorButtonSelector },
+        ];
 
-        await this.scrollTo(this.toggleButtonSelector);
-        const toggleButtonDisplayed = await this.isElementDisplayed(this.toggleButtonSelector);
-        console.log('Toggle button displayed:', toggleButtonDisplayed);
+        const missing: string[] = [];
 
-        await this.scrollTo(this.modalSelectorButtonSelector);
-        const modalSelectorButtonDisplayed = await this.isElementDisplayed(this.modalSelectorButtonSelector);
-        console.log('Modal Selector Button displayed:', modalSelectorButtonDisplayed);
+        for (const { name, selector } of elements) {
+            await this.scrollTo(selector);
+            const visible = await this.isElementDisplayed(selector);
+            console.log(`${name} visible: ${visible}`);
+            if (!visible) missing.push(name);
+        }
 
-        return productsTitleDisplayed && toggleButtonDisplayed && modalSelectorButtonDisplayed;
+        if (missing.length > 0) {
+            throw new Error(`Missing product list header elements: ${missing.join(', ')}`);
+        }
+
+        console.log('All product list header elements are visible.');
     }
 
     /**
-    * Verifies if product titles, prices, and "Add to Cart" buttons are visible.
-    * @returns {Promise<boolean>} - True if all elements are visible, otherwise false.
-    */
-    async verifyProductAndAddToCartButtons(): Promise<boolean> {
-        await this.scrollTo(this.itemTitleSelector);
-        const itemsDisplayed = await this.isElementDisplayed(this.itemTitleSelector);
+     * Asserts that product titles, prices, and "Add to Cart" buttons are displayed.
+     * Throws an error if any element is not visible.
+     * @returns {Promise<void>}
+     */
+    async assertProductItemsAndButtonsVisible(): Promise<void> {
+        const elements = [
+            { name: 'Product Titles', selector: this.itemTitleSelector },
+            { name: 'Product Prices', selector: this.priceSelector },
+            { name: 'Add to Cart Buttons', selector: this.addToCartButtonSelector },
+        ];
 
-        await this.scrollTo(this.priceSelector);
-        const pricesDisplayed = await this.isElementDisplayed(this.priceSelector);
+        const missing: string[] = [];
 
-        await this.scrollTo(this.addToCartButtonSelector);
-        const addToCartButtonsDisplayed = await this.isElementDisplayed(this.addToCartButtonSelector);
+        for (const { name, selector } of elements) {
+            await this.scrollTo(selector);
+            const visible = await this.isElementDisplayed(selector);
+            console.log(`${name} visible: ${visible}`);
+            if (!visible) missing.push(name);
+        }
 
-        console.log('Product titles displayed:', itemsDisplayed);
-        console.log('Prices displayed:', pricesDisplayed);
-        console.log('Add to Cart buttons displayed:', addToCartButtonsDisplayed);
+        if (missing.length > 0) {
+            throw new Error(`Missing product item elements: ${missing.join(', ')}`);
+        }
 
-        return itemsDisplayed && pricesDisplayed && addToCartButtonsDisplayed;
+        console.log('All product item elements are visible.');
     }
 
     /**
