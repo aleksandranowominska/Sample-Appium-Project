@@ -1,29 +1,34 @@
 import { Reporters } from '@wdio/types';
 import path from 'path';
+import 'dotenv/config';
 
 const TARGET_DEVICE = process.env.TARGET_DEVICE || 'emulator';
+const isEmulator = TARGET_DEVICE === 'emulator';
 
-const EMULATOR_CONFIG = {
-    deviceName: 'Android Emulator',
-    platformVersion: '13',
-    automationName: 'UiAutomator2',
-    appPath: path.resolve(__dirname, 'Android.SauceLabs.Mobile.Sample.app.2.7.1.apk'),
+const ACTIVE = {
+    deviceName: isEmulator
+        ? process.env.EMULATOR_DEVICE_NAME || 'Android Emulator'
+        : process.env.PHYSICAL_DEVICE_NAME || 'R5CX14742XK',
+
+    platformVersion: isEmulator
+        ? process.env.EMULATOR_PLATFORM_VERSION || '13'
+        : process.env.PHYSICAL_PLATFORM_VERSION || '14',
+
+    automationName: isEmulator
+        ? process.env.EMULATOR_AUTOMATION_NAME || 'UiAutomator2'
+        : process.env.PHYSICAL_AUTOMATION_NAME || 'UiAutomator2',
+
+    appPath: isEmulator
+        ? process.env.EMULATOR_APP_PATH || path.resolve(__dirname, 'Android.SauceLabs.Mobile.Sample.app.2.7.1.apk')
+        : process.env.PHYSICAL_APP_PATH || path.resolve(__dirname, 'Android.SauceLabs.Mobile.Sample.app.2.7.1.apk'),
+
     specs: ['./test/specs/test.e2e.android.ts']
 };
-
-const PHYSICAL_CONFIG = {
-    deviceName: 'R5CX14742XK',
-    platformVersion: '14', // Sprawdź dokładną wersję przez `adb shell getprop ro.build.version.release`
-    automationName: 'UiAutomator2',
-    appPath: path.resolve(__dirname, 'Android.SauceLabs.Mobile.Sample.app.2.7.1.apk'),
-    specs: ['./test/specs/test.e2e.android.ts']
-};
-
-const ACTIVE = TARGET_DEVICE === 'physical' ? PHYSICAL_CONFIG : EMULATOR_CONFIG;
 
 console.log('==== WDIO CONFIGURATION ====');
 console.log('TARGET_DEVICE:', TARGET_DEVICE);
 console.log('DEVICE_NAME:', ACTIVE.deviceName);
+console.log('PLATFORM_VERSION:', ACTIVE.platformVersion);
 console.log('APP_PATH:', ACTIVE.appPath);
 console.log('AUTOMATION_NAME:', ACTIVE.automationName);
 
@@ -58,7 +63,6 @@ export const config: WebdriverIO.Config = {
         timeout: 60000
     },
     reporters: [
-        'spec',
         'spec',
         [
             'allure',
