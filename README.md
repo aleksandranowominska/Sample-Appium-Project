@@ -1,104 +1,90 @@
-# Mobile Automation Tests
+# Android Mobile Automation Tests
 
 ## Overview
-This repository contains automated end-to-end tests for the Sauce Labs Sample Mobile Application. Tests are designed to run on both Android and iOS platforms using Appium and WebdriverIO.
+This repository contains automated end-to-end tests for the Sauce Labs Sample Mobile Application on **Android** using Appium and WebdriverIO. It supports two modes: emulator and physical device.
 
 ## Prerequisites
 - Node.js (>= 16.x)
-- Appium server installed and running (`npm install -g appium`)
-- Android SDK for Android testing
-- Xcode for iOS testing (required for simulators)
+- Appium server installed (`npm install -g appium`)
+- Android SDK installed and configured (`adb` available in terminal)
 - Allure Commandline for report generation (`npm install -g allure-commandline`)
-- Set environment variables in a `.env` file
 
 ## Installation
-1. Clone this repository:
+1. Clone the repository:
    ```bash
    git clone https://github.com/aleksandranowominska/Sample-Appium-Project.git
-   cd your-repository
+   cd Sample-Appium-Project
    ```
 2. Install dependencies:
    ```bash
    npm install
    ```
+
 3. Place your application files in the `apps` directory:
    - Android: `Android.SauceLabs.Mobile.Sample.app.apk`
-   - iOS: `iOS.Simulator.SauceLabs.Mobile.Sample.app.app`
-4. Configure the `.env` file:
-   - Example for iOS:
-     ```env
-     PLATFORM=iOS
-     DEVICE_NAME=iPhone 13
-     PLATFORM_VERSION=16.0
-     APP_PATH=./apps/iOS.Simulator.SauceLabs.Mobile.Sample.app.app
-     ```
-   - Example for Android:
-     ```env
-     PLATFORM=Android
-     DEVICE_NAME=Android Emulator
-     PLATFORM_VERSION=12
-     APP_PATH=./apps/Android.SauceLabs.Mobile.Sample.app.apk
-     ```
 
-## How to Run Tests
-1. Start the Appium server:
-   ```bash
-   appium
-   ```
-2. Run tests:
-   - For Android:
-     ```bash
-     PLATFORM=Android npm test
-     ```
-   - For iOS:
-     ```bash
-     PLATFORM=iOS npm test
-     ```
+## Configuration
+The app and device configuration is controlled via the `TARGET_DEVICE` environment variable:
+
+- **Emulator config**: `deviceName: Android Emulator`, `platformVersion: 13`
+- **Physical device config**: `deviceName: R5CX14742XK`, `platformVersion: 14`
+
+APK file path is resolved as:
+```
+./Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
+```
+
+## Running Tests
+### Start Appium server
+```bash
+appium
+```
+
+### Run on emulator
+```bash
+npm run android:emulator
+```
+
+### Run on physical device
+```bash
+npm run android:physical
+```
 
 ## Generating and Viewing Reports
-1. Run tests to generate the Allure report.
-   ```bash
-   npm test
-   ```
-2. Start the Allure report server:
+1. Run the tests (as above).
+2. Serve Allure report:
    ```bash
    allure serve allure-results
    ```
-3. The report will open in your default browser, displaying detailed test results.
+3. Report opens in the browser.
 
 ## Key Features
-1. **Platform-Specific Selectors:** The framework dynamically selects Android or iOS-specific selectors.
-2. **Environment Variables:** Configuration can be customized without modifying source code.
-3. **Scroll Utilities:** Includes platform-specific scrolling utilities (`scrollToElementAndroid`, `scrollToElementiOS`).
-4. **Flexible Test Specs:** Automatically chooses appropriate test files based on the `PLATFORM` variable.
+- Platform-specific configuration through env var `TARGET_DEVICE`
+- Scroll utilities for Android (`scrollToElementAndroid`)
+- WDIO + Appium setup with support for Allure reporting
 
 ## Directory Structure
 ```
 .
-├── apps/                     # APK/APP files
+├── Android.SauceLabs.Mobile.Sample.app.2.7.1.apk
 ├── test/
-│   ├── specs/                # Test scripts
-│   ├── pageobjects/          # Page object models
-│   ├── steps/                # Test step definitions
-│   └── utils/                # Utility functions and constants
-├── allure-results/           # Allure report files
-├── wdio.conf.ts              # WebdriverIO configuration
-├── package.json              # Node.js dependencies
-└── README.md                 # Project documentation
+│   ├── specs/                      # Test scripts
+│   ├── pageobjects/                # Page object models
+│   ├── steps/                      # Test step definitions
+│   └── utils/                      # Utility functions (e.g. selectors, scrolls)
+├── allure-results/                 # Allure output
+├── wdio.conf.ts                    # WebdriverIO configuration
+├── package.json                    # Scripts and dependencies
+└── README.md
 ```
 
 ## Troubleshooting
-1. Ensure Appium server is running.
-   ```bash
-   appium
-   ```
-2. Verify device/simulator availability:
-   - For Android:
-     ```bash
-     adb devices
-     ```
-   - For iOS, use Xcode to confirm simulator availability.
-3. Check `.env` file for correct configuration.
+- Ensure Appium is running on `localhost:4723`
+- Check connected Android device:
+  ```bash
+  adb devices
+  ```
+- Confirm APK is accessible at defined path
 
 ## License
 This project is licensed under the MIT License.
