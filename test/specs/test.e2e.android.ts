@@ -214,15 +214,9 @@ describe('Android E2E Tests', () => {
         await cartSteps.removeProductAndVerifyRemoval(expectedName!);
     });
 
-    it('should sort the product with name', async () => {
-        // Wait for splash screen to disappear
-        await loginSteps.waitForSplashScreen();
-
-        // Verify login screen is visible
-        await loginSteps.verifyPageIsVisible();
-
-        // Perform login
-        await loginSteps.logIn();
+    it('should sort products by name in ascending order (A–Z)', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
 
         // Verify product list screen is visible
         await productListSteps.verifyPageIsVisible();

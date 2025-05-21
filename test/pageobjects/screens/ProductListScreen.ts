@@ -32,7 +32,8 @@ export class ProductListScreen extends BaseScreen {
     }
 
     /**
-     * Fetches all product titles from the list by scrolling within the container until the footer is visible.
+     * Fetches all product titles from the list by scrolling until the footer is visible.
+     * Ensures no duplicate titles are collected and handles lazy-loading lists.
      * @returns {Promise<string[]>} - An array of product titles.
      */
     async getProductTitles(): Promise<string[]> {
@@ -40,9 +41,14 @@ export class ProductListScreen extends BaseScreen {
         const titles: string[] = [];
         const seenTitles = new Set<string>();
 
-        while (true) {
-            console.log('Fetching visible product titles on Android...');
+        let footerVisible = false;
+        let attempt = 0;
+        const maxScrolls = 10;
+
+        while (!footerVisible && attempt < maxScrolls) {
+            console.log(`Scroll attempt #${attempt + 1}`);
             const elements = await $$(this.productItemTitleSelector);
+
             for (const element of elements) {
                 if (await element.isDisplayed()) {
                     const title = await element.getText();
@@ -53,23 +59,72 @@ export class ProductListScreen extends BaseScreen {
                 }
             }
 
-            try {
-                console.log('Scrolling to footer...');
-                await scrollToElementAndroid(this.footerTextSelector);
-            } catch (error) {
-                console.error('Failed to scroll to footer:', (error as Error).message);
-                break;
+            footerVisible = await this.isElementDisplayed(this.footerTextSelector);
+
+            if (!footerVisible) {
+                try {
+                    console.log('Scrolling to footer...');
+                    await scrollToElementAndroid(this.footerTextSelector);
+                    await browser.pause(300); // allow lazy-loaded elements to appear
+                } catch (error) {
+                    console.warn('Scroll attempt failed or footer already visible.');
+                    break;
+                }
             }
 
-            const isFooterVisible = await this.isElementDisplayed(this.footerTextSelector);
-            if (isFooterVisible) {
-                console.log('Footer is visible. All product titles loaded.');
-                break;
-            }
+            attempt++;
         }
 
-        console.log('Retrieved product titles:', titles);
+        console.log('Final product title list:', titles);
         return titles;
+    }
+
+    /**
+    * Fetches all product prices from the list by scrolling until the footer is visible.
+    * Ensures no duplicate prices are collected and handles lazy-loading lists.
+    * @returns {Promise<string[]>} - An array of product prices (e.g., ["$9.99", "$14.99"]).
+    */
+    async getProductPrices(): Promise<string[]> {
+        console.log('Fetching all product prices from the list...');
+        const prices: string[] = [];
+        const seenPrices = new Set<string>();
+
+        let footerVisible = false;
+        let attempt = 0;
+        const maxScrolls = 10;
+
+        while (!footerVisible && attempt < maxScrolls) {
+            console.log(`Scroll attempt #${attempt + 1}`);
+            const elements = await $$(this.priceSelector);
+
+            for (const element of elements) {
+                if (await element.isDisplayed()) {
+                    const price = await element.getText();
+                    if (!seenPrices.has(price)) {
+                        seenPrices.add(price);
+                        prices.push(price);
+                    }
+                }
+            }
+
+            footerVisible = await this.isElementDisplayed(this.footerTextSelector);
+
+            if (!footerVisible) {
+                try {
+                    console.log('Scrolling to footer...');
+                    await scrollToElementAndroid(this.footerTextSelector);
+                    await browser.pause(300); // allow lazy-loaded elements to appear
+                } catch (error) {
+                    console.warn('Scroll attempt failed or footer already visible.');
+                    break;
+                }
+            }
+
+            attempt++;
+        }
+
+        console.log('Final product price list:', prices);
+        return prices;
     }
 
     async isAnyAddToCartButtonVisible(): Promise<boolean> {
@@ -193,7 +248,7 @@ export class ProductListScreen extends BaseScreen {
     * @param {boolean} ascending - True if sorting should be ascending; False for descending.
     * @returns {boolean} - True if products are sorted correctly; False otherwise.
     */
-    verifyProductOrder(productTitles: string[], ascending: boolean = true): boolean {
+    verifyProductTitleOrder(productTitles: string[], ascending: boolean = true): boolean {
         console.log(`Verifying product order. Ascending: ${ascending}`);
         const sortedTitles = [...productTitles].sort((a, b) => ascending ? a.localeCompare(b) : b.localeCompare(a));
         const isOrderCorrect = JSON.stringify(productTitles) === JSON.stringify(sortedTitles);

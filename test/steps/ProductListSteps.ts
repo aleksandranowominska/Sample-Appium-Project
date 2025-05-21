@@ -40,16 +40,22 @@ export class ProductListSteps {
         console.log('Verifying product items and Add to Cart buttons...');
         await this.productListScreen.assertProductItemsAndButtonsVisible();
     }
-
     /**
-     * Fetches all product titles from the product list by scrolling.
-     * @returns {Promise<void>} - A list of product titles.
+     * Fetches all product titles from the product list by scrolling and verifies the sort order.
+     * @param {boolean} ascending - Whether the list should be sorted in ascending (A–Z) order.
+     * @returns {Promise<void>}
      */
     async fetchAndVerifySortedProductTitles(ascending: boolean): Promise<void> {
         console.log('Fetching and verifying sorted product titles...');
+
         const productTitles = await this.productListScreen.getProductTitles();
 
-        const isSortedCorrectly = this.productListScreen.verifyProductOrder(productTitles, ascending);
+        const expectedOrder = [...productTitles].sort((a, b) =>
+            ascending ? a.localeCompare(b) : b.localeCompare(a)
+        );
+        console.log('Expected sorted order:', expectedOrder);
+
+        const isSortedCorrectly = this.productListScreen.verifyProductTitleOrder(productTitles, ascending);
 
         if (!isSortedCorrectly) {
             throw new Error(
@@ -153,7 +159,7 @@ export class ProductListSteps {
      * @returns {boolean} - True if the products are sorted correctly; False otherwise.
      */
     verifyProductsAreSorted(productTitles: string[], ascending: boolean): boolean {
-        return this.productListScreen.verifyProductOrder(productTitles, ascending);
+        return this.productListScreen.verifyProductTitleOrder(productTitles, ascending);
     }
 
     /**
