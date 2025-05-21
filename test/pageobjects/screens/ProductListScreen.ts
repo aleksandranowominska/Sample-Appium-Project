@@ -32,99 +32,25 @@ export class ProductListScreen extends BaseScreen {
     }
 
     /**
-     * Fetches all product titles from the list by scrolling until the footer is visible.
-     * Ensures no duplicate titles are collected and handles lazy-loading lists.
-     * @returns {Promise<string[]>} - An array of product titles.
-     */
+    * Retrieves all unique product titles from the product list screen.
+    * Internally scrolls the view until the footer is visible to ensure all lazy-loaded items are fetched.
+    * Uses `getVisibleTextsFromList()` from BaseScreen to avoid duplicates and ensure completeness.
+    *
+    * @returns {Promise<string[]>} - An array of unique product titles.
+    */
     async getProductTitles(): Promise<string[]> {
-        console.log('Fetching all product titles from the list...');
-        const titles: string[] = [];
-        const seenTitles = new Set<string>();
-
-        let footerVisible = false;
-        let attempt = 0;
-        const maxScrolls = 10;
-
-        while (!footerVisible && attempt < maxScrolls) {
-            console.log(`Scroll attempt #${attempt + 1}`);
-            const elements = await $$(this.productItemTitleSelector);
-
-            for (const element of elements) {
-                if (await element.isDisplayed()) {
-                    const title = await element.getText();
-                    if (!seenTitles.has(title)) {
-                        seenTitles.add(title);
-                        titles.push(title);
-                    }
-                }
-            }
-
-            footerVisible = await this.isElementDisplayed(this.footerTextSelector);
-
-            if (!footerVisible) {
-                try {
-                    console.log('Scrolling to footer...');
-                    await scrollToElementAndroid(this.footerTextSelector);
-                    await browser.pause(300); // allow lazy-loaded elements to appear
-                } catch (error) {
-                    console.warn('Scroll attempt failed or footer already visible.');
-                    break;
-                }
-            }
-
-            attempt++;
-        }
-
-        console.log('Final product title list:', titles);
-        return titles;
+        return this.getVisibleTextsFromList(this.productItemTitleSelector, this.footerTextSelector, 'product title');
     }
 
     /**
-    * Fetches all product prices from the list by scrolling until the footer is visible.
-    * Ensures no duplicate prices are collected and handles lazy-loading lists.
-    * @returns {Promise<string[]>} - An array of product prices (e.g., ["$9.99", "$14.99"]).
-    */
+     * Retrieves all unique product prices from the product list screen.
+     * Scrolls through the list until the footer is visible to fetch all prices, including those loaded lazily.
+     * Delegates to `getVisibleTextsFromList()` to extract clean, non-duplicate values.
+     *
+     * @returns {Promise<string[]>} - An array of unique product prices (e.g., ["$9.99", "$29.99"]).
+     */
     async getProductPrices(): Promise<string[]> {
-        console.log('Fetching all product prices from the list...');
-        const prices: string[] = [];
-        const seenPrices = new Set<string>();
-
-        let footerVisible = false;
-        let attempt = 0;
-        const maxScrolls = 10;
-
-        while (!footerVisible && attempt < maxScrolls) {
-            console.log(`Scroll attempt #${attempt + 1}`);
-            const elements = await $$(this.priceSelector);
-
-            for (const element of elements) {
-                if (await element.isDisplayed()) {
-                    const price = await element.getText();
-                    if (!seenPrices.has(price)) {
-                        seenPrices.add(price);
-                        prices.push(price);
-                    }
-                }
-            }
-
-            footerVisible = await this.isElementDisplayed(this.footerTextSelector);
-
-            if (!footerVisible) {
-                try {
-                    console.log('Scrolling to footer...');
-                    await scrollToElementAndroid(this.footerTextSelector);
-                    await browser.pause(300); // allow lazy-loaded elements to appear
-                } catch (error) {
-                    console.warn('Scroll attempt failed or footer already visible.');
-                    break;
-                }
-            }
-
-            attempt++;
-        }
-
-        console.log('Final product price list:', prices);
-        return prices;
+        return this.getVisibleTextsFromList(this.priceSelector, this.footerTextSelector, 'product price');
     }
 
     async isAnyAddToCartButtonVisible(): Promise<boolean> {
@@ -243,42 +169,32 @@ export class ProductListScreen extends BaseScreen {
     }
 
     /**
-    * Verifies whether the products are sorted alphabetically in ascending or descending order.
-    * @param {string[]} productTitles - An array of product titles.
-    * @param {boolean} ascending - True if sorting should be ascending; False for descending.
-    * @returns {boolean} - True if products are sorted correctly; False otherwise.
-    */
-    verifyProductTitleOrder(productTitles: string[], ascending: boolean = true): boolean {
-        console.log(`Verifying product order. Ascending: ${ascending}`);
-        const sortedTitles = [...productTitles].sort((a, b) => ascending ? a.localeCompare(b) : b.localeCompare(a));
-        const isOrderCorrect = JSON.stringify(productTitles) === JSON.stringify(sortedTitles);
-
-        console.log('Original titles:', productTitles);
-        console.log('Expected sorted titles:', sortedTitles);
-        console.log('Is order correct:', isOrderCorrect);
-
-        return isOrderCorrect;
+     * Verifies whether the list of product titles is sorted alphabetically
+     * in ascending (A–Z) or descending (Z–A) order.
+     * Delegates to the generic `verifySortedOrder` utility from BaseScreen.
+     *
+     * @param {string[]} titles - Array of product titles to verify.
+     * @param {boolean} [ascending=true] - Whether the expected order is ascending.
+     * @returns {boolean} - True if the titles are sorted correctly, otherwise false.
+     */
+    verifyProductTitleOrder(titles: string[], ascending = true): boolean {
+        console.log('typeof this.verifySortedOrder:', typeof this.verifySortedOrder);
+        return this.verifySortedOrder(titles, ascending);
     }
 
     /**
-    * Verifies whether the products are sorted by price in ascending or descending order.
-    * @param {string[]} productPrices - An array of product prices as strings (e.g., "$29.99").
-    * @param {boolean} ascending - True if sorting should be ascending; False for descending.
-    * @returns {boolean} - True if products are sorted correctly by price; False otherwise.
-    */
-    verifyProductPriceOrder(productPrices: string[], ascending: boolean = true): boolean {
-        console.log(`Verifying product price order. Ascending: ${ascending}`);
-
-        const numericPrices = productPrices.map((price) => parseFloat(price.replace(/[^0-9.]/g, '')));
-        const sortedPrices = [...numericPrices].sort((a, b) => ascending ? a - b : b - a);
-
-        const isOrderCorrect = JSON.stringify(numericPrices) === JSON.stringify(sortedPrices);
-
-        console.log('Original prices:', numericPrices);
-        console.log('Expected sorted prices:', sortedPrices);
-        console.log('Is order correct:', isOrderCorrect);
-
-        return isOrderCorrect;
+     * Verifies whether the list of product prices is sorted numerically
+     * in ascending or descending order. Strips currency symbols before comparison.
+     * Delegates to the generic `verifySortedOrder` utility from BaseScreen.
+     *
+     * @param {string[]} prices - Array of price strings (e.g., "$9.99") to verify.
+     * @param {boolean} [ascending=true] - Whether the expected order is ascending.
+     * @returns {boolean} - True if the prices are sorted correctly, otherwise false.
+     */
+    verifyProductPriceOrder(prices: string[], ascending = true): boolean {
+        return this.verifySortedOrder(prices, ascending, price =>
+            parseFloat(price.replace(/[^0-9.]/g, ''))
+        );
     }
 
     /**

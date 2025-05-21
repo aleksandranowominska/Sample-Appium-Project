@@ -235,7 +235,7 @@ describe('Android E2E Tests', () => {
         await sortPopupSteps.applySortOption(SortOptions.NAME_ASC);
 
         // Fetch and verify the sorted product titles
-        const sortedTitles = await productListSteps.fetchAndVerifySortedProductTitles(true);
+        const sortedTitles = await productListSteps.verifyProductTitlesAreSorted(true);
         console.log('Products are sorted correctly in ascending order:', sortedTitles);
     });
 
@@ -260,7 +260,7 @@ describe('Android E2E Tests', () => {
         await sortPopupSteps.applySortOption(SortOptions.NAME_DESC);
 
         // Fetch and verify the sorted product titles
-        const sortedTitles = await productListSteps.fetchAndVerifySortedProductTitles(false);
+        const sortedTitles = await productListSteps.verifyProductTitlesAreSorted(false);
         console.log('Products are sorted correctly in descending order:', sortedTitles);
     });
 
@@ -285,7 +285,7 @@ describe('Android E2E Tests', () => {
         await sortPopupSteps.applySortOption(SortOptions.PRICE_LOW_TO_HIGH);
 
         // Fetch and verify the sorted product titles
-        await productListSteps.fetchAndVerifySortedProductPrices(true);
+        await productListSteps.verifyProductPricesAreSorted(true);
         console.log('Products are sorted correctly in ascending order by price');
     });
 
@@ -310,7 +310,7 @@ describe('Android E2E Tests', () => {
         await sortPopupSteps.applySortOption(SortOptions.PRICE_HIGH_TO_LOW);
 
         // Fetch and verify the sorted product titles
-        await productListSteps.fetchAndVerifySortedProductPrices(false);
+        await productListSteps.verifyProductPricesAreSorted(false);
         console.log('Products are sorted correctly in descending order by price');
     });
 

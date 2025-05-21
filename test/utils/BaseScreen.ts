@@ -90,4 +90,95 @@ export class BaseScreen {
             return false;
         }
     }
+
+    /**
+     * Fetches all visible text values (e.g., product titles or prices) by repeatedly scrolling until the footer is visible.
+     * Ensures uniqueness of values (e.g., avoids collecting duplicates from previous scroll states).
+     * Useful for lazy-loaded or paginated lists where not all items are visible at once.
+     *
+     * @param {string} itemSelector - The selector for the list items (e.g., product titles or prices).
+     * @param {string} footerSelector - The selector used to detect that the list has been fully loaded.
+     * @returns {Promise<string[]>} - A list of unique values extracted from the visible elements.
+     */
+    async getVisibleTextsFromList(
+        itemSelector: string,
+        footerSelector: string,
+        label: string
+    ): Promise<string[]> {
+        console.log(`Fetching all ${label} from the list...`);
+        const results: string[] = [];
+        const seen = new Set<string>();
+
+        let footerVisible = false;
+        let attempt = 0;
+        const maxScrolls = 10;
+
+        while (!footerVisible && attempt < maxScrolls) {
+            console.log(`Scroll attempt #${attempt + 1}`);
+            const elements = await $$(itemSelector);
+
+            for (const element of elements) {
+                if (await element.isDisplayed()) {
+                    const text = await element.getText();
+                    if (!seen.has(text)) {
+                        seen.add(text);
+                        results.push(text);
+                    }
+                }
+            }
+
+            footerVisible = await this.isElementDisplayed(footerSelector);
+
+            if (!footerVisible) {
+                try {
+                    console.log('Scrolling to footer...');
+                    await scrollToElementAndroid(footerSelector);
+                    await browser.pause(300); // allow lazy-loaded elements to appear
+                } catch (error) {
+                    console.warn('Scroll attempt failed or footer already visible.');
+                    break;
+                }
+            }
+
+            attempt++;
+        }
+
+        console.log(`Final ${label} list:`, results);
+        return results;
+    }
+
+    /**
+     * Verifies if an array is sorted in ascending or descending order.
+     * Accepts optional transform function (e.g., parseFloat or localeCompare wrapper).
+     *
+     * @template T - The type of original values.
+     * @template U - The type after optional transform (e.g., string → number).
+     * @param {T[]} items - Original array of values.
+     * @param {boolean} ascending - Whether the expected order is ascending.
+     * @param {(item: T) => U} [transform] - Optional function to transform values before comparison.
+     * @returns {boolean} - True if sorted correctly, false otherwise.
+     */
+    public verifySortedOrder<T, U = T>(
+        items: T[],
+        ascending: boolean,
+        transform?: (item: T) => U
+    ): boolean {
+        const transformed = transform ? items.map(transform) : ([...items] as unknown as U[]);
+        const sorted = [...transformed].sort((a, b) => {
+            if (typeof a === 'string' && typeof b === 'string') {
+                return ascending ? a.localeCompare(b) : b.localeCompare(a);
+            } else {
+                return ascending ? (a as any) - (b as any) : (b as any) - (a as any);
+            }
+        });
+
+        const isCorrect = JSON.stringify(transformed) === JSON.stringify(sorted);
+
+        console.log('Original values:', transformed);
+        console.log('Expected sorted values:', sorted);
+        console.log('Is order correct:', isCorrect);
+
+        return isCorrect;
+    }
+
 }

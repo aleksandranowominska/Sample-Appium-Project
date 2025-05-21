@@ -61,4 +61,48 @@ export class CommonTestUtils extends BaseScreen {
         await headerSteps.waitForHeaderElements();
         console.log('Header elements are displayed successfully.');
     }
+
+    /**
+     * Fetches values (e.g., titles or prices) from the product list screen
+     * and verifies if they are sorted in the specified order.
+     *
+     * @template T
+     * @param fetchValuesFn - Function that fetches the array of values to be verified (e.g., product titles or prices).
+     * @param verifyFn - Function that verifies if the array is sorted correctly.
+     * @param label - Label used in log messages (e.g., 'product title', 'product price').
+     * @param ascending - Whether the sort order should be ascending.
+     */
+    async fetchAndVerifySortedValues<T>(
+        fetchValuesFn: () => Promise<T[]>,
+        verifyFn: (items: T[], ascending: boolean) => boolean,
+        label: string,
+        ascending: boolean
+    ): Promise<void> {
+        console.log(`Fetching and verifying sorted ${label}s...`);
+
+        const values = await fetchValuesFn();
+        console.log(`Fetched ${label}s:`, values);
+
+        const isSorted = verifyFn(values, ascending);
+        const expectedOrder = [...values].sort((a, b) =>
+            typeof a === 'string'
+                ? ascending
+                    ? (a as string).localeCompare(b as string)
+                    : (b as string).localeCompare(a as string)
+                : ascending
+                    ? (a as number) - (b as number)
+                    : (b as number) - (a as number)
+        );
+
+        console.log(`Expected sorted ${label} order:`, expectedOrder);
+
+        if (!isSorted) {
+            throw new Error(
+                `${label[0].toUpperCase() + label.slice(1)}s are not sorted in ${ascending ? 'ascending' : 'descending'} order.`
+            );
+        }
+
+        console.log(`${label[0].toUpperCase() + label.slice(1)}s are sorted correctly.`);
+    }
+
 }

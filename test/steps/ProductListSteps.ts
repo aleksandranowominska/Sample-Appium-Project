@@ -1,13 +1,16 @@
 import { ProductListScreen } from '../pageobjects/screens/ProductListScreen';
+import { CommonTestUtils } from '../utils/CommonTestUtils';
 
 export class ProductListSteps {
     private productListScreen: ProductListScreen;
     private selectedProductName: string | null = null;
     private selectedProductPrice: string | null = null;
+    private utils: CommonTestUtils;
 
     constructor() {
         console.log(`Initializing ProductListSteps for Android`);
         this.productListScreen = new ProductListScreen();
+        this.utils = new CommonTestUtils();
     }
 
     /**
@@ -40,60 +43,33 @@ export class ProductListSteps {
         console.log('Verifying product items and Add to Cart buttons...');
         await this.productListScreen.assertProductItemsAndButtonsVisible();
     }
+
     /**
-     * Fetches all product titles from the product list by scrolling and verifies the sort order.
+     * Fetches and verifies that product titles are sorted in the given order.
      * @param {boolean} ascending - Whether the list should be sorted in ascending (A–Z) order.
      * @returns {Promise<void>}
      */
-    async fetchAndVerifySortedProductTitles(ascending: boolean): Promise<void> {
-        console.log('Fetching and verifying sorted product titles...');
-
-        const productTitles = await this.productListScreen.getProductTitles();
-
-        const expectedOrder = [...productTitles].sort((a, b) =>
-            ascending ? a.localeCompare(b) : b.localeCompare(a)
+    async verifyProductTitlesAreSorted(ascending: boolean): Promise<void> {
+        await this.utils.fetchAndVerifySortedValues(
+            () => this.productListScreen.getProductTitles(),
+            (titles, asc) => this.productListScreen.verifyProductTitleOrder(titles, asc),
+            'product title',
+            ascending
         );
-        console.log('Expected sorted order:', expectedOrder);
-
-        const isSortedCorrectly = this.productListScreen.verifyProductTitleOrder(productTitles, ascending);
-
-        if (!isSortedCorrectly) {
-            throw new Error(
-                `Products are not sorted in ${ascending ? 'ascending' : 'descending'} order.`
-            );
-        }
-
-        console.log('Products are sorted correctly.');
     }
 
     /**
-     * Fetches all product prices from the product list by scrolling and verifies the sort order.
+     * Fetches and verifies that product prices are sorted in the given order.
      * @param {boolean} ascending - Whether the list should be sorted in ascending (low to high) order.
      * @returns {Promise<void>}
      */
-    async fetchAndVerifySortedProductPrices(ascending: boolean): Promise<void> {
-        console.log('Fetching and verifying sorted product prices...');
-
-        const productPricesRaw = await this.productListScreen.getProductPrices();
-        console.log('Raw product prices (with $):', productPricesRaw);
-
-        const productPrices = productPricesRaw.map((p) => parseFloat(p.replace('$', '')));
-        console.log('Parsed product prices (numbers):', productPrices);
-
-        const expectedOrder = [...productPrices].sort((a, b) =>
-            ascending ? a - b : b - a
+    async verifyProductPricesAreSorted(ascending: boolean): Promise<void> {
+        await this.utils.fetchAndVerifySortedValues(
+            () => this.productListScreen.getProductPrices(),
+            (prices, asc) => this.productListScreen.verifyProductPriceOrder(prices, asc),
+            'product price',
+            ascending
         );
-        console.log('Expected sorted price order:', expectedOrder);
-
-        const isSortedCorrectly = JSON.stringify(productPrices) === JSON.stringify(expectedOrder);
-
-        if (!isSortedCorrectly) {
-            throw new Error(
-                `Product prices are not sorted in ${ascending ? 'ascending' : 'descending'} order.`
-            );
-        }
-
-        console.log('Product prices are sorted correctly.');
     }
 
     /**
