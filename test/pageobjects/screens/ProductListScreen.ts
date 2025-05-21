@@ -261,6 +261,27 @@ export class ProductListScreen extends BaseScreen {
     }
 
     /**
+    * Verifies whether the products are sorted by price in ascending or descending order.
+    * @param {string[]} productPrices - An array of product prices as strings (e.g., "$29.99").
+    * @param {boolean} ascending - True if sorting should be ascending; False for descending.
+    * @returns {boolean} - True if products are sorted correctly by price; False otherwise.
+    */
+    verifyProductPriceOrder(productPrices: string[], ascending: boolean = true): boolean {
+        console.log(`Verifying product price order. Ascending: ${ascending}`);
+
+        const numericPrices = productPrices.map((price) => parseFloat(price.replace(/[^0-9.]/g, '')));
+        const sortedPrices = [...numericPrices].sort((a, b) => ascending ? a - b : b - a);
+
+        const isOrderCorrect = JSON.stringify(numericPrices) === JSON.stringify(sortedPrices);
+
+        console.log('Original prices:', numericPrices);
+        console.log('Expected sorted prices:', sortedPrices);
+        console.log('Is order correct:', isOrderCorrect);
+
+        return isOrderCorrect;
+    }
+
+    /**
     * Clicks on the modal selector button.
     * This opens the modal for filtering or sorting products.
     * @returns {Promise<void>} - Resolves when the button is successfully clicked.

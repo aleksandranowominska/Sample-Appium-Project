@@ -239,6 +239,81 @@ describe('Android E2E Tests', () => {
         console.log('Products are sorted correctly in ascending order:', sortedTitles);
     });
 
+    it('should sort products by name in descending order (Z–A)', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+        // Verify product list screen is visible
+        await productListSteps.verifyPageIsVisible();
+
+        // Toggle the view to ListView (from GridView)
+        console.log('Toggling to ListView...');
+        await productListSteps.toggleProductView();
+        console.log('Successfully toggled to ListView.');
+
+        // Open the modal for sorting or filtering products
+        console.log('Opening filter/sort modal...');
+        await productListSteps.openFilterOrSortModal();
+        console.log('Filter/sort modal opened successfully.');
+
+        // Apply the descending sort filter
+        await sortPopupSteps.applySortOption(SortOptions.NAME_DESC);
+
+        // Fetch and verify the sorted product titles
+        const sortedTitles = await productListSteps.fetchAndVerifySortedProductTitles(false);
+        console.log('Products are sorted correctly in descending order:', sortedTitles);
+    });
+
+    it('should sort products by price in ascending order ($ low to high)', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+        // Verify product list screen is visible
+        await productListSteps.verifyPageIsVisible();
+
+        // Toggle the view to ListView (from GridView)
+        console.log('Toggling to ListView...');
+        await productListSteps.toggleProductView();
+        console.log('Successfully toggled to ListView.');
+
+        // Open the modal for sorting or filtering products
+        console.log('Opening filter/sort modal...');
+        await productListSteps.openFilterOrSortModal();
+        console.log('Filter/sort modal opened successfully.');
+
+        // Apply the ascending sort filter
+        await sortPopupSteps.applySortOption(SortOptions.PRICE_LOW_TO_HIGH);
+
+        // Fetch and verify the sorted product titles
+        await productListSteps.fetchAndVerifySortedProductPrices(true);
+        console.log('Products are sorted correctly in ascending order by price');
+    });
+
+        it('should sort products by price in descending order ($ high to low)', async () => {
+        // Login to standard account using CommonTestUtils helper
+        await commonTestUtils.loginToStandardAccount(loginSteps, headerSteps);
+
+        // Verify product list screen is visible
+        await productListSteps.verifyPageIsVisible();
+
+        // Toggle the view to ListView (from GridView)
+        console.log('Toggling to ListView...');
+        await productListSteps.toggleProductView();
+        console.log('Successfully toggled to ListView.');
+
+        // Open the modal for sorting or filtering products
+        console.log('Opening filter/sort modal...');
+        await productListSteps.openFilterOrSortModal();
+        console.log('Filter/sort modal opened successfully.');
+
+        // Apply the ascending sort filter
+        await sortPopupSteps.applySortOption(SortOptions.PRICE_HIGH_TO_LOW);
+
+        // Fetch and verify the sorted product titles
+        await productListSteps.fetchAndVerifySortedProductPrices(false);
+        console.log('Products are sorted correctly in descending order by price');
+    });
+
     it('should display errors for empty fields while login', async () => {
         await loginSteps.waitForSplashScreen();
         await loginSteps.verifyPageIsVisible();

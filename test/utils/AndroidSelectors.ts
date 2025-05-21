@@ -7,7 +7,7 @@ export class AndroidSelectors {
     static headerSwagLogoSelector = '//android.widget.FrameLayout[@resource-id="android:id/content"]/android.widget.FrameLayout/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup/android.view.ViewGroup[1]/android.widget.ImageView[2]';
 
     // Footer Selectors
-    static footerTextSelector = '//android.widget.TextView[@text="© 2024 Sauce Labs. All Rights Reserved."]';
+    static footerTextSelector = '//android.widget.TextView[@text="© 2025 Sauce Labs. All Rights Reserved."]';
     static termsTextSelector = '//android.widget.TextView[@text="Terms of Service | Privacy Policy"]';
     static swagBotImageSelector = '//android.widget.ScrollView[@content-desc="test-PRODUCTS"]/android.view.ViewGroup/android.view.ViewGroup[2]/android.view.ViewGroup/android.widget.ImageView';
 
@@ -26,7 +26,7 @@ export class AndroidSelectors {
     static addToCartButtonSelector = '(//android.view.ViewGroup[@content-desc="test-ADD TO CART"])[1]';
     static removeButtonSelector = '//android.view.ViewGroup[@content-desc="test-REMOVE"]';
     static itemTitleSelector = '//android.widget.TextView[@content-desc="test-Item title" and @text="Sauce Labs Backpack"]';
-    static priceSelector = '//android.widget.TextView[@content-desc="test-Price" and @text="$29.99"]';
+    static priceSelector = '//android.widget.TextView[@content-desc="test-Price"]';
     static productItemTitleSelector = '//android.widget.TextView[@content-desc="test-Item title"]';
 
     // Sort Modal Selectors
