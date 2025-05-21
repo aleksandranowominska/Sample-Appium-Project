@@ -1,31 +1,48 @@
 /**
- * Scrolls to an element on an Android screen.
- * Performs a maximum number of attempts to ensure the element becomes visible.
- * @param {string} elementSelector - The selector of the element to scroll to.
- * @returns {Promise<void>} - Resolves when the element is successfully scrolled into view.
- * @throws {Error} - Throws an error if the element is not visible after the maximum number of scroll attempts.
+ * Scrolls to an element on an Android screen using manual swipe gestures.
+ * Tries a limited number of times. Throws an error if the element is not found.
+ * @param {string} elementSelector - XPath or selector of the element to scroll to.
+ * @returns {Promise<void>}
  */
 export async function scrollToElementAndroid(elementSelector: string): Promise<void> {
-    const el = await $(elementSelector);
     const MAX_SCROLL_ATTEMPTS = 10;
-    let isVisible = await el.isDisplayed();
+    const SCROLL_SLEEP_MS = 1000;
 
-    for (let attempts = 0; attempts < MAX_SCROLL_ATTEMPTS && !isVisible; attempts++) {
-        try {
-            console.log(`Scroll attempt ${attempts + 1} for Android element: ${elementSelector}`);
-            await el.scrollIntoView({ block: 'center', inline: 'nearest' });
-            isVisible = await el.isDisplayed();
-        } catch (error) {
-            console.log(`Scroll attempt ${attempts + 1} failed: ${(error as Error).message}`);
+    for (let attempt = 1; attempt <= MAX_SCROLL_ATTEMPTS; attempt++) {
+        console.log(`Attempt ${attempt}: Trying to find element ${elementSelector}`);
+        const elements = await $$(elementSelector);
+        const count = await elements.length;
+
+        if (count > 0 && await elements[0].isDisplayed()) {
+            console.log(`Element ${elementSelector} is now visible.`);
+            return;
         }
+
+        // Swipe from bottom to top
+        const { height, width } = await driver.getWindowRect();
+        const startX = width / 2;
+        const startY = height * 0.7;
+        const endY = height * 0.3;
+
+        await driver.performActions([{
+            type: 'pointer',
+            id: 'finger1',
+            parameters: { pointerType: 'touch' },
+            actions: [
+                { type: 'pointerMove', duration: 0, x: startX, y: startY },
+                { type: 'pointerDown', button: 0 },
+                { type: 'pause', duration: 100 },
+                { type: 'pointerMove', duration: 500, x: startX, y: endY },
+                { type: 'pointerUp', button: 0 }
+            ]
+        }]);
+
+        await driver.pause(SCROLL_SLEEP_MS);
     }
 
-    if (!isVisible) {
-        throw new Error(
-            `Element with selector "${elementSelector}" is not visible after ${MAX_SCROLL_ATTEMPTS} scroll attempts.`
-        );
-    }
+    throw new Error(`Element "${elementSelector}" not found after ${MAX_SCROLL_ATTEMPTS} scrolls.`);
 }
+
 
 /**
  * Waits for a specific error message to appear on the Android screen.

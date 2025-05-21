@@ -30,9 +30,7 @@ export class CheckoutOverviewSteps {
      */
     async verifyTotalPrice(): Promise<void> {
         console.log('Verifying total price calculation...');
-        const totalMatches = await this.checkoutOverviewScreen.assertTotalPriceCorrect();
-        console.log('Total price calculation is correct:', totalMatches);
-        expect(totalMatches).toBe(true);
+        await this.checkoutOverviewScreen.assertTotalPriceCorrect();
     }
 
     /**

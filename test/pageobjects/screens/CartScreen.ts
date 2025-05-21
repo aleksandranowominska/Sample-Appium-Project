@@ -18,9 +18,7 @@ export class CartScreen extends BaseScreen {
     async isCheckoutButtonVisible(): Promise<boolean> {
         console.log('Checking if the "Checkout" button is visible...');
         const isCheckoutButtonDisplayed = await this.isElementDisplayed(this.selectors.checkoutButtonSelector);
-
-        console.log('"Checkout" button display status:', isCheckoutButtonDisplayed);
-
+        console.log(`"Checkout" button display status: ${isCheckoutButtonDisplayed}`);
         return isCheckoutButtonDisplayed;
     }
 
@@ -29,7 +27,7 @@ export class CartScreen extends BaseScreen {
      * Throws an error if any element is missing.
      * @returns {Promise<void>}
      */
-    async assertCartElementsVisible(): Promise<void> {
+    async assertCartElementsVisible(): Promise<boolean> {
         const elementsToCheck = [
             this.selectors.yourCartSelector,
             this.selectors.qtySelector,
@@ -59,6 +57,7 @@ export class CartScreen extends BaseScreen {
         }
 
         console.log('All cart elements are visible.');
+        return true;
     }
 
 
@@ -101,7 +100,7 @@ export class CartScreen extends BaseScreen {
         const isRemoved = await this.waitForElementToDisappear(
             `//*[contains(@content-desc, "test-Item title") and @text="${productName}"]`
         );
-        console.log(`Product "${productName}" removed:`, isRemoved);
+        console.log(`Product "${productName}" removed: ${isRemoved}`);
         return isRemoved;
     }
 

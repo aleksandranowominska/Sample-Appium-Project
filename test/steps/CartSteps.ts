@@ -15,7 +15,7 @@ export class CartSteps {
     async verifyPageIsVisible(): Promise<void> {
         console.log('Verifying if the cart page is visible...');
         const isPageVisible = await this.cartScreen.isCheckoutButtonVisible();
-        console.log('Is the cart page visible ("Checkout" button displayed):', isPageVisible);
+        console.log(`Is the cart page visible ("Checkout" button displayed): ${isPageVisible}`);
 
         if (!isPageVisible) {
             throw new Error('The cart page is not visible. The "Checkout" button is not displayed.');
@@ -32,7 +32,7 @@ export class CartSteps {
     async verifyCartElements(): Promise<void> {
         console.log('Verifying cart elements...');
         const cartElementsDisplayed = await this.cartScreen.assertCartElementsVisible();
-        console.log('All cart elements are displayed:', cartElementsDisplayed);
+        console.log(`All cart elements are displayed: ${cartElementsDisplayed}`);
         expect(cartElementsDisplayed).toBe(true);
     }
 
@@ -45,7 +45,7 @@ export class CartSteps {
     async verifyProductQuantity(expectedQuantity: string): Promise<void> {
         console.log('Verifying product quantity in cart...');
         const quantityMatches = await this.cartScreen.verifyProductQuantity(expectedQuantity);
-        console.log('Product quantity matches:', quantityMatches);
+        console.log(`Product quantity matches: ${quantityMatches}`);
         expect(quantityMatches).toBe(true);
     }
 
@@ -70,8 +70,10 @@ export class CartSteps {
         await this.cartScreen.tapRemoveButton();
 
         const productSelector = `//android.widget.TextView[@text="${productName}"]`;
-        await this.cartScreen.waitForElementToDisappear(productSelector);
-        console.log(`Product "${productName}" successfully removed from the cart.`);
+        const isRemoved = await this.cartScreen.waitForElementToDisappear(productSelector);
+        console.log(`Product "${productName}" successfully removed from the cart: ${isRemoved}`);
+
+        expect(isRemoved).toBe(true);
     }
 
     /**

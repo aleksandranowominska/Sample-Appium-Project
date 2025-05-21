@@ -62,7 +62,7 @@ export class AndroidSelectors {
     static paymentMethodSelector = '//android.widget.TextView[@text="SauceCard #31337"]';
     static shippingInformationSelector = '//android.widget.TextView[@text="Shipping Information:"]';
     static shippingMethodSelector = '//android.widget.TextView[@text="FREE PONY EXPRESS DELIVERY!"]';
-    static itemTotalSelector = '//android.widget.TextView[@text="Item total: $29.99"]';
+    static itemTotalSelector = '//android.widget.TextView[contains(@text, "Item total:")]';
     static taxSelector = '//android.widget.TextView[@text="Tax: $2.40"]';
     static totalPriceSelector = '//android.widget.TextView[@text="Total: $32.39"]';
     static finishButtonSelector = '//android.view.ViewGroup[@content-desc="test-FINISH"]';

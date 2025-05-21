@@ -1,7 +1,9 @@
 import { Reporters } from '@wdio/types';
 import path from 'path';
 
-const ACTIVE = {
+const TARGET_DEVICE = process.env.TARGET_DEVICE || 'emulator';
+
+const EMULATOR_CONFIG = {
     deviceName: 'Android Emulator',
     platformVersion: '13',
     automationName: 'UiAutomator2',
@@ -9,7 +11,18 @@ const ACTIVE = {
     specs: ['./test/specs/test.e2e.android.ts']
 };
 
+const PHYSICAL_CONFIG = {
+    deviceName: 'R5CX14742XK',
+    platformVersion: '14', // Sprawdź dokładną wersję przez `adb shell getprop ro.build.version.release`
+    automationName: 'UiAutomator2',
+    appPath: path.resolve(__dirname, 'Android.SauceLabs.Mobile.Sample.app.2.7.1.apk'),
+    specs: ['./test/specs/test.e2e.android.ts']
+};
+
+const ACTIVE = TARGET_DEVICE === 'physical' ? PHYSICAL_CONFIG : EMULATOR_CONFIG;
+
 console.log('==== WDIO CONFIGURATION ====');
+console.log('TARGET_DEVICE:', TARGET_DEVICE);
 console.log('DEVICE_NAME:', ACTIVE.deviceName);
 console.log('APP_PATH:', ACTIVE.appPath);
 console.log('AUTOMATION_NAME:', ACTIVE.automationName);
@@ -27,19 +40,15 @@ const baseCapabilities: WebdriverIO.Capabilities & { [key: string]: string | boo
 export const config: WebdriverIO.Config = {
     runner: 'local',
     tsConfigPath: './tsconfig.json',
-    // Define test specs
     specs: ACTIVE.specs,
     exclude: [],
-    // Appium server connection
     maxInstances: 1,
     hostname: 'localhost',
     port: 4723,
     path: '/',
     capabilities: [baseCapabilities],
     logLevel: 'info',
-    // If >0, wdio will stop after given number of test failures
     bail: 0,
-    // Timeouts
     waitforTimeout: 10000,
     connectionRetryTimeout: 120000,
     connectionRetryCount: 3,
@@ -48,14 +57,13 @@ export const config: WebdriverIO.Config = {
         ui: 'bdd',
         timeout: 60000
     },
-    // Reporters configuration
     reporters: [
-        'spec', // Spec reporter to log detailed test execution
+        'spec',
         'spec',
         [
             'allure',
             {
-                outputDir: './allure-results', // Directory for Allure results
+                outputDir: './allure-results',
                 disableWebdriverStepsReporting: true,
                 disableWebdriverScreenshotsReporting: false
             }
